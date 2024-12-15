@@ -8,7 +8,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/GoodFriends.sln",
+                "${workspaceFolder}/WebApiTemplate.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
@@ -20,7 +20,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/GoodFriends.sln",
+                "${workspaceFolder}/WebApiTemplate.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
@@ -34,7 +34,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/GoodFriends.sln"
+                "${workspaceFolder}/WebApiTemplate.sln"
             ],
             "problemMatcher": "$msCompile"
         }

@@ -1,4 +1,4 @@
 {
     "appService.defaultWebAppToDeploy": "",
-    "appService.deploySubpath": "AppGoodFriendsWebApi/publish"
+    "appService.deploySubpath": "AppWebApi/publish"
 }

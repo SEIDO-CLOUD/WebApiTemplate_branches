@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbRepos", "DbRepos\DbRepos.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{D6F90081-67EE-48D3-BFFA-581A6A855D55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGoodFriendsWebApi", "AppGoodFriendsWebApi\AppGoodFriendsWebApi.csproj", "{B7961A28-1988-4997-AB58-D0496A6E8DC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppWebApi", "AppWebApi\AppWebApi.csproj", "{B7961A28-1988-4997-AB58-D0496A6E8DC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{00F3F8F0-4980-4B7F-BBB1-AAF26CAB1193}"
 EndProject

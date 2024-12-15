@@ -8,7 +8,7 @@ using Models.DTO;
 
 
 namespace DbModels;
-
+[Table("Animals", Schema = "supusr")]
 public class AnimalDbM : Animal, ISeed<AnimalDbM>
 {
     [Key]
@@ -31,6 +31,7 @@ public class AnimalDbM : Animal, ISeed<AnimalDbM>
     public override IZoo Zoo { get => ZooDbM; set => throw new NotImplementedException(); }
 
     [JsonIgnore]
+    [Required]
     public  ZooDbM ZooDbM { get; set; }
     
     //Used to stop recursion in DbRepos when using .Include in many-to-many relationships

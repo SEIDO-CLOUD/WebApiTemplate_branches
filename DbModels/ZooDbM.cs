@@ -8,7 +8,7 @@ using Models.DTO;
 
 namespace DbModels;
 
-
+[Table("Zoos", Schema = "supusr")]
 public class ZooDbM : Zoo, ISeed<ZooDbM>
 {
     [Key]

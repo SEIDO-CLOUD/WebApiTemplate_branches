@@ -18,17 +18,17 @@ public class Animal:IAnimal, ISeed<Animal>
     #region Seeder
     public bool Seeded { get; set; } = false;
 
-    public virtual Animal Seed (SeedGenerator _seeder)
+    public virtual Animal Seed (SeedGenerator seeder)
     {
         Seeded = true;
         AnimalId = Guid.NewGuid();
         
-        Kind = _seeder.FromEnum<enAnimalKind>();
-        Mood = _seeder.FromEnum<enAnimalMood>();
-        Age = _seeder.Next(0, 11);
+        Kind = seeder.FromEnum<enAnimalKind>();
+        Mood = seeder.FromEnum<enAnimalMood>();
+        Age = seeder.Next(0, 11);
 
-        Name = _seeder.PetName;
-        Description = _seeder.LatinSentence;
+        Name = seeder.PetName;
+        Description = seeder.LatinSentence;
 
         return this;
     }

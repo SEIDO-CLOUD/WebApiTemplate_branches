@@ -12,12 +12,12 @@ public class Zoo: IZoo, ISeed<Zoo>
 
     public virtual List<IAnimal> Animals { get; set; }
     public bool Seeded { get; set; } = false;
-    public virtual Zoo Seed (SeedGenerator _seeder)
+    public virtual Zoo Seed (SeedGenerator seeder)
     {
         ZooId = Guid.NewGuid();
-        Country = _seeder.Country;
-        City = _seeder.City(Country);
-        Name = $"Zoo in the city of {City}, {Country}";
+        Country = seeder.Country;
+        City = seeder.City(Country);
+        Name = $"Zoo {seeder.PetName} {seeder.LatinWords(1)[0]} in the city of {City}, {Country}";
         return this;
     }
 }

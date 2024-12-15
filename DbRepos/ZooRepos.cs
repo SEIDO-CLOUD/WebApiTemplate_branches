@@ -29,7 +29,7 @@ public class ZooDbRepos
             //make sure the model is fully populated, try without include.
             //remove tracking for all read operations for performance and to avoid recursion/circular access
             var query = _dbContext.Zoos.AsNoTracking()
-                .Include(i => i.Animals)
+                .Include(i => i.AnimalsDbM)
                 .Where(i => i.ZooId == id);
 
             return await query.FirstOrDefaultAsync<IZoo>();
@@ -56,7 +56,7 @@ public class ZooDbRepos
         else
         {
             query = _dbContext.Zoos.AsNoTracking()
-                .Include(i => i.Animals);
+                .Include(i => i.AnimalsDbM);
         }
 
         var ret = new ResponsePageDto<IZoo>()
@@ -113,7 +113,7 @@ public class ZooDbRepos
         var query1 = _dbContext.Zoos
             .Where(i => i.ZooId == itemDto.ZooId);
         var item = await query1
-            .Include(i => i.Animals)
+            .Include(i => i.AnimalsDbM)
             .FirstOrDefaultAsync<ZooDbM>();
 
         //If the item does not exists

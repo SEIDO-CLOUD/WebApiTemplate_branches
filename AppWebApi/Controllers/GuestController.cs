@@ -13,7 +13,7 @@ namespace AppWebApi.Controllers
     [Route("api/[controller]/[action]")]
     public class GuestController : Controller
     {
-        readonly IFriendsService _friendService = null;
+        readonly IZooService _service = null;
         readonly ILogger<GuestController> _logger = null;
 
        //GET: api/guest/info
@@ -24,7 +24,7 @@ namespace AppWebApi.Controllers
         {
             try
             {
-                var info = await _friendService.InfoAsync;
+                var info = await _service.InfoAsync();
 
                 _logger.LogInformation($"{nameof(Info)}:\n{JsonConvert.SerializeObject(info)}");
                 return Ok(info);
@@ -36,16 +36,10 @@ namespace AppWebApi.Controllers
             }
         }
 
-
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            base.OnActionExecuting(context);
-        }
-
         #region constructors
-        public GuestController(IFriendsService friendService, ILogger<GuestController> logger)
+        public GuestController(IZooService service, ILogger<GuestController> logger)
         {
-            _friendService = friendService;
+            _service = service;
             _logger = logger;
         }
         #endregion

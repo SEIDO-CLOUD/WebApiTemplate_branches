@@ -15,7 +15,7 @@ namespace AppWebApi.Controllers
     public class AdminController : Controller
     {
         readonly DatabaseConnections _dbConnections;
-        readonly IFriendsService _service;
+        readonly IZooService _service;
         readonly ILogger<AdminController> _logger;
 
         //GET: api/guest/info
@@ -97,13 +97,8 @@ namespace AppWebApi.Controllers
             return Ok("No messages in log");
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            base.OnActionExecuting(context);
-        }
-
         #region constructors
-        public AdminController(IFriendsService service, ILogger<AdminController> logger, DatabaseConnections dbConnections)
+        public AdminController(IZooService service, ILogger<AdminController> logger, DatabaseConnections dbConnections)
         {
             _service = service;
             _logger = logger;

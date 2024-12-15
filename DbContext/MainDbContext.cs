@@ -22,10 +22,9 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     DatabaseConnections _databaseConnections;
 
     #region C# model of database tables
-    public DbSet<FriendDbM> Friends { get; set; }
-    public DbSet<AddressDbM> Addresses { get; set; }
-    public DbSet<PetDbM> Pets { get; set; }
-    public DbSet<QuoteDbM> Quotes { get; set; }    
+    public DbSet<ZooDbM> Zoos { get; set; }    
+    public DbSet<AnimalDbM> Animals { get; set; }    
+
     #endregion
 
     #region constructors
@@ -39,9 +38,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #region model the Views
     public DbSet<GstUsrInfoDbDto> InfoDbView { get; set; }
-    public DbSet<GstUsrInfoFriendsDto> InfoFriendsView { get; set; }
-    public DbSet<GstUsrInfoPetsDto> InfoPetsView { get; set; }
-    public DbSet<GstUsrInfoQuotesDto> InfoQuotesView { get; set; }
+    public DbSet<GstUsrInfoAnimalsDto> InfoAnimalsView { get; set; }
+    public DbSet<GstUsrInfoZoosDto> InfoZoosView { get; set; }
     #endregion
 
     //Here we can modify the migration building
@@ -50,9 +48,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         #region model the Views
         modelBuilder.Entity<GstUsrInfoDbDto>().ToView("vwInfoDb", "gstusr").HasNoKey();
-        modelBuilder.Entity<GstUsrInfoFriendsDto>().ToView("vwInfoFriends", "gstusr").HasNoKey();
-        modelBuilder.Entity<GstUsrInfoPetsDto>().ToView("vwInfoPets", "gstusr").HasNoKey();
-        modelBuilder.Entity<GstUsrInfoQuotesDto>().ToView("vwInfoQuotes", "gstusr").HasNoKey();        
+        modelBuilder.Entity<GstUsrInfoAnimalsDto>().ToView("vwInfoAnimals", "gstusr").HasNoKey();        
+        modelBuilder.Entity<GstUsrInfoZoosDto>().ToView("vwInfoZoos", "gstusr").HasNoKey();        
         #endregion
 
         #region override modelbuilder

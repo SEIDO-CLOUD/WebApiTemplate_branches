@@ -1,0 +1,54 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
+
+using Models;
+using Seido.Utilities.SeedGenerator;
+using Models.DTO;
+
+namespace DbModels;
+
+
+public class ZooDbM : Zoo, ISeed<ZooDbM>
+{
+    [Key]
+    public override Guid ZooId { get; set; }
+
+
+    [NotMapped]
+    public override List<IAnimal> Animals { get => AnimalsDbM?.ToList<IAnimal>(); set => throw new NotImplementedException(); }
+
+    [JsonIgnore]
+    public List<AnimalDbM> AnimalsDbM { get; set; }
+
+    //Used to stop recursion in DbRepos when using .Include in many-to-many relationships
+    public ZooDbM ExludeNavProps() 
+    {
+        AnimalsDbM = null;
+        return this;
+    }
+
+    public override ZooDbM Seed (SeedGenerator _seeder)
+    {
+        base.Seed (_seeder);
+        return this;
+    }
+
+    public ZooDbM UpdateFromDTO(ZooCuDto org)
+    {
+        if (org == null) return null;
+
+        City = org.City;
+        Country = org.Country;
+        Name = org.Name;
+
+        return this;
+    }
+
+    public ZooDbM() { }
+    public ZooDbM(ZooCuDto org)
+    {
+        ZooId = Guid.NewGuid();
+        UpdateFromDTO(org);
+    }
+}

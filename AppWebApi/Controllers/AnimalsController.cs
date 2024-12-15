@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 using Models;
 using Models.DTO;
@@ -11,16 +10,16 @@ namespace AppWebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class PetsController : Controller
+    public class AnimalsController : Controller
     {
-        readonly IFriendsService _service = null;
-        readonly ILogger<PetsController> _logger = null;
+        readonly IZooService _service = null;
+        readonly ILogger<AnimalsController> _logger = null;
 
 
-        //GET: api/pets/read
+        //GET: api/Animals/read
         [HttpGet()]
         [ActionName("Read")]
-        [ProducesResponseType(200, Type = typeof(ResponsePageDto<IPet>))]
+        [ProducesResponseType(200, Type = typeof(ResponsePageDto<IAnimal>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> Read(string seeded = "true", string flat = "true",
             string filter = null, string pageNr = "0", string pageSize = "10")
@@ -35,7 +34,7 @@ namespace AppWebApi.Controllers
                 _logger.LogInformation($"{nameof(Read)}: {nameof(seededArg)}: {seededArg}, {nameof(flatArg)}: {flatArg}, " +
                     $"{nameof(pageNrArg)}: {pageNrArg}, {nameof(pageSizeArg)}: {pageSizeArg}");
                 
-                var resp = await _service.ReadPetsAsync(seededArg, flatArg, filter?.Trim().ToLower(), pageNrArg, pageSizeArg);     
+                var resp = await _service.ReadAnimalsAsync(seededArg, flatArg, filter?.Trim().ToLower(), pageNrArg, pageSizeArg);     
                 return Ok(resp);
             }
             catch (Exception ex)
@@ -45,10 +44,10 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //GET: api/pets/readitem
+        //GET: api/Animals/readitem
         [HttpGet()]
         [ActionName("Readitem")]
-        [ProducesResponseType(200, Type = typeof(IPet))]
+        [ProducesResponseType(200, Type = typeof(IAnimal))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
         public async Task<IActionResult> ReadItem(string id = null, string flat = "false")
@@ -60,7 +59,7 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(ReadItem)}: {nameof(idArg)}: {idArg}, {nameof(flatArg)}: {flatArg}");
                 
-                var item = await _service.ReadPetAsync(idArg, flatArg);
+                var item = await _service.ReadAnimalAsync(idArg, flatArg);
                 if (item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(item);
@@ -72,9 +71,9 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //DELETE: api/pets/deleteitem/id
+        //DELETE: api/Animals/deleteitem/id
         [HttpDelete("{id}")]
-        [ProducesResponseType(200, Type = typeof(IPet))]
+        [ProducesResponseType(200, Type = typeof(IAnimal))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> DeleteItem(string id)
         {
@@ -84,7 +83,7 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(DeleteItem)}: {nameof(idArg)}: {idArg}");
                 
-                var item = await _service.DeletePetAsync(idArg);
+                var item = await _service.DeleteAnimalAsync(idArg);
                 if (item == null) throw new ArgumentException ($"Item with id {id} does not exist");
         
                 _logger.LogInformation($"item {idArg} deleted");
@@ -97,10 +96,10 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //GET: api/pets/readitemdto
+        //GET: api/Animals/readitemdto
         [HttpGet()]
         [ActionName("ReadItemDto")]
-        [ProducesResponseType(200, Type = typeof(PetCUdto))]
+        [ProducesResponseType(200, Type = typeof(AnimalCuDto))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
         public async Task<IActionResult> ReadItemDto(string id = null)
@@ -111,10 +110,10 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(ReadItemDto)}: {nameof(idArg)}: {idArg}");
 
-                var item = await _service.ReadPetAsync(idArg, false);
+                var item = await _service.ReadAnimalAsync(idArg, false);
                 if (item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
-                var dto = new PetCUdto(item);
+                var dto = new AnimalCuDto(item);
                 return Ok(dto);
             }
             catch (Exception ex)
@@ -124,13 +123,13 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //PUT: api/pets/updateitem/id
-        //Body: csPetCUdto in Json
+        //PUT: api/Animals/updateitem/id
+        //Body: csAnimalCUdto in Json
         [HttpPut("{id}")]
         [ActionName("UpdateItem")]
-        [ProducesResponseType(200, Type = typeof(IPet))]
+        [ProducesResponseType(200, Type = typeof(IAnimal))]
         [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> UpdateItem(string id, [FromBody] PetCUdto item)
+        public async Task<IActionResult> UpdateItem(string id, [FromBody] AnimalCuDto item)
         {
             try
             {
@@ -138,9 +137,9 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(UpdateItem)}: {nameof(idArg)}: {idArg}");
                 
-                if (item.PetId != idArg) throw new ArgumentException("Id mismatch");
+                if (item.AnimalId != idArg) throw new ArgumentException("Id mismatch");
 
-                var model = await _service.UpdatePetAsync(item);
+                var model = await _service.UpdateAnimalAsync(item);
                 _logger.LogInformation($"item {idArg} updated");
                
                 return Ok(model);
@@ -152,20 +151,20 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //POST: api/pets/createitem
-        //Body: csPetCUdto in Json
+        //POST: api/Animals/createitem
+        //Body: csAnimalCUdto in Json
         [HttpPost()]
         [ActionName("CreateItem")]
-        [ProducesResponseType(200, Type = typeof(IPet))]
+        [ProducesResponseType(200, Type = typeof(IAnimal))]
         [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> CreateItem([FromBody] PetCUdto item)
+        public async Task<IActionResult> CreateItem([FromBody] AnimalCuDto item)
         {
             try
             {
                 _logger.LogInformation($"{nameof(CreateItem)}:");
                 
-                var model = await _service.CreatePetAsync(item);
-                _logger.LogInformation($"item {model.PetId} created");
+                var model = await _service.CreateAnimalAsync(item);
+                _logger.LogInformation($"item {model.AnimalId} created");
 
                 return Ok(model);
             }
@@ -176,13 +175,8 @@ namespace AppWebApi.Controllers
             }
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            base.OnActionExecuting(context);
-        }
-
         #region constructors
-        public PetsController(IFriendsService service, ILogger<PetsController> logger)
+        public AnimalsController(IZooService service, ILogger<AnimalsController> logger)
         {
             _service = service;
             _logger = logger;

@@ -24,8 +24,10 @@ builder.Services.AddSwaggerGen();
 
 //Inject Custom logger
 builder.Services.AddSingleton<ILoggerProvider, InMemoryLoggerProvider>();
-builder.Services.AddScoped<FriendsDbRepos>();
-builder.Services.AddScoped<IFriendsService, FriendsServiceDb>();
+builder.Services.AddScoped<AdminDbRepos>();
+builder.Services.AddScoped<ZooDbRepos>();
+builder.Services.AddScoped<AnimalDbRepos>();
+builder.Services.AddScoped<IZooService, ZooServiceDb>();
 
 
 var app = builder.Build();

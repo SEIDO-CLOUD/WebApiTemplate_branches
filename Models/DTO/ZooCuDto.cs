@@ -31,28 +31,3 @@ public class ZooCuDto
         AnimalsId = org.Animals?.Select(i => i.AnimalId).ToList();
     }
 }
-{
-    public virtual Guid? AnimalId { get; set; }
-
-    public enAnimalKind Kind { get; set; }
-    public enAnimalMood Mood { get; set; }
-    
-    public int Age { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-
-    public virtual Guid? ZooId { get; set; } = null;
-    public AnimalCUdto() { }
-    public AnimalCUdto(IAnimal org)
-    {
-        AnimalId = org.AnimalId;
-
-        Kind = org.Kind;
-        Mood = org.Mood;
-        Age = org.Age;
-        Name = org.Name;
-        Description = org.Description;
-
-        ZooId = org?.Zoo?.ZooId;
-    }
-}

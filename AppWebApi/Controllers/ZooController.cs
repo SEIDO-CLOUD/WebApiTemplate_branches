@@ -111,7 +111,7 @@ namespace AppWebApi.Controllers
                 var item = await _service.ReadZooAsync(idArg, false);
                 if (item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
-                var dto = new ZooCUdto(item);
+                var dto = new ZooCuDto(item);
                 return Ok(dto);         
             }
             catch (Exception ex)

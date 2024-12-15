@@ -53,15 +53,6 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
         #endregion
 
         #region override modelbuilder
-        modelBuilder.Entity("DbModels.FriendDbM", b =>
-        {
-            b.HasOne("DbModels.AddressDbM", "AddressDbM")
-                .WithMany("FriendsDbM")
-                .HasForeignKey("AddressId")
-                .OnDelete(DeleteBehavior.SetNull);
-
-            b.Navigation("AddressDbM");
-        });
         #endregion
         
         base.OnModelCreating(modelBuilder);

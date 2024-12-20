@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <UserSecretPath>/Users/Martin/.microsoft/usersecrets/</UserSecretPath>
-    <AzureProjectSettings>/Users/Martin/Development/scripts/azure/az-projects/web-dev</AzureProjectSettings>
+    <AzureProjectSettings>/Users/Martin/Development/scripts/azure/az-projects/newton-jade</AzureProjectSettings>
   </PropertyGroup>
 
   <ItemGroup>

@@ -200,9 +200,9 @@
     }
   ],
   "Names": {
-    "jsonFirstNames": "Harry, Lord, Hermione, Albus, Severus, Ron, Draco, Frodo, Gandalf, Sam, Peregrin, Saruman",
-    "jsonLastNames": "Potter, Voldemort, Granger, Dumbledore, Snape, Malfoy, Baggins, the Gray, Gamgee, Took, the White",
-    "jsonPetNames": "Max, Charlie, Cooper, Milo, Rocky, Wanda, Teddy, Duke, Leo, Max, Simba"
+    "jsonFirstNames": "Fred, Wilma, Barney, Betty, Pebbles, Dino, Baby, Bamm-Bamm, Harry, Lord, Hermione, Albus, Severus, Ron, Draco, Frodo, Gandalf, Sam, Peregrin, Saruman",
+    "jsonLastNames": "Flintstone, Rubble, Potter, Voldemort, Granger, Dumbledore, Snape, Malfoy, Baggins, the Gray, Gamgee, Took, the White",
+    "jsonPetNames": "Asterix, Obelix, Dogmatix, Getafix, Vitalstatistix, Cacofonix, Geriatrix, Unhygienix, Fulliautomatix" 
   },
   "Domains": {
     "jsonDomainNames": "icloud.com, me.com, mac.com, hotmail.com, gmail.com"

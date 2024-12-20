@@ -133,7 +133,12 @@ namespace Seido.Utilities.SeedGenerator
             }
             return sRet;
         }
-
+        public string LatinWordsAsSentence(int tryNrOfItems, string delimiter = ".") 
+        {
+            var s = string.Join(" ", LatinWords(tryNrOfItems)).ToLower().Replace(".", "") + delimiter;
+            return char.ToUpper(s[0]) + s.Substring(1);
+        }
+        
         public string LatinParagraph => LatinParagraphs(1).FirstOrDefault()?.Paragraph;
         public string LatinSentence => LatinSentences(1).FirstOrDefault();
         #endregion
@@ -146,6 +151,10 @@ namespace Seido.Utilities.SeedGenerator
             + " " + _seeds.Music.AlbumNames[this.Next(0, _seeds.Music.AlbumNames.Count)]
             + " " + _seeds.Music.AlbumNames[this.Next(0, _seeds.Music.AlbumNames.Count)]
             + " " + _seeds.Music.AlbumSuffix[this.Next(0, _seeds.Music.AlbumSuffix.Count)];
+        public string AlbumPrefix => _seeds.Music.AlbumPrefix[this.Next(0, _seeds.Music.AlbumPrefix.Count)];
+
+        public string AlbumSuffix => _seeds.Music.AlbumSuffix[this.Next(0, _seeds.Music.AlbumSuffix.Count)];
+
         #endregion
 
         #region DateTime, bool and decimal

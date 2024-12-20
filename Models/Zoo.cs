@@ -17,7 +17,7 @@ public class Zoo: IZoo, ISeed<Zoo>
         ZooId = Guid.NewGuid();
         Country = seeder.Country;
         City = seeder.City(Country);
-        Name = $"Zoo {seeder.PetName} {seeder.LatinWords(1)[0]} in the city of {City}, {Country}";
+        Name = $"Zoo {seeder.LatinWordsAsSentence(seeder.Next(1,5), ":")} {seeder.PetName} {seeder.AlbumSuffix}";
         return this;
     }
 }

@@ -47,7 +47,7 @@ namespace AppWebApi.Controllers
         //GET: api/Animals/readitem
         [HttpGet()]
         [ActionName("Readitem")]
-        [ProducesResponseType(200, Type = typeof(IAnimal))]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAnimal>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
         public async Task<IActionResult> ReadItem(string id = null, string flat = "false")
@@ -73,7 +73,7 @@ namespace AppWebApi.Controllers
 
         //DELETE: api/Animals/deleteitem/id
         [HttpDelete("{id}")]
-        [ProducesResponseType(200, Type = typeof(IAnimal))]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAnimal>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> DeleteItem(string id)
         {
@@ -99,7 +99,7 @@ namespace AppWebApi.Controllers
         //GET: api/Animals/readitemdto
         [HttpGet()]
         [ActionName("ReadItemDto")]
-        [ProducesResponseType(200, Type = typeof(AnimalCuDto))]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<AnimalCuDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
         public async Task<IActionResult> ReadItemDto(string id = null)
@@ -113,8 +113,11 @@ namespace AppWebApi.Controllers
                 var item = await _service.ReadAnimalAsync(idArg, false);
                 if (item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
-                var dto = new AnimalCuDto(item);
-                return Ok(dto);
+                return Ok(
+                    new ResponseItemDto<AnimalCuDto>() {
+                    DbConnectionKeyUsed = item.DbConnectionKeyUsed,
+                    Item = new AnimalCuDto(item.Item)
+                });   
             }
             catch (Exception ex)
             {
@@ -127,7 +130,7 @@ namespace AppWebApi.Controllers
         //Body: csAnimalCUdto in Json
         [HttpPut("{id}")]
         [ActionName("UpdateItem")]
-        [ProducesResponseType(200, Type = typeof(IAnimal))]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAnimal>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> UpdateItem(string id, [FromBody] AnimalCuDto item)
         {
@@ -155,7 +158,7 @@ namespace AppWebApi.Controllers
         //Body: csAnimalCUdto in Json
         [HttpPost()]
         [ActionName("CreateItem")]
-        [ProducesResponseType(200, Type = typeof(IAnimal))]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAnimal>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> CreateItem([FromBody] AnimalCuDto item)
         {
@@ -164,7 +167,7 @@ namespace AppWebApi.Controllers
                 _logger.LogInformation($"{nameof(CreateItem)}:");
                 
                 var model = await _service.CreateAnimalAsync(item);
-                _logger.LogInformation($"item {model.AnimalId} created");
+                _logger.LogInformation($"item {model.Item.AnimalId} created");
 
                 return Ok(model);
             }

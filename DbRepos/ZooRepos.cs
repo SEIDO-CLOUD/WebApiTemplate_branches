@@ -22,7 +22,7 @@ public class ZooDbRepos
     }
     #endregion
 
-    public async Task<IZoo> ReadZooAsync(Guid id, bool flat)
+    public async Task<ResponseItemDto<IZoo>> ReadZooAsync(Guid id, bool flat)
     {
         if (!flat)
         {
@@ -31,7 +31,12 @@ public class ZooDbRepos
             var query = _dbContext.Zoos.AsNoTracking()
                 .Where(i => i.ZooId == id);
 
-            return await query.FirstOrDefaultAsync<IZoo>();
+            var resp =  await query.FirstOrDefaultAsync<IZoo>();
+            return new ResponseItemDto<IZoo>()
+            {
+                DbConnectionKeyUsed = _dbContext.dbConnection,
+                Item = resp
+            };
         }
         else
         {
@@ -40,7 +45,12 @@ public class ZooDbRepos
             var query = _dbContext.Zoos.AsNoTracking()
                 .Where(i => i.ZooId == id);
 
-            return await query.FirstOrDefaultAsync<IZoo>();
+            var resp = await query.FirstOrDefaultAsync<IZoo>();
+            return new ResponseItemDto<IZoo>()
+            {
+                DbConnectionKeyUsed = _dbContext.dbConnection,
+                Item = resp
+            };
         }   
     }
 
@@ -57,8 +67,9 @@ public class ZooDbRepos
             query = _dbContext.Zoos.AsNoTracking();
         }
 
-        var ret = new ResponsePageDto<IZoo>()
+        return new ResponsePageDto<IZoo>()
         {
+            DbConnectionKeyUsed = _dbContext.dbConnection,
             DbItemsCount = await query
 
             //Adding filter functionality
@@ -84,10 +95,9 @@ public class ZooDbRepos
             PageNr = pageNumber,
             PageSize = pageSize
         };
-        return ret;
     }
 
-    public async Task<IZoo> DeleteZooAsync(Guid id)
+    public async Task<ResponseItemDto<IZoo>> DeleteZooAsync(Guid id)
     {
         //Find the instance with matching id
         var query1 = _dbContext.Zoos
@@ -102,10 +112,15 @@ public class ZooDbRepos
 
         //write to database in a UoW
         await _dbContext.SaveChangesAsync();
-        return item;   
+
+        return new ResponseItemDto<IZoo>()
+        {
+            DbConnectionKeyUsed = _dbContext.dbConnection,
+            Item = item
+        };
     }
 
-    public async Task<IZoo> UpdateZooAsync(ZooCuDto itemDto)
+    public async Task<ResponseItemDto<IZoo>> UpdateZooAsync(ZooCuDto itemDto)
     {
         //Find the instance with matching id and read the navigation properties.
         var query1 = _dbContext.Zoos
@@ -130,7 +145,7 @@ public class ZooDbRepos
         return await ReadZooAsync(item.ZooId, false);    
     }
 
-    public async Task<IZoo> CreateZooAsync(ZooCuDto itemDto)
+    public async Task<ResponseItemDto<IZoo>> CreateZooAsync(ZooCuDto itemDto)
     {
         if (itemDto.ZooId != null)
             throw new ArgumentException($"{nameof(itemDto.ZooId)} must be null when creating a new object");
@@ -146,6 +161,6 @@ public class ZooDbRepos
         await _dbContext.SaveChangesAsync();
         
         //return the updated item in non-flat mode
-        return await ReadZooAsync(item.ZooId, false);   
+        return await ReadZooAsync(item.ZooId, false);
     }
 }

@@ -10,8 +10,8 @@ public interface IZooService {
     public Task<GstUsrInfoAllDto> RemoveSeedAsync(bool seeded);
 
     public Task<ResponsePageDto<IZoo>> ReadZoosAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize);
-    public Task<IZoo> ReadZooAsync(Guid id, bool flat);
-    public Task<IZoo> DeleteZooAsync(Guid id);
-    public Task<IZoo> UpdateZooAsync(ZooCuDto item);
-    public Task<IZoo> CreateZooAsync(ZooCuDto item);
+    public Task<ResponseItemDto<IZoo>> ReadZooAsync(Guid id, bool flat);
+    public Task<ResponseItemDto<IZoo>> DeleteZooAsync(Guid id);
+    public Task<ResponseItemDto<IZoo>> UpdateZooAsync(ZooCuDto item);
+    public Task<ResponseItemDto<IZoo>> CreateZooAsync(ZooCuDto item);
 }

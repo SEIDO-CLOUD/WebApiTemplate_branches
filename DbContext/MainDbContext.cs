@@ -21,6 +21,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     IConfiguration _configuration;
     DatabaseConnections _databaseConnections;
 
+    public string dbConnection  => _databaseConnections.GetDbConnection(this.Database.GetConnectionString());
+
     #region C# model of database tables
     public DbSet<ZooDbM> Zoos { get; set; }    
     #endregion

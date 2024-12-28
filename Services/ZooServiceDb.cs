@@ -26,10 +26,10 @@ public class ZooServiceDb : IZooService {
     public Task<GstUsrInfoAllDto> RemoveSeedAsync(bool seeded) => _adminRepo.RemoveSeedAsync(seeded);
 
     public Task<ResponsePageDto<IZoo>> ReadZoosAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize) => _zooRepo.ReadZoosAsync(seeded, flat, filter, pageNumber, pageSize);
-    public Task<IZoo> ReadZooAsync(Guid id, bool flat) => _zooRepo.ReadZooAsync(id, flat);
-    public Task<IZoo> DeleteZooAsync(Guid id) => _zooRepo.DeleteZooAsync(id);
-    public Task<IZoo> UpdateZooAsync(ZooCuDto item) => _zooRepo.UpdateZooAsync(item);
-    public Task<IZoo> CreateZooAsync(ZooCuDto item) => _zooRepo.CreateZooAsync(item);
+    public Task<ResponseItemDto<IZoo>> ReadZooAsync(Guid id, bool flat) => _zooRepo.ReadZooAsync(id, flat);
+    public Task<ResponseItemDto<IZoo>> DeleteZooAsync(Guid id) => _zooRepo.DeleteZooAsync(id);
+    public Task<ResponseItemDto<IZoo>> UpdateZooAsync(ZooCuDto item) => _zooRepo.UpdateZooAsync(item);
+    public Task<ResponseItemDto<IZoo>> CreateZooAsync(ZooCuDto item) => _zooRepo.CreateZooAsync(item);
 
     #endregion
 }

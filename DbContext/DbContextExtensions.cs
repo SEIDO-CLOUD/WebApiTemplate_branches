@@ -12,15 +12,15 @@ using Microsoft.Extensions.Configuration;
 namespace DbContext;
 public static class DbContextExtensions
 {
-    public static IServiceCollection AddDatabaseConnectionsDbContext(this IServiceCollection serviceCollection, string user=null)
+    public static IServiceCollection AddDatabaseConnectionsDbContext(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddDbContext<MainDbContext>((serviceProvider, options) => 
         { 
             var configuration = serviceProvider.GetRequiredService<IConfiguration>(); 
             var databaseConnections = serviceProvider.GetRequiredService<DatabaseConnections>(); 
             
-            user ??= configuration["DatabaseConnections:DefaultDataUser"];
-            var conn = databaseConnections.GetDataConnectionDetails(user);
+            var userRole = configuration["DatabaseConnections:DefaultDataUser"];
+            var conn = databaseConnections.GetDataConnectionDetails(userRole);
             if (databaseConnections.SetupInfo.DataConnectionServer == DatabaseServer.SQLServer)
             {
                 options.UseSqlServer(conn.DbConnectionString, options => options.EnableRetryOnFailure());

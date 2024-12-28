@@ -60,7 +60,7 @@ namespace AppWebApi.Controllers
                 _logger.LogInformation($"{nameof(ReadItem)}: {nameof(idArg)}: {idArg}, {nameof(flatArg)}: {flatArg}");
                 
                 var item = await _service.ReadAnimalAsync(idArg, flatArg);
-                if (item == null) throw new ArgumentException ($"Item with id {id} does not exist");
+                if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(item);
             }
@@ -84,7 +84,7 @@ namespace AppWebApi.Controllers
                 _logger.LogInformation($"{nameof(DeleteItem)}: {nameof(idArg)}: {idArg}");
                 
                 var item = await _service.DeleteAnimalAsync(idArg);
-                if (item == null) throw new ArgumentException ($"Item with id {id} does not exist");
+                if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
         
                 _logger.LogInformation($"item {idArg} deleted");
                 return Ok(item);
@@ -111,7 +111,7 @@ namespace AppWebApi.Controllers
                 _logger.LogInformation($"{nameof(ReadItemDto)}: {nameof(idArg)}: {idArg}");
 
                 var item = await _service.ReadAnimalAsync(idArg, false);
-                if (item == null) throw new ArgumentException ($"Item with id {id} does not exist");
+                if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(
                     new ResponseItemDto<AnimalCuDto>() {

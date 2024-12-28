@@ -14,10 +14,4 @@ public interface IZooService {
     public Task<IZoo> DeleteZooAsync(Guid id);
     public Task<IZoo> UpdateZooAsync(ZooCuDto item);
     public Task<IZoo> CreateZooAsync(ZooCuDto item);
-
-    public Task<ResponsePageDto<IAnimal>> ReadAnimalsAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize);
-    public Task<IAnimal> ReadAnimalAsync(Guid id, bool flat);
-    public Task<IAnimal> DeleteAnimalAsync(Guid id);
-    public Task<IAnimal> UpdateAnimalAsync(AnimalCuDto item);
-    public Task<IAnimal> CreateAnimalAsync(AnimalCuDto item);
 }

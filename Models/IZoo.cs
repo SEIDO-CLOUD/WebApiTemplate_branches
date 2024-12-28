@@ -6,7 +6,4 @@ public interface IZoo
     public string City { get; set; }
     public string Country { get; set; }
     public string Name { get; set; }
-
-    //Navigation properties
-    public List<IAnimal> Animals { get; set; }
 }

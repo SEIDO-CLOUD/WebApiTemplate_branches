@@ -15,19 +15,6 @@ public class ZooDbM : Zoo, ISeed<ZooDbM>
     public override Guid ZooId { get; set; }
 
 
-    [NotMapped]
-    public override List<IAnimal> Animals { get => AnimalsDbM?.ToList<IAnimal>(); set => throw new NotImplementedException(); }
-
-    [JsonIgnore]
-    public List<AnimalDbM> AnimalsDbM { get; set; }
-
-    //Used to stop recursion in DbRepos when using .Include in many-to-many relationships
-    public ZooDbM ExludeNavProps() 
-    {
-        AnimalsDbM = null;
-        return this;
-    }
-
     public override ZooDbM Seed (SeedGenerator _seeder)
     {
         base.Seed (_seeder);

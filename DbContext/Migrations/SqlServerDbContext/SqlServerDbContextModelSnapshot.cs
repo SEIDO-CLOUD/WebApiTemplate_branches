@@ -22,46 +22,6 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DbModels.AnimalDbM", b =>
-                {
-                    b.Property<Guid>("AnimalId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("Kind")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Mood")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<bool>("Seeded")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("ZooDbMZooId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("strKind")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("strMood")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("AnimalId");
-
-                    b.HasIndex("ZooDbMZooId");
-
-                    b.ToTable("Animals", "supusr");
-                });
-
             modelBuilder.Entity("DbModels.ZooDbM", b =>
                 {
                     b.Property<Guid>("ZooId")
@@ -83,25 +43,6 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.HasKey("ZooId");
 
                     b.ToTable("Zoos", "supusr");
-                });
-
-            modelBuilder.Entity("Models.DTO.GstUsrInfoAnimalsDto", b =>
-                {
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("NrAnimals")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ZooName")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.ToTable((string)null);
-
-                    b.ToView("vwInfoAnimals", "gstusr");
                 });
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>
@@ -137,22 +78,6 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable((string)null);
 
                     b.ToView("vwInfoZoos", "gstusr");
-                });
-
-            modelBuilder.Entity("DbModels.AnimalDbM", b =>
-                {
-                    b.HasOne("DbModels.ZooDbM", "ZooDbM")
-                        .WithMany("AnimalsDbM")
-                        .HasForeignKey("ZooDbMZooId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ZooDbM");
-                });
-
-            modelBuilder.Entity("DbModels.ZooDbM", b =>
-                {
-                    b.Navigation("AnimalsDbM");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,8 +18,6 @@ public class ZooCuDto
     public string Country { get; set; }
     public string Name { get; set; }
 
-    public virtual List<Guid> AnimalsId { get; set; } = null;
-
     public ZooCuDto() { }
     public ZooCuDto(IZoo org)
     {
@@ -27,7 +25,5 @@ public class ZooCuDto
         Name = org.Name;
         Country = org.Country;
         City = org.City;
-        
-        AnimalsId = org.Animals?.Select(i => i.AnimalId).ToList();
     }
 }

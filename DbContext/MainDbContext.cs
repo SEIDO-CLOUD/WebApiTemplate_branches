@@ -23,8 +23,6 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #region C# model of database tables
     public DbSet<ZooDbM> Zoos { get; set; }    
-    public DbSet<AnimalDbM> Animals { get; set; }    
-
     #endregion
 
     #region constructors
@@ -38,7 +36,6 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #region model the Views
     public DbSet<GstUsrInfoDbDto> InfoDbView { get; set; }
-    public DbSet<GstUsrInfoAnimalsDto> InfoAnimalsView { get; set; }
     public DbSet<GstUsrInfoZoosDto> InfoZoosView { get; set; }
     #endregion
 
@@ -48,7 +45,6 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         #region model the Views
         modelBuilder.Entity<GstUsrInfoDbDto>().ToView("vwInfoDb", "gstusr").HasNoKey();
-        modelBuilder.Entity<GstUsrInfoAnimalsDto>().ToView("vwInfoAnimals", "gstusr").HasNoKey();        
         modelBuilder.Entity<GstUsrInfoZoosDto>().ToView("vwInfoZoos", "gstusr").HasNoKey();        
         #endregion
 

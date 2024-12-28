@@ -14,21 +14,12 @@ GO
 --create a view that gives overview of the database content
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
     SELECT (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 1) as nrSeededZoos, 
-        (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 0) as nrUnseededZoos,
-        (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 1) as nrSeededAnimals, 
-        (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 0) as nrUnseededAnimals
-
+        (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 0) as nrUnseededZoos
 GO
 
 CREATE OR ALTER VIEW gstusr.vwInfoZoos AS
     SELECT z.Country, z.City, COUNT(*) as NrZoos  FROM supusr.Zoos z
     GROUP BY z.Country, z.City WITH ROLLUP;
-GO
-
-CREATE OR ALTER VIEW gstusr.vwInfoAnimals AS
-    SELECT z.Country, z.City, z.Name as ZooName, COUNT(a.AnimalId) as NrAnimals FROM supusr.Zoos z
-    INNER JOIN supusr.Animals a ON a.ZooDbMZooId = z.ZooId
-    GROUP BY z.Country, z.City, z.Name WITH ROLLUP;
 GO
 
 
@@ -37,18 +28,15 @@ GO
 CREATE OR ALTER PROC supusr.spDeleteAll
     @Seeded BIT = 1,
 
-    @nrZoosAffected INT OUTPUT,
-    @nrAnimalsAffected INT OUTPUT
+    @nrZoosAffected INT OUTPUT
     
     AS
 
     SET NOCOUNT ON;
 
     SELECT  @nrZoosAffected = COUNT(*) FROM supusr.Zoos WHERE Seeded = @Seeded;
-    SELECT  @nrAnimalsAffected = COUNT(*) FROM supusr.Animals WHERE Seeded = @Seeded;
 
     DELETE FROM supusr.Zoos WHERE Seeded = @Seeded;
-    DELETE FROM supusr.Animals WHERE Seeded = @Seeded;
 
     SELECT * FROM gstusr.vwInfoDb;
 

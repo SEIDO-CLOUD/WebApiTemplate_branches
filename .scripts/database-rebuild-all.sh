@@ -2,12 +2,6 @@
 #To make the .sh file executable
 #sudo chmod +x ./database-rebuild-all.sh
 
-#Make sure DbConnection is: SQLServer-musicefc-azkv-docker-sysadmin
-#This should be "DbSetActiveIdx": 0  in DbContext/appsettings.json
-
-#If EFC tools needs update use:
-#dotnet tool update --global dotnet-ef
-
 if [[ -z "$1" ]]; then
     printf "\nMissing parameter:\n  ./database-rebuild-all.sh [local | azure]\n"
     exit 1
@@ -31,4 +25,3 @@ dotnet ef database update -c SqlServerDbContext -p ../DbContext -s ../DbContext
 
 #to initialize the database you need to run the sql scripts from Azure Data Studio
 #../DbContext/SqlScripts/initDatabase.sql
-#or run ./database-init.sh

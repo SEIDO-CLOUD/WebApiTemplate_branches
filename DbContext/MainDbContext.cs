@@ -188,7 +188,9 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         _databaseConnections = serviceProvider.GetRequiredService<DatabaseConnections>();
         System.Console.WriteLine($"   {nameof(DatabaseConnections)} retrieved");
-        System.Console.WriteLine($"   secret source: {_databaseConnections.SetupInfo.SecretSource}");
+        System.Console.WriteLine($"      secret source: {_databaseConnections.SetupInfo.SecretSource}");
+        System.Console.WriteLine($"      database server: {_databaseConnections.SetupInfo.DataConnectionServer}");
+        System.Console.WriteLine($"      database connection tag: {_databaseConnections.SetupInfo.DataConnectionTag}");
 
     }
 

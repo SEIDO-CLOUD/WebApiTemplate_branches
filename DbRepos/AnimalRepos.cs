@@ -32,7 +32,12 @@ public class AnimalDbRepos
                 .Include(i => i.ZooDbM)
                 .Where(i => i.AnimalId == id);
 
-            return await query.FirstOrDefaultAsync<IAnimal>();
+            var resp = await query.FirstOrDefaultAsync<IAnimal>();
+            return new ResponseItemDto<IAnimal>()
+            {
+                DbConnectionKeyUsed = _dbContext.dbConnection,
+                Item = resp
+            };
         }
         else
         {
@@ -41,7 +46,12 @@ public class AnimalDbRepos
             var query = _dbContext.Animals.AsNoTracking()
                 .Where(i => i.AnimalId == id);
 
-            return await query.FirstOrDefaultAsync<IAnimal>();
+            var resp = await query.FirstOrDefaultAsync<IAnimal>();
+            return new ResponseItemDto<IAnimal>()
+            {
+                DbConnectionKeyUsed = _dbContext.dbConnection,
+                Item = resp
+            };
         } 
     }
 
@@ -61,6 +71,7 @@ public class AnimalDbRepos
 
         var ret = new ResponsePageDto<IAnimal>()
         {
+            DbConnectionKeyUsed = _dbContext.dbConnection,
             DbItemsCount = await query
 
             //Adding filter functionality
@@ -108,7 +119,12 @@ public class AnimalDbRepos
 
         //write to database in a UoW
         await _dbContext.SaveChangesAsync();
-        return item;
+
+        return new ResponseItemDto<IAnimal>()
+        {
+            DbConnectionKeyUsed = _dbContext.dbConnection,
+            Item = item
+        };
     }
 
     public async Task<ResponseItemDto<IAnimal>> UpdateAnimalAsync(AnimalCuDto itemDto)

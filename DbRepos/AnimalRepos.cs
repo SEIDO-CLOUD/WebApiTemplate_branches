@@ -22,7 +22,7 @@ public class AnimalDbRepos
     }
     #endregion
 
-    public async Task<IAnimal> ReadAnimalAsync(Guid id, bool flat)
+    public async Task<ResponseItemDto<IAnimal>> ReadAnimalAsync(Guid id, bool flat)
     {
         if (!flat)
         {
@@ -93,7 +93,7 @@ public class AnimalDbRepos
         return ret;
     }
 
-    public async Task<IAnimal> DeleteAnimalAsync(Guid id)
+    public async Task<ResponseItemDto<IAnimal>> DeleteAnimalAsync(Guid id)
     {
         var query1 = _dbContext.Animals
             .Where(i => i.AnimalId == id);
@@ -111,7 +111,7 @@ public class AnimalDbRepos
         return item;
     }
 
-    public async Task<IAnimal> UpdateAnimalAsync(AnimalCuDto itemDto)
+    public async Task<ResponseItemDto<IAnimal>> UpdateAnimalAsync(AnimalCuDto itemDto)
     {
         var query1 = _dbContext.Animals
             .Where(i => i.AnimalId == itemDto.AnimalId);
@@ -139,7 +139,7 @@ public class AnimalDbRepos
         return await ReadAnimalAsync(item.AnimalId, false);    
     }
 
-    public async Task<IAnimal> CreateAnimalAsync(AnimalCuDto itemDto)
+    public async Task<ResponseItemDto<IAnimal>> CreateAnimalAsync(AnimalCuDto itemDto)
     {
         if (itemDto.AnimalId != null)
             throw new ArgumentException($"{nameof(itemDto.AnimalId)} must be null when creating a new object");

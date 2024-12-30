@@ -51,7 +51,7 @@ public class ZooDbRepos
                 DbConnectionKeyUsed = _dbContext.dbConnection,
                 Item = resp
             };
-        }
+        }   
     }
 
     public async Task<ResponsePageDto<IZoo>> ReadZoosAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize)
@@ -68,7 +68,7 @@ public class ZooDbRepos
                 .Include(i => i.AnimalsDbM);
         }
 
-        var ret = new ResponsePageDto<IZoo>()
+        return new ResponsePageDto<IZoo>()
         {
             DbConnectionKeyUsed = _dbContext.dbConnection,
             DbItemsCount = await query
@@ -96,7 +96,6 @@ public class ZooDbRepos
             PageNr = pageNumber,
             PageSize = pageSize
         };
-        return ret;
     }
 
     public async Task<ResponseItemDto<IZoo>> DeleteZooAsync(Guid id)

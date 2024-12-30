@@ -44,7 +44,8 @@ public class DatabaseConnections
             DbConnection = conn.DbConnection,
             DbConnectionString = _configuration.GetConnectionString(conn.DbConnection)
         };
-    }    
+    }
+    
     //Not to revieal the connection string, I find the corresponding DbConnectionKey in the 
     public string GetDbConnection (string DbConnectionString) => 
             _activeDataSet.DbConnections.First(m =>_configuration.GetConnectionString(m.DbConnection).Trim().ToLower() == DbConnectionString.Trim().ToLower())?.DbConnection;

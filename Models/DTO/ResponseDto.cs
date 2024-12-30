@@ -14,7 +14,6 @@ public class ResponsePageDto<T>
     public int PageNr { get; init; }
     public int PageSize { get; init; }
     public int PageCount => (int)Math.Ceiling((double)DbItemsCount / PageSize);
-    
     public string DbConnectionKeyUsed {get; init;}
 }
 

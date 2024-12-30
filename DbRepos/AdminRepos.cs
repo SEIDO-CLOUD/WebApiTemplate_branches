@@ -24,22 +24,21 @@ public class AdminDbRepos
     }
     #endregion
 
-    public async Task<GstUsrInfoAllDto> InfoAsync()
-    {
-        return await DbInfo();
-    }
-
-    private async Task<GstUsrInfoAllDto> DbInfo()
+    public async Task<ResponseItemDto<GstUsrInfoAllDto>> InfoAsync()
     {
         var info = new GstUsrInfoAllDto();
         info.Db = await _dbContext.InfoDbView.FirstAsync();
         info.Zoos = await _dbContext.InfoZoosView.ToListAsync();
         info.Animals = await _dbContext.InfoAnimalsView.ToListAsync();
 
-        return info;
+        return new ResponseItemDto<GstUsrInfoAllDto>()
+        {
+            DbConnectionKeyUsed = _dbContext.dbConnection,
+            Item = info
+        };
     }
 
-    public async Task<GstUsrInfoAllDto> SeedAsync(int nrOfItems)
+    public async Task<ResponseItemDto<GstUsrInfoAllDto>> SeedAsync(int nrOfItems)
     {
         //First of all make sure the database is cleared from all seeded data
         await RemoveSeedAsync(true);
@@ -61,11 +60,10 @@ public class AdminDbRepos
         _dbContext.Zoos.AddRange(zoos);
 
         await _dbContext.SaveChangesAsync();
-        var info = await DbInfo();
-        return info;
+        return await InfoAsync();
     }
     
-    public async Task<GstUsrInfoAllDto> RemoveSeedAsync(bool seeded)
+    public async Task<ResponseItemDto<GstUsrInfoAllDto>> RemoveSeedAsync(bool seeded)
     {
             var parameters = new List<SqlParameter>();
 
@@ -93,6 +91,6 @@ public class AdminDbRepos
             int retCode = (int)retValue.Value;
             if (retCode != 0) throw new Exception("supusr.spDeleteAll return code error");
 
-            return await DbInfo();
+            return await InfoAsync();
     }
 }

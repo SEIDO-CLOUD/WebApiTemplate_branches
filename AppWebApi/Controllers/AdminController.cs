@@ -41,7 +41,7 @@ namespace AppWebApi.Controllers
         //GET: api/admin/seed?count={count}
         [HttpGet()]
         [ActionName("Seed")]
-        [ProducesResponseType(200, Type = typeof(GstUsrInfoAllDto))]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<GstUsrInfoAllDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> Seed(string count = "10")
         {
@@ -50,7 +50,7 @@ namespace AppWebApi.Controllers
                 int countArg = int.Parse(count);
 
                 _logger.LogInformation($"{nameof(Seed)}: {nameof(countArg)}: {countArg}");
-                GstUsrInfoAllDto info = await _service.SeedAsync(countArg);
+                var info = await _service.SeedAsync(countArg);
                 return Ok(info);
             }
             catch (Exception ex)
@@ -63,7 +63,7 @@ namespace AppWebApi.Controllers
         //GET: api/admin/removeseed
         [HttpGet()]
         [ActionName("RemoveSeed")]
-        [ProducesResponseType(200, Type = typeof(GstUsrInfoAllDto))]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<GstUsrInfoAllDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> RemoveSeed(string seeded = "true")
         {
@@ -72,7 +72,7 @@ namespace AppWebApi.Controllers
                 bool seededArg = bool.Parse(seeded);
 
                 _logger.LogInformation($"{nameof(RemoveSeed)}: {nameof(seededArg)}: {seededArg}");
-                GstUsrInfoAllDto info = await _service.RemoveSeedAsync(seededArg);
+                var info = await _service.RemoveSeedAsync(seededArg);
                 return Ok(info);        
             }
             catch (Exception ex)

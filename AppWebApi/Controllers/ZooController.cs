@@ -115,7 +115,7 @@ namespace AppWebApi.Controllers
                     new ResponseItemDto<ZooCuDto>() {
                     DbConnectionKeyUsed = item.DbConnectionKeyUsed,
                     Item = new ZooCuDto(item.Item)
-                });      
+                });
             }
             catch (Exception ex)
             {

@@ -19,7 +19,7 @@ namespace AppWebApi.Controllers
        //GET: api/guest/info
         [HttpGet()]
         [ActionName("Info")]
-        [ProducesResponseType(200, Type = typeof(GstUsrInfoAllDto))]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<GstUsrInfoAllDto>))]
         public async Task<IActionResult> Info()
         {
             try

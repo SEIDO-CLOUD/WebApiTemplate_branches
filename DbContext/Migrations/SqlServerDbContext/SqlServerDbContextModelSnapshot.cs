@@ -47,13 +47,7 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>
                 {
-                    b.Property<int>("NrSeededAnimals")
-                        .HasColumnType("int");
-
                     b.Property<int>("NrSeededZoos")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NrUnseededAnimals")
                         .HasColumnType("int");
 
                     b.Property<int>("NrUnseededZoos")

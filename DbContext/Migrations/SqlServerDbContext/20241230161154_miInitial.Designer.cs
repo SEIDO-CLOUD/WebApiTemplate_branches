@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20241228145022_miInitial")]
+    [Migration("20241230161154_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -50,13 +50,7 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>
                 {
-                    b.Property<int>("NrSeededAnimals")
-                        .HasColumnType("int");
-
                     b.Property<int>("NrSeededZoos")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NrUnseededAnimals")
                         .HasColumnType("int");
 
                     b.Property<int>("NrUnseededZoos")

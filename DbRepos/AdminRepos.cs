@@ -30,6 +30,7 @@ public class AdminDbRepos
         info.Db = await _dbContext.InfoDbView.FirstAsync();
         info.Zoos = await _dbContext.InfoZoosView.ToListAsync();
         info.Animals = await _dbContext.InfoAnimalsView.ToListAsync();
+        info.Employees = await _dbContext.InfoEmployeesView.ToListAsync();
 
         return new ResponseItemDto<GstUsrInfoAllDto>()
         {
@@ -54,6 +55,7 @@ public class AdminDbRepos
         foreach (var zoo in zoos)
         {
             zoo.AnimalsDbM = seeder.ItemsToList<AnimalDbM>(seeder.Next(5,51));
+            zoo.EmployeesDbM = seeder.ItemsToList<EmployeeDbM>(seeder.Next(2, 9));
         }
 
         //Note that all other tables are automatically set through ZooDbM Navigation properties
@@ -72,16 +74,18 @@ public class AdminDbRepos
             var seededArg = new SqlParameter("seeded", seeded);
             var nrZ = new SqlParameter("nrZ", SqlDbType.Int) { Direction = ParameterDirection.Output };
             var nrA = new SqlParameter("nrA", SqlDbType.Int) { Direction = ParameterDirection.Output };
+            var nrE = new SqlParameter("nrE", SqlDbType.Int) { Direction = ParameterDirection.Output };
 
             parameters.Add(retValue);
             parameters.Add(seededArg);
             parameters.Add(nrZ);
             parameters.Add(nrA);
+            parameters.Add(nrE);
 
             //there is no FromSqlRawAsync to I make one here
             var _query = await Task.Run(() =>
                 _dbContext.InfoDbView.FromSqlRaw($"EXEC @retval = supusr.spDeleteAll @seeded," +
-                    $"@nrZ OUTPUT, @nrA OUTPUT",
+                    $"@nrZ OUTPUT, @nrA OUTPUT, @nrE OUTPUT",
                     parameters.ToArray()).AsEnumerable());
 
             //Execute the query and get the sp result set.

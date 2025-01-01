@@ -21,6 +21,14 @@ public class ZooDbM : Zoo, ISeed<ZooDbM>
     [JsonIgnore]
     public List<AnimalDbM> AnimalsDbM { get; set; }
 
+
+    [NotMapped]
+    public override List<IEmployee> Employees { get => EmployeesDbM?.ToList<IEmployee>(); set => throw new NotImplementedException(); }
+
+    [JsonIgnore]
+    public List<EmployeeDbM> EmployeesDbM { get; set; }
+
+
     //Used to stop recursion in DbRepos when using .Include in many-to-many relationships
     public ZooDbM ExludeNavProps() 
     {

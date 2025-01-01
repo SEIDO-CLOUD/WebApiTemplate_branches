@@ -11,6 +11,8 @@ public class Zoo: IZoo, ISeed<Zoo>
     public string Country { get; set; }
 
     public virtual List<IAnimal> Animals { get; set; }
+    public virtual List<IEmployee> Employees { get; set; }
+
     public bool Seeded { get; set; } = false;
     public virtual Zoo Seed (SeedGenerator seeder)
     {

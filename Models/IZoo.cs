@@ -9,4 +9,5 @@ public interface IZoo
 
     //Navigation properties
     public List<IAnimal> Animals { get; set; }
+    public List<IEmployee> Employees { get; set; }
 }

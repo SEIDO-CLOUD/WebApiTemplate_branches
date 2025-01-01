@@ -20,4 +20,10 @@ public interface IZooService {
     public Task<ResponseItemDto<IAnimal>> DeleteAnimalAsync(Guid id);
     public Task<ResponseItemDto<IAnimal>> UpdateAnimalAsync(AnimalCuDto item);
     public Task<ResponseItemDto<IAnimal>> CreateAnimalAsync(AnimalCuDto item);
+
+    public Task<ResponsePageDto<IEmployee>> ReadEmployeesAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize);
+    public Task<ResponseItemDto<IEmployee>> ReadEmployeeAsync(Guid id, bool flat);
+    public Task<ResponseItemDto<IEmployee>> DeleteEmployeeAsync(Guid id);
+    public Task<ResponseItemDto<IEmployee>> UpdateEmployeeAsync(EmployeeCuDto item);
+    public Task<ResponseItemDto<IEmployee>> CreateEmployeeAsync(EmployeeCuDto item);
 }

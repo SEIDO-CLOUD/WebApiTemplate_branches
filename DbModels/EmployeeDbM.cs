@@ -47,8 +47,6 @@ public class EmployeeDbM : Employee, ISeed<EmployeeDbM>
     {
         if (org == null) return null;
 
-        EmployeeId = org.EmployeeId;
-
         Role = org.Role;
         FirstName = org.FirstName;
         LastName = org.LastName;

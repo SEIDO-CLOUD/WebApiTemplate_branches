@@ -11,13 +11,15 @@ public class ZooServiceDb : IZooService {
     private readonly AdminDbRepos _adminRepo;
     private readonly ZooDbRepos _zooRepo;
     private readonly AnimalDbRepos _animalRepo;
+    private readonly EmployeeDbRepos _employeeRepo;
     private readonly ILogger<ZooServiceDb> _logger;    
     
-    public ZooServiceDb(AdminDbRepos adminRepo, ZooDbRepos zooRepo, AnimalDbRepos animalRepo, ILogger<ZooServiceDb> logger)
+    public ZooServiceDb(AdminDbRepos adminRepo, ZooDbRepos zooRepo, AnimalDbRepos animalRepo, EmployeeDbRepos employeeRepo, ILogger<ZooServiceDb> logger)
     {
         _adminRepo = adminRepo;
         _zooRepo = zooRepo;
         _animalRepo = animalRepo;
+        _employeeRepo = employeeRepo;
         _logger = logger;
     }
 
@@ -38,6 +40,13 @@ public class ZooServiceDb : IZooService {
     public Task<ResponseItemDto<IAnimal>> DeleteAnimalAsync(Guid id) => _animalRepo.DeleteAnimalAsync(id);
     public Task<ResponseItemDto<IAnimal>> UpdateAnimalAsync(AnimalCuDto item) => _animalRepo.UpdateAnimalAsync(item);
     public Task<ResponseItemDto<IAnimal>> CreateAnimalAsync(AnimalCuDto item) => _animalRepo.CreateAnimalAsync(item);
+
+
+    public Task<ResponsePageDto<IEmployee>> ReadEmployeesAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize) => _employeeRepo.ReadEmployeesAsync(seeded, flat, filter, pageNumber, pageSize);
+    public Task<ResponseItemDto<IEmployee>> ReadEmployeeAsync(Guid id, bool flat) => _employeeRepo.ReadEmployeeAsync(id, flat);
+    public Task<ResponseItemDto<IEmployee>> DeleteEmployeeAsync(Guid id) => _employeeRepo.DeleteEmployeeAsync(id);
+    public Task<ResponseItemDto<IEmployee>> UpdateEmployeeAsync(EmployeeCuDto item) => _employeeRepo.UpdateEmployeeAsync(item);
+    public Task<ResponseItemDto<IEmployee>> CreateEmployeeAsync(EmployeeCuDto item) => _employeeRepo.CreateEmployeeAsync(item);
 
     #endregion
 }

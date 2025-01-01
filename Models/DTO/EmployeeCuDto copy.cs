@@ -12,7 +12,7 @@ namespace Models.DTO;
 //These DTO are simplistic and used to Update and Create objects
 public class EmployeeCuDto
 {
-    public Guid EmployeeId { get; set; }
+    public Guid? EmployeeId { get; set; }
 
     public WorkRole Role { get; set; }
     public string FirstName { get; set; }

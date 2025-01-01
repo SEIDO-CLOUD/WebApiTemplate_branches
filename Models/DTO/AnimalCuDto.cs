@@ -14,8 +14,8 @@ public class AnimalCuDto
 {
     public virtual Guid? AnimalId { get; set; }
 
-    public enAnimalKind Kind { get; set; }
-    public enAnimalMood Mood { get; set; }
+    public AnimalKind Kind { get; set; }
+    public AnimalMood Mood { get; set; }
     
     public int Age { get; set; }
     public string Name { get; set; }

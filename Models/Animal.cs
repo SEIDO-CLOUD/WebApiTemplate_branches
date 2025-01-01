@@ -6,8 +6,8 @@ namespace Models;
 public class Animal:IAnimal, ISeed<Animal>
 {
     public virtual Guid AnimalId { get; set; } = Guid.NewGuid();
-    public enAnimalKind Kind { get; set; }
-    public enAnimalMood Mood { get; set; }
+    public AnimalKind Kind { get; set; }
+    public AnimalMood Mood { get; set; }
 
     public int Age { get; set; }
     public string Name { get; set; }
@@ -23,8 +23,8 @@ public class Animal:IAnimal, ISeed<Animal>
         Seeded = true;
         AnimalId = Guid.NewGuid();
         
-        Kind = seeder.FromEnum<enAnimalKind>();
-        Mood = seeder.FromEnum<enAnimalMood>();
+        Kind = seeder.FromEnum<AnimalKind>();
+        Mood = seeder.FromEnum<AnimalMood>();
         Age = seeder.Next(0, 11);
 
         Name = seeder.PetName;

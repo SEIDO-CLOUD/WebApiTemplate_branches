@@ -1,12 +1,13 @@
 namespace Models;
-public enum enAnimalKind {Zebra, Elephant, Lion, Leopard, Gasell}
-public enum enAnimalMood { Happy, Hungry, Lazy, Sulky, Buzy, Sleepy };
+
+public enum AnimalKind {Zebra, Elephant, Lion, Leopard, Gasell}
+public enum AnimalMood { Happy, Hungry, Lazy, Sulky, Buzy, Sleepy };
 
 public interface IAnimal
 {
     public Guid AnimalId { get; set; }
-    public enAnimalKind Kind { get; set; }
-    public enAnimalMood Mood { get; set; }
+    public AnimalKind Kind { get; set; }
+    public AnimalMood Mood { get; set; }
     
     public int Age { get; set; }
     public string Name { get; set; }

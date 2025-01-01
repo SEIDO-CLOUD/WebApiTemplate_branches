@@ -40,8 +40,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #region model the Views
     public DbSet<GstUsrInfoDbDto> InfoDbView { get; set; }
-    public DbSet<GstUsrInfoAnimalsDto> InfoAnimalsView { get; set; }
     public DbSet<GstUsrInfoZoosDto> InfoZoosView { get; set; }
+    public DbSet<GstUsrInfoAnimalsDto> InfoAnimalsView { get; set; }
     #endregion
 
     //Here we can modify the migration building
@@ -50,8 +50,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         #region model the Views
         modelBuilder.Entity<GstUsrInfoDbDto>().ToView("vwInfoDb", "gstusr").HasNoKey();
-        modelBuilder.Entity<GstUsrInfoAnimalsDto>().ToView("vwInfoAnimals", "gstusr").HasNoKey();        
         modelBuilder.Entity<GstUsrInfoZoosDto>().ToView("vwInfoZoos", "gstusr").HasNoKey();        
+        modelBuilder.Entity<GstUsrInfoAnimalsDto>().ToView("vwInfoAnimals", "gstusr").HasNoKey();        
         #endregion
 
         #region override modelbuilder

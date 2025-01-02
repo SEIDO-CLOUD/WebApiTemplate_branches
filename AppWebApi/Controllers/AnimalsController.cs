@@ -15,13 +15,16 @@ namespace AppWebApi.Controllers
         readonly IZooService _service = null;
         readonly ILogger<AnimalsController> _logger = null;
 
+        public AnimalsController(IZooService service, ILogger<AnimalsController> logger)
+        {
+            _service = service;
+            _logger = logger;
+        }
 
-        //GET: api/Animals/read
         [HttpGet()]
-        [ActionName("Read")]
         [ProducesResponseType(200, Type = typeof(ResponsePageDto<IAnimal>))]
         [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> Read(string seeded = "true", string flat = "true",
+        public async Task<IActionResult> ReadItems(string seeded = "true", string flat = "true",
             string filter = null, string pageNr = "0", string pageSize = "10")
         {
             try
@@ -31,7 +34,7 @@ namespace AppWebApi.Controllers
                 int pageNrArg = int.Parse(pageNr);
                 int pageSizeArg = int.Parse(pageSize);
 
-                _logger.LogInformation($"{nameof(Read)}: {nameof(seededArg)}: {seededArg}, {nameof(flatArg)}: {flatArg}, " +
+                _logger.LogInformation($"{nameof(ReadItems)}: {nameof(seededArg)}: {seededArg}, {nameof(flatArg)}: {flatArg}, " +
                     $"{nameof(pageNrArg)}: {pageNrArg}, {nameof(pageSizeArg)}: {pageSizeArg}");
                 
                 var resp = await _service.ReadAnimalsAsync(seededArg, flatArg, filter?.Trim().ToLower(), pageNrArg, pageSizeArg);     
@@ -39,14 +42,12 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(Read)}: {ex.Message}");
+                _logger.LogError($"{nameof(ReadItems)}: {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
 
-        //GET: api/Animals/readitem
         [HttpGet()]
-        [ActionName("Readitem")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAnimal>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
@@ -71,7 +72,6 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //DELETE: api/Animals/deleteitem/id
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAnimal>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -96,9 +96,7 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //GET: api/Animals/readitemdto
         [HttpGet()]
-        [ActionName("ReadItemDto")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<AnimalCuDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
@@ -126,10 +124,7 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //PUT: api/Animals/updateitem/id
-        //Body: csAnimalCUdto in Json
         [HttpPut("{id}")]
-        [ActionName("UpdateItem")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAnimal>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> UpdateItem(string id, [FromBody] AnimalCuDto item)
@@ -154,10 +149,7 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //POST: api/Animals/createitem
-        //Body: csAnimalCUdto in Json
         [HttpPost()]
-        [ActionName("CreateItem")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAnimal>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> CreateItem([FromBody] AnimalCuDto item)
@@ -177,14 +169,6 @@ namespace AppWebApi.Controllers
                 return BadRequest($"Could not create. Error {ex.Message}");
             }
         }
-
-        #region constructors
-        public AnimalsController(IZooService service, ILogger<AnimalsController> logger)
-        {
-            _service = service;
-            _logger = logger;
-        }
-        #endregion
     }
 }
 

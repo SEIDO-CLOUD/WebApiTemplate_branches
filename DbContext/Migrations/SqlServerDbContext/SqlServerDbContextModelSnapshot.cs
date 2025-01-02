@@ -168,6 +168,9 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Property<int>("NrUnseededZoos")
                         .HasColumnType("int");
 
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(200)");
+
                     b.ToTable((string)null);
 
                     b.ToView("vwInfoDb", "gstusr");

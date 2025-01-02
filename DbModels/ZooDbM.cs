@@ -29,13 +29,6 @@ public class ZooDbM : Zoo, ISeed<ZooDbM>
     public List<EmployeeDbM> EmployeesDbM { get; set; }
 
 
-    //Used to stop recursion in DbRepos when using .Include in many-to-many relationships
-    public ZooDbM ExludeNavProps() 
-    {
-        AnimalsDbM = null;
-        return this;
-    }
-
     public override ZooDbM Seed (SeedGenerator _seeder)
     {
         base.Seed (_seeder);

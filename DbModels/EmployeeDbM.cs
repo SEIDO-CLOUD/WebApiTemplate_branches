@@ -28,14 +28,6 @@ public class EmployeeDbM : Employee, ISeed<EmployeeDbM>
     [JsonIgnore]
     [Required]
     public  List<ZooDbM>  ZoosDbM { get; set; } = null;
-    
-    //Used to stop recursion in DbRepos when using .Include in many-to-many relationships
-    public EmployeeDbM ExludeNavProps() 
-    {
-        //Set all Navprops to default
-        ZoosDbM = default;
-        return this;
-    }
 
     public override EmployeeDbM Seed (SeedGenerator _seeder)
     {

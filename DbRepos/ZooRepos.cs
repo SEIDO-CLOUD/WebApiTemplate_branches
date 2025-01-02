@@ -29,6 +29,7 @@ public class ZooDbRepos
         {
             query = _dbContext.Zoos.AsNoTracking()
                 .Include(i => i.AnimalsDbM)
+                .Include(i => i.EmployeesDbM)
                 .Where(i => i.ZooId == id);
         }
         else
@@ -56,7 +57,8 @@ public class ZooDbRepos
         else
         {
             query = _dbContext.Zoos.AsNoTracking()
-                .Include(i => i.AnimalsDbM);
+                .Include(i => i.AnimalsDbM)
+                .Include(i => i.EmployeesDbM);
         }
 
         return new ResponsePageDto<IZoo>()

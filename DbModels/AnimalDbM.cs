@@ -34,14 +34,6 @@ public class AnimalDbM : Animal, ISeed<AnimalDbM>
     [Required]
     public  ZooDbM ZooDbM { get; set; }
     
-    //Used to stop recursion in DbRepos when using .Include in many-to-many relationships
-    public AnimalDbM ExludeNavProps() 
-    {
-        //Set all Navprops to default
-        ZooDbM = default;
-        return this;
-    }
-
     public override AnimalDbM Seed (SeedGenerator _seeder)
     {
         base.Seed (_seeder);

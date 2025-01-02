@@ -35,18 +35,18 @@ public class ZooServiceDb : IZooService {
     public Task<ResponseItemDto<IZoo>> UpdateZooAsync(ZooCuDto item) => _zooRepo.UpdateZooAsync(item);
     public Task<ResponseItemDto<IZoo>> CreateZooAsync(ZooCuDto item) => _zooRepo.CreateZooAsync(item);
 
-    public Task<ResponsePageDto<IAnimal>> ReadAnimalsAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize) => _animalRepo.ReadAnimalsAsync(seeded, flat, filter, pageNumber, pageSize);
-    public Task<ResponseItemDto<IAnimal>> ReadAnimalAsync(Guid id, bool flat) => _animalRepo.ReadAnimalAsync(id, flat);
-    public Task<ResponseItemDto<IAnimal>> DeleteAnimalAsync(Guid id) => _animalRepo.DeleteAnimalAsync(id);
-    public Task<ResponseItemDto<IAnimal>> UpdateAnimalAsync(AnimalCuDto item) => _animalRepo.UpdateAnimalAsync(item);
-    public Task<ResponseItemDto<IAnimal>> CreateAnimalAsync(AnimalCuDto item) => _animalRepo.CreateAnimalAsync(item);
+    public Task<ResponsePageDto<IAnimal>> ReadAnimalsAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize) => _animalRepo.ReadItemsAsync(seeded, flat, filter, pageNumber, pageSize);
+    public Task<ResponseItemDto<IAnimal>> ReadAnimalAsync(Guid id, bool flat) => _animalRepo.ReadItemAsync(id, flat);
+    public Task<ResponseItemDto<IAnimal>> DeleteAnimalAsync(Guid id) => _animalRepo.DeleteItemAsync(id);
+    public Task<ResponseItemDto<IAnimal>> UpdateAnimalAsync(AnimalCuDto item) => _animalRepo.UpdateItemAsync(item);
+    public Task<ResponseItemDto<IAnimal>> CreateAnimalAsync(AnimalCuDto item) => _animalRepo.CreateItemAsync(item);
 
 
-    public Task<ResponsePageDto<IEmployee>> ReadEmployeesAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize) => _employeeRepo.ReadEmployeesAsync(seeded, flat, filter, pageNumber, pageSize);
-    public Task<ResponseItemDto<IEmployee>> ReadEmployeeAsync(Guid id, bool flat) => _employeeRepo.ReadEmployeeAsync(id, flat);
-    public Task<ResponseItemDto<IEmployee>> DeleteEmployeeAsync(Guid id) => _employeeRepo.DeleteEmployeeAsync(id);
-    public Task<ResponseItemDto<IEmployee>> UpdateEmployeeAsync(EmployeeCuDto item) => _employeeRepo.UpdateEmployeeAsync(item);
-    public Task<ResponseItemDto<IEmployee>> CreateEmployeeAsync(EmployeeCuDto item) => _employeeRepo.CreateEmployeeAsync(item);
+    public Task<ResponsePageDto<IEmployee>> ReadEmployeesAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize) => _employeeRepo.ReadItemsAsync(seeded, flat, filter, pageNumber, pageSize);
+    public Task<ResponseItemDto<IEmployee>> ReadEmployeeAsync(Guid id, bool flat) => _employeeRepo.ReadItemAsync(id, flat);
+    public Task<ResponseItemDto<IEmployee>> DeleteEmployeeAsync(Guid id) => _employeeRepo.DeleteItemAsync(id);
+    public Task<ResponseItemDto<IEmployee>> UpdateEmployeeAsync(EmployeeCuDto item) => _employeeRepo.UpdateItemAsync(item);
+    public Task<ResponseItemDto<IEmployee>> CreateEmployeeAsync(EmployeeCuDto item) => _employeeRepo.CreateItemAsync(item);
 
     #endregion
 }

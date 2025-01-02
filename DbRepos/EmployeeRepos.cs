@@ -22,40 +22,34 @@ public class EmployeeDbRepos
     }
     #endregion
 
-    public async Task<ResponseItemDto<IEmployee>> ReadEmployeeAsync(Guid id, bool flat)
+    public async Task<ResponseItemDto<IEmployee>> ReadItemAsync(Guid id, bool flat)
     {
+        IQueryable<EmployeeDbM> query;
         if (!flat)
         {
             //make sure the model is fully populated, try without include.
             //remove tracking for all read operations for performance and to avoid recursion/circular access
-            var query = _dbContext.Employees.AsNoTracking()
+            query = _dbContext.Employees.AsNoTracking()
                 .Include(i => i.ZoosDbM)
                 .Where(i => i.EmployeeId == id);
-
-            var resp = await query.FirstOrDefaultAsync<IEmployee>();
-            return new ResponseItemDto<IEmployee>()
-            {
-                DbConnectionKeyUsed = _dbContext.dbConnection,
-                Item = resp
-            };
         }
         else
         {
             //Not fully populated, compare the SQL Statements generated
             //remove tracking for all read operations for performance and to avoid recursion/circular access
-            var query = _dbContext.Employees.AsNoTracking()
+            query = _dbContext.Employees.AsNoTracking()
                 .Where(i => i.EmployeeId == id);
+        }
 
-            var resp = await query.FirstOrDefaultAsync<IEmployee>();
-            return new ResponseItemDto<IEmployee>()
-            {
-                DbConnectionKeyUsed = _dbContext.dbConnection,
-                Item = resp
-            };
-        } 
+        var resp = await query.FirstOrDefaultAsync<IEmployee>();
+        return new ResponseItemDto<IEmployee>()
+        {
+            DbConnectionKeyUsed = _dbContext.dbConnection,
+            Item = resp
+        };
     }
 
-    public async Task<ResponsePageDto<IEmployee>> ReadEmployeesAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize)
+    public async Task<ResponsePageDto<IEmployee>> ReadItemsAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize)
     {
         filter ??= "";
         IQueryable<EmployeeDbM> query;
@@ -100,7 +94,7 @@ public class EmployeeDbRepos
         return ret;
     }
 
-    public async Task<ResponseItemDto<IEmployee>> DeleteEmployeeAsync(Guid id)
+    public async Task<ResponseItemDto<IEmployee>> DeleteItemAsync(Guid id)
     {
         var query1 = _dbContext.Employees
             .Where(i => i.EmployeeId == id);
@@ -123,7 +117,7 @@ public class EmployeeDbRepos
         };
     }
 
-    public async Task<ResponseItemDto<IEmployee>> UpdateEmployeeAsync(EmployeeCuDto itemDto)
+    public async Task<ResponseItemDto<IEmployee>> UpdateItemAsync(EmployeeCuDto itemDto)
     {
         var query1 = _dbContext.Employees
             .Where(i => i.EmployeeId == itemDto.EmployeeId);
@@ -139,7 +133,7 @@ public class EmployeeDbRepos
         item.UpdateFromDTO(itemDto);
 
         //Update navigation properties
-        await navProp_EmployeeCUdto_to_EmployeeDbM(itemDto, item);
+        await navProp_ItemCUdto_to_ItemDbM(itemDto, item);
 
         //write to database model
         _dbContext.Employees.Update(item);
@@ -148,10 +142,10 @@ public class EmployeeDbRepos
         await _dbContext.SaveChangesAsync();
 
         //return the updated item in non-flat mode
-        return await ReadEmployeeAsync(item.EmployeeId, false);    
+        return await ReadItemAsync(item.EmployeeId, false);    
     }
 
-    public async Task<ResponseItemDto<IEmployee>> CreateEmployeeAsync(EmployeeCuDto itemDto)
+    public async Task<ResponseItemDto<IEmployee>> CreateItemAsync(EmployeeCuDto itemDto)
     {
         if (itemDto.EmployeeId != null)
             throw new ArgumentException($"{nameof(itemDto.EmployeeId)} must be null when creating a new object");
@@ -161,7 +155,7 @@ public class EmployeeDbRepos
         var item = new EmployeeDbM(itemDto);
 
         //Update navigation properties
-        await navProp_EmployeeCUdto_to_EmployeeDbM(itemDto, item);
+        await navProp_ItemCUdto_to_ItemDbM(itemDto, item);
 
         //write to database model
         _dbContext.Employees.Add(item);
@@ -170,10 +164,10 @@ public class EmployeeDbRepos
         await _dbContext.SaveChangesAsync();
 
         //return the updated item in non-flat mode
-        return await ReadEmployeeAsync(item.EmployeeId, false);    
+        return await ReadItemAsync(item.EmployeeId, false);    
     }
 
-    private async Task navProp_EmployeeCUdto_to_EmployeeDbM(EmployeeCuDto itemDtoSrc, EmployeeDbM itemDst)
+    private async Task navProp_ItemCUdto_to_ItemDbM(EmployeeCuDto itemDtoSrc, EmployeeDbM itemDst)
     {
         //update ZooDbM from itemDto.ZooId
         List<ZooDbM> zoos = null;

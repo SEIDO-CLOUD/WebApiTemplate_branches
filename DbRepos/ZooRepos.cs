@@ -24,22 +24,9 @@ public class ZooDbRepos
 
     public async Task<ResponseItemDto<IZoo>> ReadItemAsync(Guid id, bool flat)
     {
-        IQueryable<ZooDbM> query;
-        if (!flat)
-        {
-            //make sure the model is fully populated, try without include.
-            //remove tracking for all read operations for performance and to avoid recursion/circular access
-            query = _dbContext.Zoos.AsNoTracking()
-                .Include(i => i.AnimalsDbM)
+        //ignoring flat as yet no navigation properties 
+        IQueryable<ZooDbM> query = _dbContext.Zoos.AsNoTracking()
                 .Where(i => i.ZooId == id);
-        }
-        else
-        {
-            //Not fully populated, compare the SQL Statements generated
-            //remove tracking for all read operations for performance and to avoid recursion/circular access
-            query = _dbContext.Zoos.AsNoTracking()
-                .Where(i => i.ZooId == id);
-        }   
 
         var resp =  await query.FirstOrDefaultAsync<IZoo>();
         return new ResponseItemDto<IZoo>()
@@ -52,15 +39,10 @@ public class ZooDbRepos
     public async Task<ResponsePageDto<IZoo>> ReadItemsAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize)
     {
         filter ??= "";
-        IQueryable<ZooDbM> query;
-        if (flat)
-        {
-            query = _dbContext.Zoos.AsNoTracking();
-        }
-        else
-        {
-            query = _dbContext.Zoos.AsNoTracking();
-        }
+
+        //ignoring flat as yet no navigation properties 
+        IQueryable<ZooDbM> query = _dbContext.Zoos.AsNoTracking();
+
 
         return new ResponsePageDto<IZoo>()
         {
@@ -130,9 +112,6 @@ public class ZooDbRepos
         //Update individual properties
         item.UpdateFromDTO(itemDto);
 
-        //Update navigation properties
-        await navProp_ZooCUdto_to_ZooDbM(itemDto, item);
-
         //write to database model
         _dbContext.Zoos.Update(item);
 
@@ -152,9 +131,6 @@ public class ZooDbRepos
         //Update individual properties Zoo
         var item = new ZooDbM(itemDto);
 
-        //Update navigation properties
-        await navProp_ZooCUdto_to_ZooDbM(itemDto, item);
-
         //write to database model
         _dbContext.Zoos.Add(item);
 
@@ -163,26 +139,5 @@ public class ZooDbRepos
         
         //return the updated item in non-flat mode
         return await ReadItemAsync(item.ZooId, false);
-    }
-
-    //from all Guid relationships in _itemDtoSrc finds the corresponding object in the database and assigns it to _itemDst 
-    //as navigation properties. Error is thrown if no object is found corresponing to an id.
-    private async Task navProp_ZooCUdto_to_ZooDbM(ZooCuDto itemDtoSrc, ZooDbM itemDst)
-    {
-        //update AnimalsDbM from list
-        List<AnimalDbM> Animals = null;
-        if (itemDtoSrc.AnimalsId != null)
-        {
-            Animals = new List<AnimalDbM>();
-            foreach (var id in itemDtoSrc.AnimalsId)
-            {
-                var p = await _dbContext.Animals.FirstOrDefaultAsync(i => i.AnimalId == id);
-                if (p == null)
-                    throw new ArgumentException($"Item id {id} not existing");
-
-                Animals.Add(p);
-            }
-        }
-        itemDst.AnimalsDbM = Animals;
     }
 }

@@ -8,6 +8,8 @@ using Models.DTO;
 
 namespace DbModels;
 
-public class EmptyModelDbM
+public class ZooDbM
 {
+    [Key]
+    public Guid ZooId { get; set; }
 }

@@ -8,8 +8,6 @@ using Models.DTO;
 
 namespace DbModels;
 
-//Empty table in supusr Schema
-[Table("Zoos", Schema = "supusr")]
-public class ZooDbM
+public class EmptyModelDbM
 {
 }

@@ -27,6 +27,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     #endregion
 
     #region model the Views
+    public DbSet<GstUsrInfoDbDto> InfoDbView { get; set; }
     #endregion
 
     #region constructors

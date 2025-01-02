@@ -21,7 +21,6 @@ namespace AppWebApi.Controllers
         }
 
         [HttpGet()]
-        [ActionName(nameof(ReadItems))]
         [ProducesResponseType(200, Type = typeof(ResponsePageDto<IZoo>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> ReadItems(string seeded = "true", string flat = "true",
@@ -48,7 +47,6 @@ namespace AppWebApi.Controllers
         }
 
         [HttpGet()]
-        [ActionName(nameof(ReadItem))]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IZoo>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
@@ -74,7 +72,6 @@ namespace AppWebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ActionName(nameof(DeleteItem))]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IZoo>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> DeleteItem(string id)
@@ -99,7 +96,6 @@ namespace AppWebApi.Controllers
         }
 
         [HttpGet()]
-        [ActionName(nameof(ReadItemDto))]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ZooCuDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
@@ -128,7 +124,6 @@ namespace AppWebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [ActionName(nameof(UpdateItem))]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IZoo>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> UpdateItem(string id, [FromBody] ZooCuDto item)
@@ -154,7 +149,6 @@ namespace AppWebApi.Controllers
         }
 
         [HttpPost()]
-        [ActionName(nameof(CreateItem))]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IZoo>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> CreateItem([FromBody] ZooCuDto item)
@@ -176,4 +170,5 @@ namespace AppWebApi.Controllers
         }
     }
 }
+
 

@@ -26,6 +26,11 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     #region C# model of database tables
     public DbSet<ZooDbM> Zoos { get; set; }    
     #endregion
+    
+    #region model the Views
+    public DbSet<GstUsrInfoDbDto> InfoDbView { get; set; }
+    public DbSet<GstUsrInfoZoosDto> InfoZoosView { get; set; }
+    #endregion
 
     #region constructors
     public MainDbContext() { }
@@ -34,11 +39,6 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
         _databaseConnections = databaseConnections;
         _configuration = configuration;
     }
-    #endregion
-
-    #region model the Views
-    public DbSet<GstUsrInfoDbDto> InfoDbView { get; set; }
-    public DbSet<GstUsrInfoZoosDto> InfoZoosView { get; set; }
     #endregion
 
     //Here we can modify the migration building

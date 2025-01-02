@@ -46,7 +46,7 @@ public class AdminDbRepos
         var fn = Path.GetFullPath(_seedSource);
         var seeder = new SeedGenerator(fn);
 
-        //Generate Zoos and addresses
+        //Generate Zoos
         var zoos = seeder.ItemsToList<ZooDbM>(nrOfItems);
 
         _dbContext.Zoos.AddRange(zoos);

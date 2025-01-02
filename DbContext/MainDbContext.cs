@@ -44,7 +44,6 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     //Here we can modify the migration building
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
         #region model the Views
         modelBuilder.Entity<GstUsrInfoDbDto>().ToView("vwInfoDb", "gstusr").HasNoKey();
         modelBuilder.Entity<GstUsrInfoZoosDto>().ToView("vwInfoZoos", "gstusr").HasNoKey();        

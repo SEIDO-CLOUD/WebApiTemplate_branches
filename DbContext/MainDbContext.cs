@@ -24,7 +24,9 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public string dbConnection  => _databaseConnections.GetDbConnection(this.Database.GetConnectionString());
 
     #region C# model of database tables
-    public DbSet<ZooDbM> Zoos { get; set; }    
+    #endregion
+
+    #region model the Views
     #endregion
 
     #region constructors
@@ -36,18 +38,11 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     }
     #endregion
 
-    #region model the Views
-    public DbSet<GstUsrInfoDbDto> InfoDbView { get; set; }
-    public DbSet<GstUsrInfoZoosDto> InfoZoosView { get; set; }
-    #endregion
-
     //Here we can modify the migration building
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
         #region model the Views
-        modelBuilder.Entity<GstUsrInfoDbDto>().ToView("vwInfoDb", "gstusr").HasNoKey();
-        modelBuilder.Entity<GstUsrInfoZoosDto>().ToView("vwInfoZoos", "gstusr").HasNoKey();        
         #endregion
 
         #region override modelbuilder

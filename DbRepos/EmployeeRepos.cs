@@ -27,16 +27,12 @@ public class EmployeeDbRepos
         IQueryable<EmployeeDbM> query;
         if (!flat)
         {
-            //make sure the model is fully populated, try without include.
-            //remove tracking for all read operations for performance and to avoid recursion/circular access
             query = _dbContext.Employees.AsNoTracking()
                 .Include(i => i.ZoosDbM)
                 .Where(i => i.EmployeeId == id);
         }
         else
         {
-            //Not fully populated, compare the SQL Statements generated
-            //remove tracking for all read operations for performance and to avoid recursion/circular access
             query = _dbContext.Employees.AsNoTracking()
                 .Where(i => i.EmployeeId == id);
         }

@@ -22,39 +22,34 @@ public class ZooDbRepos
     }
     #endregion
 
-    public async Task<ResponseItemDto<IZoo>> ReadZooAsync(Guid id, bool flat)
+    public async Task<ResponseItemDto<IZoo>> ReadItemAsync(Guid id, bool flat)
     {
+        IQueryable<ZooDbM> query;
         if (!flat)
         {
             //make sure the model is fully populated, try without include.
             //remove tracking for all read operations for performance and to avoid recursion/circular access
-            var query = _dbContext.Zoos.AsNoTracking()
+            query = _dbContext.Zoos.AsNoTracking()
+                .Include(i => i.AnimalsDbM)
                 .Where(i => i.ZooId == id);
-
-            var resp =  await query.FirstOrDefaultAsync<IZoo>();
-            return new ResponseItemDto<IZoo>()
-            {
-                DbConnectionKeyUsed = _dbContext.dbConnection,
-                Item = resp
-            };
         }
         else
         {
             //Not fully populated, compare the SQL Statements generated
             //remove tracking for all read operations for performance and to avoid recursion/circular access
-            var query = _dbContext.Zoos.AsNoTracking()
+            query = _dbContext.Zoos.AsNoTracking()
                 .Where(i => i.ZooId == id);
-
-            var resp = await query.FirstOrDefaultAsync<IZoo>();
-            return new ResponseItemDto<IZoo>()
-            {
-                DbConnectionKeyUsed = _dbContext.dbConnection,
-                Item = resp
-            };
         }   
+
+        var resp =  await query.FirstOrDefaultAsync<IZoo>();
+        return new ResponseItemDto<IZoo>()
+        {
+            DbConnectionKeyUsed = _dbContext.dbConnection,
+            Item = resp
+        };
     }
 
-    public async Task<ResponsePageDto<IZoo>> ReadZoosAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize)
+    public async Task<ResponsePageDto<IZoo>> ReadItemsAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize)
     {
         filter ??= "";
         IQueryable<ZooDbM> query;
@@ -97,7 +92,7 @@ public class ZooDbRepos
         };
     }
 
-    public async Task<ResponseItemDto<IZoo>> DeleteZooAsync(Guid id)
+    public async Task<ResponseItemDto<IZoo>> DeleteItemAsync(Guid id)
     {
         //Find the instance with matching id
         var query1 = _dbContext.Zoos
@@ -120,7 +115,7 @@ public class ZooDbRepos
         };
     }
 
-    public async Task<ResponseItemDto<IZoo>> UpdateZooAsync(ZooCuDto itemDto)
+    public async Task<ResponseItemDto<IZoo>> UpdateItemAsync(ZooCuDto itemDto)
     {
         //Find the instance with matching id and read the navigation properties.
         var query1 = _dbContext.Zoos
@@ -135,6 +130,9 @@ public class ZooDbRepos
         //Update individual properties
         item.UpdateFromDTO(itemDto);
 
+        //Update navigation properties
+        await navProp_ZooCUdto_to_ZooDbM(itemDto, item);
+
         //write to database model
         _dbContext.Zoos.Update(item);
 
@@ -142,10 +140,10 @@ public class ZooDbRepos
         await _dbContext.SaveChangesAsync();
 
         //return the updated item in non-flat mode
-        return await ReadZooAsync(item.ZooId, false);    
+        return await ReadItemAsync(item.ZooId, false);    
     }
 
-    public async Task<ResponseItemDto<IZoo>> CreateZooAsync(ZooCuDto itemDto)
+    public async Task<ResponseItemDto<IZoo>> CreateItemAsync(ZooCuDto itemDto)
     {
         if (itemDto.ZooId != null)
             throw new ArgumentException($"{nameof(itemDto.ZooId)} must be null when creating a new object");
@@ -154,6 +152,9 @@ public class ZooDbRepos
         //Update individual properties Zoo
         var item = new ZooDbM(itemDto);
 
+        //Update navigation properties
+        await navProp_ZooCUdto_to_ZooDbM(itemDto, item);
+
         //write to database model
         _dbContext.Zoos.Add(item);
 
@@ -161,6 +162,27 @@ public class ZooDbRepos
         await _dbContext.SaveChangesAsync();
         
         //return the updated item in non-flat mode
-        return await ReadZooAsync(item.ZooId, false);
+        return await ReadItemAsync(item.ZooId, false);
+    }
+
+    //from all Guid relationships in _itemDtoSrc finds the corresponding object in the database and assigns it to _itemDst 
+    //as navigation properties. Error is thrown if no object is found corresponing to an id.
+    private async Task navProp_ZooCUdto_to_ZooDbM(ZooCuDto itemDtoSrc, ZooDbM itemDst)
+    {
+        //update AnimalsDbM from list
+        List<AnimalDbM> Animals = null;
+        if (itemDtoSrc.AnimalsId != null)
+        {
+            Animals = new List<AnimalDbM>();
+            foreach (var id in itemDtoSrc.AnimalsId)
+            {
+                var p = await _dbContext.Animals.FirstOrDefaultAsync(i => i.AnimalId == id);
+                if (p == null)
+                    throw new ArgumentException($"Item id {id} not existing");
+
+                Animals.Add(p);
+            }
+        }
+        itemDst.AnimalsDbM = Animals;
     }
 }

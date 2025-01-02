@@ -22,40 +22,34 @@ public class AnimalDbRepos
     }
     #endregion
 
-    public async Task<ResponseItemDto<IAnimal>> ReadAnimalAsync(Guid id, bool flat)
+    public async Task<ResponseItemDto<IAnimal>> ReadItemAsync(Guid id, bool flat)
     {
+        IQueryable<AnimalDbM> query;
         if (!flat)
         {
             //make sure the model is fully populated, try without include.
             //remove tracking for all read operations for performance and to avoid recursion/circular access
-            var query = _dbContext.Animals.AsNoTracking()
+            query = _dbContext.Animals.AsNoTracking()
                 .Include(i => i.ZooDbM)
                 .Where(i => i.AnimalId == id);
-
-            var resp = await query.FirstOrDefaultAsync<IAnimal>();
-            return new ResponseItemDto<IAnimal>()
-            {
-                DbConnectionKeyUsed = _dbContext.dbConnection,
-                Item = resp
-            };
         }
         else
         {
             //Not fully populated, compare the SQL Statements generated
             //remove tracking for all read operations for performance and to avoid recursion/circular access
-            var query = _dbContext.Animals.AsNoTracking()
+            query = _dbContext.Animals.AsNoTracking()
                 .Where(i => i.AnimalId == id);
+        }
 
-            var resp = await query.FirstOrDefaultAsync<IAnimal>();
-            return new ResponseItemDto<IAnimal>()
-            {
-                DbConnectionKeyUsed = _dbContext.dbConnection,
-                Item = resp
-            };
-        } 
+        var resp = await query.FirstOrDefaultAsync<IAnimal>();
+        return new ResponseItemDto<IAnimal>()
+        {
+            DbConnectionKeyUsed = _dbContext.dbConnection,
+            Item = resp
+        };
     }
 
-    public async Task<ResponsePageDto<IAnimal>> ReadAnimalsAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize)
+    public async Task<ResponsePageDto<IAnimal>> ReadItemsAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize)
     {
         filter ??= "";
         IQueryable<AnimalDbM> query;
@@ -104,7 +98,7 @@ public class AnimalDbRepos
         return ret;
     }
 
-    public async Task<ResponseItemDto<IAnimal>> DeleteAnimalAsync(Guid id)
+    public async Task<ResponseItemDto<IAnimal>> DeleteItemAsync(Guid id)
     {
         var query1 = _dbContext.Animals
             .Where(i => i.AnimalId == id);
@@ -127,7 +121,7 @@ public class AnimalDbRepos
         };
     }
 
-    public async Task<ResponseItemDto<IAnimal>> UpdateAnimalAsync(AnimalCuDto itemDto)
+    public async Task<ResponseItemDto<IAnimal>> UpdateItemAsync(AnimalCuDto itemDto)
     {
         var query1 = _dbContext.Animals
             .Where(i => i.AnimalId == itemDto.AnimalId);
@@ -143,7 +137,7 @@ public class AnimalDbRepos
         item.UpdateFromDTO(itemDto);
 
         //Update navigation properties
-        await navProp_AnimalCUdto_to_AnimalDbM(itemDto, item);
+        await navProp_ItemCUdto_to_ItemDbM(itemDto, item);
 
         //write to database model
         _dbContext.Animals.Update(item);
@@ -152,10 +146,10 @@ public class AnimalDbRepos
         await _dbContext.SaveChangesAsync();
 
         //return the updated item in non-flat mode
-        return await ReadAnimalAsync(item.AnimalId, false);    
+        return await ReadItemAsync(item.AnimalId, false);    
     }
 
-    public async Task<ResponseItemDto<IAnimal>> CreateAnimalAsync(AnimalCuDto itemDto)
+    public async Task<ResponseItemDto<IAnimal>> CreateItemAsync(AnimalCuDto itemDto)
     {
         if (itemDto.AnimalId != null)
             throw new ArgumentException($"{nameof(itemDto.AnimalId)} must be null when creating a new object");
@@ -165,7 +159,7 @@ public class AnimalDbRepos
         var item = new AnimalDbM(itemDto);
 
         //Update navigation properties
-        await navProp_AnimalCUdto_to_AnimalDbM(itemDto, item);
+        await navProp_ItemCUdto_to_ItemDbM(itemDto, item);
 
         //write to database model
         _dbContext.Animals.Add(item);
@@ -174,10 +168,10 @@ public class AnimalDbRepos
         await _dbContext.SaveChangesAsync();
 
         //return the updated item in non-flat mode
-        return await ReadAnimalAsync(item.AnimalId, false);    
+        return await ReadItemAsync(item.AnimalId, false);    
     }
 
-    private async Task navProp_AnimalCUdto_to_AnimalDbM(AnimalCuDto itemDtoSrc, AnimalDbM itemDst)
+    private async Task navProp_ItemCUdto_to_ItemDbM(AnimalCuDto itemDtoSrc, AnimalDbM itemDst)
     {
         //update owner, i.e. navigation property FriendDbM
         var zoo = await _dbContext.Zoos.FirstOrDefaultAsync(

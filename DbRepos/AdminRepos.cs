@@ -63,7 +63,7 @@ public class AdminDbRepos
 
             //there is no FromSqlRawAsync to I make one here
             var _query = await Task.Run(() =>
-                _dbContext.InfoDbView.FromSqlRaw($"EXEC @retval = supusr.spDeleteAll @seeded,",
+                _dbContext.InfoDbView.FromSqlRaw($"EXEC @retval = supusr.spDeleteAll @seeded",
                     parameters.ToArray()).AsEnumerable());
 
             //Execute the query and get the sp result set.

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250102124432_miInitial")]
+    [Migration("20250102124539_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -33,7 +33,7 @@ namespace DbContext.Migrations.SqlServerDbContext
 
                     b.HasKey("ZooId");
 
-                    b.ToTable("Zoos");
+                    b.ToTable("Zoos", "supusr");
                 });
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>

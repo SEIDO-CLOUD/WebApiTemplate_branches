@@ -11,8 +11,12 @@ namespace DbContext.Migrations.SqlServerDbContext
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "supusr");
+
             migrationBuilder.CreateTable(
                 name: "Zoos",
+                schema: "supusr",
                 columns: table => new
                 {
                     ZooId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -27,7 +31,8 @@ namespace DbContext.Migrations.SqlServerDbContext
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Zoos");
+                name: "Zoos",
+                schema: "supusr");
         }
     }
 }

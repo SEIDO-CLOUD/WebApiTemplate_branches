@@ -30,7 +30,7 @@ namespace DbContext.Migrations.SqlServerDbContext
 
                     b.HasKey("ZooId");
 
-                    b.ToTable("Zoos");
+                    b.ToTable("Zoos", "supusr");
                 });
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>

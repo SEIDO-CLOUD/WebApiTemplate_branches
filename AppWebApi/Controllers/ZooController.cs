@@ -14,11 +14,17 @@ namespace AppWebApi.Controllers
         readonly IZooService _service = null;
         readonly ILogger<ZooController> _logger = null;
 
+        public ZooController(IZooService service, ILogger<ZooController> logger)
+        {
+            _service = service;
+            _logger = logger;
+        }
+
         [HttpGet()]
-        [ActionName("Read")]
+        [ActionName(nameof(ReadItems))]
         [ProducesResponseType(200, Type = typeof(ResponsePageDto<IZoo>))]
         [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> Read(string seeded = "true", string flat = "true",
+        public async Task<IActionResult> ReadItems(string seeded = "true", string flat = "true",
             string filter = null, string pageNr = "0", string pageSize = "10")
         {
             try
@@ -28,7 +34,7 @@ namespace AppWebApi.Controllers
                 int pageNrArg = int.Parse(pageNr);
                 int pageSizeArg = int.Parse(pageSize);
 
-                _logger.LogInformation($"{nameof(Read)}: {nameof(seededArg)}: {seededArg}, {nameof(flatArg)}: {flatArg}, " +
+                _logger.LogInformation($"{nameof(ReadItems)}: {nameof(seededArg)}: {seededArg}, {nameof(flatArg)}: {flatArg}, " +
                     $"{nameof(pageNrArg)}: {pageNrArg}, {nameof(pageSizeArg)}: {pageSizeArg}");
 
                 var resp = await _service.ReadZoosAsync(seededArg, flatArg, filter?.Trim().ToLower(), pageNrArg, pageSizeArg);     
@@ -36,14 +42,13 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(Read)}: {ex.Message}");
+                _logger.LogError($"{nameof(ReadItems)}: {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
 
-        //GET: api/Zoos/readitem
         [HttpGet()]
-        [ActionName("ReadItem")]
+        [ActionName(nameof(ReadItem))]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IZoo>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
@@ -68,9 +73,8 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //DELETE: api/Zoos/deleteitem/id
         [HttpDelete("{id}")]
-        [ActionName("DeleteItem")]
+        [ActionName(nameof(DeleteItem))]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IZoo>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> DeleteItem(string id)
@@ -94,9 +98,8 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //GET: api/Zoos/readitemdto
         [HttpGet()]
-        [ActionName("ReadItemDto")]
+        [ActionName(nameof(ReadItemDto))]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ZooCuDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
@@ -124,10 +127,8 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //PUT: api/Zoos/updateitem/id
-        //Body: csZooCUdto in Json
         [HttpPut("{id}")]
-        [ActionName("UpdateItem")]
+        [ActionName(nameof(UpdateItem))]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IZoo>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> UpdateItem(string id, [FromBody] ZooCuDto item)
@@ -152,10 +153,8 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //POST: api/Zoos/createitem
-        //Body: csZooCUdto in Json
         [HttpPost()]
-        [ActionName("CreateItem")]
+        [ActionName(nameof(CreateItem))]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IZoo>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> CreateItem([FromBody] ZooCuDto item)
@@ -175,14 +174,6 @@ namespace AppWebApi.Controllers
                 return BadRequest($"Could not create. Error {ex.Message}");
             }
         }
-
-        #region constructors
-        public ZooController(IZooService service, ILogger<ZooController> logger)
-        {
-            _service = service;
-            _logger = logger;
-        }
-        #endregion
     }
 }
 

@@ -8,7 +8,8 @@ using Models.DTO;
 
 namespace DbModels;
 
-//Here will come models the efc wil be using to build tables
-public class ModelDbM
+//Empty table in supusr Schema
+[Table("Zoos", Schema = "supusr")]
+public class ZooDbM
 {
 }

@@ -15,6 +15,24 @@ namespace DbContext.Migrations.SqlServerDbContext
                 name: "supusr");
 
             migrationBuilder.CreateTable(
+                name: "Employees",
+                schema: "supusr",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    strRole = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Role = table.Column<int>(type: "int", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Seeded = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Zoos",
                 schema: "supusr",
                 columns: table => new
@@ -58,11 +76,44 @@ namespace DbContext.Migrations.SqlServerDbContext
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "EmployeeDbMZooDbM",
+                schema: "supusr",
+                columns: table => new
+                {
+                    EmployeesDbMEmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ZoosDbMZooId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeDbMZooDbM", x => new { x.EmployeesDbMEmployeeId, x.ZoosDbMZooId });
+                    table.ForeignKey(
+                        name: "FK_EmployeeDbMZooDbM_Employees_EmployeesDbMEmployeeId",
+                        column: x => x.EmployeesDbMEmployeeId,
+                        principalSchema: "supusr",
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EmployeeDbMZooDbM_Zoos_ZoosDbMZooId",
+                        column: x => x.ZoosDbMZooId,
+                        principalSchema: "supusr",
+                        principalTable: "Zoos",
+                        principalColumn: "ZooId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Animals_ZooDbMZooId",
                 schema: "supusr",
                 table: "Animals",
                 column: "ZooDbMZooId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeeDbMZooDbM_ZoosDbMZooId",
+                schema: "supusr",
+                table: "EmployeeDbMZooDbM",
+                column: "ZoosDbMZooId");
         }
 
         /// <inheritdoc />
@@ -70,6 +121,14 @@ namespace DbContext.Migrations.SqlServerDbContext
         {
             migrationBuilder.DropTable(
                 name: "Animals",
+                schema: "supusr");
+
+            migrationBuilder.DropTable(
+                name: "EmployeeDbMZooDbM",
+                schema: "supusr");
+
+            migrationBuilder.DropTable(
+                name: "Employees",
                 schema: "supusr");
 
             migrationBuilder.DropTable(

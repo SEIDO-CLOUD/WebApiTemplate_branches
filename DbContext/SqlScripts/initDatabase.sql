@@ -16,7 +16,9 @@ CREATE OR ALTER VIEW gstusr.vwInfoDb AS
     SELECT (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 1) as nrSeededZoos, 
         (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 0) as nrUnseededZoos,
         (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 1) as nrSeededAnimals, 
-        (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 0) as nrUnseededAnimals
+        (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 0) as nrUnseededAnimals,
+        (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 1) as nrSeededEmployees, 
+        (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 0) as nrUnseededEmployees
 
 GO
 
@@ -31,6 +33,13 @@ CREATE OR ALTER VIEW gstusr.vwInfoAnimals AS
     GROUP BY z.Country, z.City, z.Name WITH ROLLUP;
 GO
 
+CREATE OR ALTER VIEW gstusr.vwInfoEmployees AS
+    SELECT z.Country, z.City, z.Name as ZooName, COUNT(e.EmployeeId) as NrEmployees FROM supusr.Zoos z
+    INNER JOIN supusr.EmployeeDbMZooDbM ct ON ct.ZoosDbMZooId = z.ZooId
+    INNER JOIN supusr.Employees e ON e.EmployeeId = ct.EmployeesDbMEmployeeId
+    GROUP BY z.Country, z.City, z.Name WITH ROLLUP;
+GO
+
 
 
 --03-create-supusr-sp.sql
@@ -38,7 +47,8 @@ CREATE OR ALTER PROC supusr.spDeleteAll
     @Seeded BIT = 1,
 
     @nrZoosAffected INT OUTPUT,
-    @nrAnimalsAffected INT OUTPUT
+    @nrAnimalsAffected INT OUTPUT,
+    @nrEmployeesAffected INT OUTPUT
     
     AS
 
@@ -46,9 +56,11 @@ CREATE OR ALTER PROC supusr.spDeleteAll
 
     SELECT  @nrZoosAffected = COUNT(*) FROM supusr.Zoos WHERE Seeded = @Seeded;
     SELECT  @nrAnimalsAffected = COUNT(*) FROM supusr.Animals WHERE Seeded = @Seeded;
+    SELECT  @nrEmployeesAffected = COUNT(*) FROM supusr.Employees WHERE Seeded = @Seeded;
 
     DELETE FROM supusr.Zoos WHERE Seeded = @Seeded;
     DELETE FROM supusr.Animals WHERE Seeded = @Seeded;
+    DELETE FROM supusr.Employees WHERE Seeded = @Seeded;
 
     SELECT * FROM gstusr.vwInfoDb;
 

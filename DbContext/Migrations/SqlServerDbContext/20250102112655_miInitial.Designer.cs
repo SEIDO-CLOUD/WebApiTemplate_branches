@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20241228173354_miInitial")]
+    [Migration("20250102112655_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -65,6 +65,35 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable("Animals", "supusr");
                 });
 
+            modelBuilder.Entity("DbModels.EmployeeDbM", b =>
+                {
+                    b.Property<Guid>("EmployeeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Seeded")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("strRole")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("EmployeeId");
+
+                    b.ToTable("Employees", "supusr");
+                });
+
             modelBuilder.Entity("DbModels.ZooDbM", b =>
                 {
                     b.Property<Guid>("ZooId")
@@ -86,6 +115,21 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.HasKey("ZooId");
 
                     b.ToTable("Zoos", "supusr");
+                });
+
+            modelBuilder.Entity("EmployeeDbMZooDbM", b =>
+                {
+                    b.Property<Guid>("EmployeesDbMEmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ZoosDbMZooId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("EmployeesDbMEmployeeId", "ZoosDbMZooId");
+
+                    b.HasIndex("ZoosDbMZooId");
+
+                    b.ToTable("EmployeeDbMZooDbM", "supusr");
                 });
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoAnimalsDto", b =>
@@ -112,10 +156,16 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Property<int>("NrSeededAnimals")
                         .HasColumnType("int");
 
+                    b.Property<int>("NrSeededEmployees")
+                        .HasColumnType("int");
+
                     b.Property<int>("NrSeededZoos")
                         .HasColumnType("int");
 
                     b.Property<int>("NrUnseededAnimals")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NrUnseededEmployees")
                         .HasColumnType("int");
 
                     b.Property<int>("NrUnseededZoos")
@@ -124,6 +174,25 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable((string)null);
 
                     b.ToView("vwInfoDb", "gstusr");
+                });
+
+            modelBuilder.Entity("Models.DTO.GstUsrInfoEmployeesDto", b =>
+                {
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("NrEmployees")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ZooName")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("vwInfoEmployees", "gstusr");
                 });
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoZoosDto", b =>
@@ -151,6 +220,21 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .IsRequired();
 
                     b.Navigation("ZooDbM");
+                });
+
+            modelBuilder.Entity("EmployeeDbMZooDbM", b =>
+                {
+                    b.HasOne("DbModels.EmployeeDbM", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeesDbMEmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbModels.ZooDbM", null)
+                        .WithMany()
+                        .HasForeignKey("ZoosDbMZooId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DbModels.ZooDbM", b =>

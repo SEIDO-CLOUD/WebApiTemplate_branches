@@ -48,14 +48,15 @@ public class AdminDbRepos
         var fn = Path.GetFullPath(_seedSource);
         var seeder = new SeedGenerator(fn);
 
-        //Generate Zoos and addresses
+        //Generate Zoos and persons to be employed
         var zoos = seeder.ItemsToList<ZooDbM>(nrOfItems);
+        var persons = seeder.ItemsToList<EmployeeDbM>(seeder.Next(nrOfItems, 5*nrOfItems));
 
-        //Assign Address, Animals and Quotes to all the Zoos
+        //Assign Animals and Employees to all the Zoos
         foreach (var zoo in zoos)
         {
             zoo.AnimalsDbM = seeder.ItemsToList<AnimalDbM>(seeder.Next(5,51));
-            zoo.EmployeesDbM = seeder.ItemsToList<EmployeeDbM>(seeder.Next(2, 9));
+            zoo.EmployeesDbM = seeder.UniqueIndexPickedFromList<EmployeeDbM>(seeder.Next(2, 9), persons);
         }
 
         //Note that all other tables are automatically set through ZooDbM Navigation properties

@@ -21,7 +21,6 @@ public class ZooServiceDb : IZooService {
         _logger = logger;
     }
 
-    #region Simple 1:1 calls in this case, but as Services expands, this will no longer be the case
     public Task<ResponseItemDto<GstUsrInfoAllDto>> InfoAsync() => _adminRepo.InfoAsync();
 
     public Task<ResponseItemDto<GstUsrInfoAllDto>> SeedAsync(int nrOfItems) => _adminRepo.SeedAsync(nrOfItems);
@@ -38,6 +37,4 @@ public class ZooServiceDb : IZooService {
     public Task<ResponseItemDto<IAnimal>> DeleteAnimalAsync(Guid id) => _animalRepo.DeleteItemAsync(id);
     public Task<ResponseItemDto<IAnimal>> UpdateAnimalAsync(AnimalCuDto item) => _animalRepo.UpdateItemAsync(item);
     public Task<ResponseItemDto<IAnimal>> CreateAnimalAsync(AnimalCuDto item) => _animalRepo.CreateItemAsync(item);
-
-    #endregion
 }

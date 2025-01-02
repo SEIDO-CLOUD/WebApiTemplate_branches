@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250102131547_miInitial")]
+    [Migration("20250102190540_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -63,6 +63,46 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.HasIndex("ZooDbMZooId");
 
                     b.ToTable("Animals", "supusr");
+                });
+
+            modelBuilder.Entity("DbModels.CreditCardDbM", b =>
+                {
+                    b.Property<Guid>("CreditCardId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EmployeeDbMEmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ExpirationMonth")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ExpirationYear")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Issuer")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("Seeded")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("strIssuer")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("CreditCardId");
+
+                    b.HasIndex("EmployeeDbMEmployeeId");
+
+                    b.ToTable("CreditCards", "supusr");
                 });
 
             modelBuilder.Entity("DbModels.EmployeeDbM", b =>
@@ -223,6 +263,17 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .IsRequired();
 
                     b.Navigation("ZooDbM");
+                });
+
+            modelBuilder.Entity("DbModels.CreditCardDbM", b =>
+                {
+                    b.HasOne("DbModels.EmployeeDbM", "EmployeeDbM")
+                        .WithMany()
+                        .HasForeignKey("EmployeeDbMEmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EmployeeDbM");
                 });
 
             modelBuilder.Entity("EmployeeDbMZooDbM", b =>

@@ -49,6 +49,34 @@ namespace DbContext.Migrations.SqlServerDbContext
                 });
 
             migrationBuilder.CreateTable(
+                name: "CreditCards",
+                schema: "supusr",
+                columns: table => new
+                {
+                    CreditCardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    strIssuer = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    EmployeeDbMEmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Issuer = table.Column<int>(type: "int", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Number = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    ExpirationYear = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    ExpirationMonth = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Seeded = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CreditCards", x => x.CreditCardId);
+                    table.ForeignKey(
+                        name: "FK_CreditCards_Employees_EmployeeDbMEmployeeId",
+                        column: x => x.EmployeeDbMEmployeeId,
+                        principalSchema: "supusr",
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Animals",
                 schema: "supusr",
                 columns: table => new
@@ -110,6 +138,12 @@ namespace DbContext.Migrations.SqlServerDbContext
                 column: "ZooDbMZooId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CreditCards_EmployeeDbMEmployeeId",
+                schema: "supusr",
+                table: "CreditCards",
+                column: "EmployeeDbMEmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EmployeeDbMZooDbM_ZoosDbMZooId",
                 schema: "supusr",
                 table: "EmployeeDbMZooDbM",
@@ -121,6 +155,10 @@ namespace DbContext.Migrations.SqlServerDbContext
         {
             migrationBuilder.DropTable(
                 name: "Animals",
+                schema: "supusr");
+
+            migrationBuilder.DropTable(
+                name: "CreditCards",
                 schema: "supusr");
 
             migrationBuilder.DropTable(

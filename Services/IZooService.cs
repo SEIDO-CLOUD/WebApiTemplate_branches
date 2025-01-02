@@ -26,4 +26,10 @@ public interface IZooService {
     public Task<ResponseItemDto<IEmployee>> DeleteEmployeeAsync(Guid id);
     public Task<ResponseItemDto<IEmployee>> UpdateEmployeeAsync(EmployeeCuDto item);
     public Task<ResponseItemDto<IEmployee>> CreateEmployeeAsync(EmployeeCuDto item);
+
+    public Task<ResponsePageDto<ICreditCard>> ReadCreditCardsAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize);
+    public Task<ResponseItemDto<ICreditCard>> ReadCreditCardAsync(Guid id, bool flat);
+    public Task<ResponseItemDto<ICreditCard>> DeleteCreditCardAsync(Guid id);
+    public Task<ResponseItemDto<ICreditCard>> CreateCreditCardAsync(CreditCardCuDto item);
+
 }

@@ -25,7 +25,6 @@ builder.Services.AddSwaggerGen();
 //Inject Custom logger
 builder.Services.AddSingleton<ILoggerProvider, InMemoryLoggerProvider>();
 builder.Services.AddScoped<AdminDbRepos>();
-builder.Services.AddScoped<ZooDbRepos>();
 builder.Services.AddScoped<IZooService, ZooServiceDb>();
 
 

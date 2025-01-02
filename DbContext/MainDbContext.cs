@@ -44,6 +44,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     {
 
         #region model the Views
+        modelBuilder.Entity<GstUsrInfoDbDto>().ToView("vwInfoDb", "gstusr").HasNoKey();
         #endregion
 
         #region override modelbuilder

@@ -13,31 +13,21 @@ GO
 --02-create-gstusr-view.sql
 --create a view that gives overview of the database content
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
-    SELECT (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 1) as nrSeededZoos, 
-        (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 0) as nrUnseededZoos
+    SELECT 'Guest user database overview' as Title
 GO
-
-CREATE OR ALTER VIEW gstusr.vwInfoZoos AS
-    SELECT z.Country, z.City, COUNT(*) as NrZoos  FROM supusr.Zoos z
-    GROUP BY z.Country, z.City WITH ROLLUP;
-GO
-
 
 
 --03-create-supusr-sp.sql
 CREATE OR ALTER PROC supusr.spDeleteAll
-    @Seeded BIT = 1,
+    @Seeded BIT = 1
 
-    @nrZoosAffected INT OUTPUT
-    
     AS
 
     SET NOCOUNT ON;
 
-    SELECT  @nrZoosAffected = COUNT(*) FROM supusr.Zoos WHERE Seeded = @Seeded;
+    -- will delete here
 
-    DELETE FROM supusr.Zoos WHERE Seeded = @Seeded;
-
+    -- return new data status
     SELECT * FROM gstusr.vwInfoDb;
 
     --throw our own error

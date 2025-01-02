@@ -5,7 +5,7 @@ namespace Models.DTO;
 
 public class GstUsrInfoDbDto
 {
-    public string Header {get;  set;}
+    public string Title {get;  set;}
 } 
 
 

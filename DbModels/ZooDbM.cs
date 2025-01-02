@@ -8,34 +8,7 @@ using Models.DTO;
 
 namespace DbModels;
 
-[Table("Zoos", Schema = "supusr")]
-public class ZooDbM : Zoo, ISeed<ZooDbM>
+//Here will come models the efc wil be using to build tables
+public class ModelDbM
 {
-    [Key]
-    public override Guid ZooId { get; set; }
-
-
-    public override ZooDbM Seed (SeedGenerator _seeder)
-    {
-        base.Seed (_seeder);
-        return this;
-    }
-
-    public ZooDbM UpdateFromDTO(ZooCuDto org)
-    {
-        if (org == null) return null;
-
-        City = org.City;
-        Country = org.Country;
-        Name = org.Name;
-
-        return this;
-    }
-
-    public ZooDbM() { }
-    public ZooDbM(ZooCuDto org)
-    {
-        ZooId = Guid.NewGuid();
-        UpdateFromDTO(org);
-    }
 }

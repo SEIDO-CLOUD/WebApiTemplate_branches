@@ -47,7 +47,7 @@ public class AdminDbRepos
         var fn = Path.GetFullPath(_seedSource);
         var seeder = new SeedGenerator(fn);
 
-        //Generate Zoos and persons to be employed
+        //Generate Zoos
         var zoos = seeder.ItemsToList<ZooDbM>(nrOfItems);
 
         //Assign Address, Animals and Quotes to all the Zoos

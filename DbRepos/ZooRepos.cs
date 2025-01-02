@@ -27,16 +27,12 @@ public class ZooDbRepos
         IQueryable<ZooDbM> query;
         if (!flat)
         {
-            //make sure the model is fully populated, try without include.
-            //remove tracking for all read operations for performance and to avoid recursion/circular access
             query = _dbContext.Zoos.AsNoTracking()
                 .Include(i => i.AnimalsDbM)
                 .Where(i => i.ZooId == id);
         }
         else
         {
-            //Not fully populated, compare the SQL Statements generated
-            //remove tracking for all read operations for performance and to avoid recursion/circular access
             query = _dbContext.Zoos.AsNoTracking()
                 .Where(i => i.ZooId == id);
         }   

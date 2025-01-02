@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20241228173354_miInitial")]
+    [Migration("20250102131106_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -120,6 +120,9 @@ namespace DbContext.Migrations.SqlServerDbContext
 
                     b.Property<int>("NrUnseededZoos")
                         .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(200)");
 
                     b.ToTable((string)null);
 

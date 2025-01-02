@@ -50,7 +50,7 @@ public class AdminDbRepos
         //Generate Zoos
         var zoos = seeder.ItemsToList<ZooDbM>(nrOfItems);
 
-        //Assign Address, Animals and Quotes to all the Zoos
+        //Assign Animals to all the Zoos
         foreach (var zoo in zoos)
         {
             zoo.AnimalsDbM = seeder.ItemsToList<AnimalDbM>(seeder.Next(5,51));

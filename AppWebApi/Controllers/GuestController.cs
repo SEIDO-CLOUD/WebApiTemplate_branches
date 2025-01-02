@@ -16,9 +16,13 @@ namespace AppWebApi.Controllers
         readonly IZooService _service = null;
         readonly ILogger<GuestController> _logger = null;
 
-       //GET: api/guest/info
+        public GuestController(IZooService service, ILogger<GuestController> logger)
+        {
+            _service = service;
+            _logger = logger;
+        }
+
         [HttpGet()]
-        [ActionName("Info")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<GstUsrInfoAllDto>))]
         public async Task<IActionResult> Info()
         {
@@ -35,14 +39,6 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        #region constructors
-        public GuestController(IZooService service, ILogger<GuestController> logger)
-        {
-            _service = service;
-            _logger = logger;
-        }
-        #endregion
     }
 }
 

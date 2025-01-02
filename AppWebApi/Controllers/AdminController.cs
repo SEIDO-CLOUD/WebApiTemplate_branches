@@ -18,9 +18,14 @@ namespace AppWebApi.Controllers
         readonly IZooService _service;
         readonly ILogger<AdminController> _logger;
 
-        //GET: api/guest/info
+        public AdminController(IZooService service, ILogger<AdminController> logger, DatabaseConnections dbConnections)
+        {
+            _service = service;
+            _logger = logger;
+            _dbConnections = dbConnections;
+        }
+
         [HttpGet()]
-        [ActionName("Info")]
         [ProducesResponseType(200, Type = typeof(DatabaseConnections.SetupInformation))]
         public IActionResult Info()
         {
@@ -38,9 +43,7 @@ namespace AppWebApi.Controllers
             }
          }
 
-        //GET: api/admin/seed?count={count}
         [HttpGet()]
-        [ActionName("Seed")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<GstUsrInfoAllDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> Seed(string count = "10")
@@ -60,9 +63,7 @@ namespace AppWebApi.Controllers
             }
         }
 
-        //GET: api/admin/removeseed
         [HttpGet()]
-        [ActionName("RemoveSeed")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<GstUsrInfoAllDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> RemoveSeed(string seeded = "true")
@@ -82,10 +83,7 @@ namespace AppWebApi.Controllers
             }
         }
 
-
-        //GET: api/admin/log
         [HttpGet()]
-        [ActionName("Log")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<LogMessage>))]
         public async Task<IActionResult> Log([FromServices] ILoggerProvider _loggerProvider)
         {
@@ -96,15 +94,6 @@ namespace AppWebApi.Controllers
             }
             return Ok("No messages in log");
         }
-
-        #region constructors
-        public AdminController(IZooService service, ILogger<AdminController> logger, DatabaseConnections dbConnections)
-        {
-            _service = service;
-            _logger = logger;
-            _dbConnections = dbConnections;
-        }
-        #endregion
     }
 }
 

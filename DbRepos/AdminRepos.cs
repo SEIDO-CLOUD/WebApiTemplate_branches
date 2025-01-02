@@ -56,6 +56,8 @@ public class AdminDbRepos
         foreach (var zoo in zoos)
         {
             zoo.AnimalsDbM = seeder.ItemsToList<AnimalDbM>(seeder.Next(5,51));
+
+            //Employ between 2 and 8 persons from the list
             zoo.EmployeesDbM = seeder.UniqueIndexPickedFromList<EmployeeDbM>(seeder.Next(2, 9), persons);
         }
 

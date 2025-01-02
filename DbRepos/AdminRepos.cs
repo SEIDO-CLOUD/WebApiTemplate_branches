@@ -75,20 +75,13 @@ public class AdminDbRepos
 
             var retValue = new SqlParameter("retval", SqlDbType.Int) { Direction = ParameterDirection.Output };
             var seededArg = new SqlParameter("seeded", seeded);
-            var nrZ = new SqlParameter("nrZ", SqlDbType.Int) { Direction = ParameterDirection.Output };
-            var nrA = new SqlParameter("nrA", SqlDbType.Int) { Direction = ParameterDirection.Output };
-            var nrE = new SqlParameter("nrE", SqlDbType.Int) { Direction = ParameterDirection.Output };
 
             parameters.Add(retValue);
             parameters.Add(seededArg);
-            parameters.Add(nrZ);
-            parameters.Add(nrA);
-            parameters.Add(nrE);
 
             //there is no FromSqlRawAsync to I make one here
             var _query = await Task.Run(() =>
-                _dbContext.InfoDbView.FromSqlRaw($"EXEC @retval = supusr.spDeleteAll @seeded," +
-                    $"@nrZ OUTPUT, @nrA OUTPUT, @nrE OUTPUT",
+                _dbContext.InfoDbView.FromSqlRaw($"EXEC @retval = supusr.spDeleteAll @seeded",
                     parameters.ToArray()).AsEnumerable());
 
             //Execute the query and get the sp result set.

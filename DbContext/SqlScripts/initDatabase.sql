@@ -13,12 +13,13 @@ GO
 --02-create-gstusr-view.sql
 --create a view that gives overview of the database content
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
-    SELECT (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 1) as nrSeededZoos, 
-        (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 0) as nrUnseededZoos,
-        (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 1) as nrSeededAnimals, 
-        (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 0) as nrUnseededAnimals,
-        (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 1) as nrSeededEmployees, 
-        (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 0) as nrUnseededEmployees
+    SELECT 'Guest user database overview' as Title,
+    (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 1) as nrSeededZoos, 
+    (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 0) as nrUnseededZoos,
+    (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 1) as nrSeededAnimals, 
+    (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 0) as nrUnseededAnimals,
+    (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 1) as nrSeededEmployees, 
+    (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 0) as nrUnseededEmployees
 
 GO
 
@@ -44,19 +45,11 @@ GO
 
 --03-create-supusr-sp.sql
 CREATE OR ALTER PROC supusr.spDeleteAll
-    @Seeded BIT = 1,
+    @Seeded BIT = 1
 
-    @nrZoosAffected INT OUTPUT,
-    @nrAnimalsAffected INT OUTPUT,
-    @nrEmployeesAffected INT OUTPUT
-    
     AS
 
     SET NOCOUNT ON;
-
-    SELECT  @nrZoosAffected = COUNT(*) FROM supusr.Zoos WHERE Seeded = @Seeded;
-    SELECT  @nrAnimalsAffected = COUNT(*) FROM supusr.Animals WHERE Seeded = @Seeded;
-    SELECT  @nrEmployeesAffected = COUNT(*) FROM supusr.Employees WHERE Seeded = @Seeded;
 
     DELETE FROM supusr.Zoos WHERE Seeded = @Seeded;
     DELETE FROM supusr.Animals WHERE Seeded = @Seeded;

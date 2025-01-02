@@ -5,9 +5,8 @@ namespace Models.DTO;
 
 public class GstUsrInfoDbDto
 {
-    public int NrSeededZoos { get; set; } = 0;
-    public int NrUnseededZoos { get; set; } = 0;
-}
+    public string Header {get;  set;}
+} 
 
 
 public class GstUsrInfoAllDto

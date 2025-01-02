@@ -28,7 +28,6 @@ public class AdminDbRepos
     {
         var info = new GstUsrInfoAllDto();
         info.Db = await _dbContext.InfoDbView.FirstAsync();
-        info.Zoos = await _dbContext.InfoZoosView.ToListAsync();
 
         return new ResponseItemDto<GstUsrInfoAllDto>()
         {
@@ -46,13 +45,9 @@ public class AdminDbRepos
         var fn = Path.GetFullPath(_seedSource);
         var seeder = new SeedGenerator(fn);
 
-        //Generate Zoos
-        var zoos = seeder.ItemsToList<ZooDbM>(nrOfItems);
+        //Here the database models will be seeded using the seeder
 
-        _dbContext.Zoos.AddRange(zoos);
-
-        await _dbContext.SaveChangesAsync();
-
+        //Overview of the database
         return await InfoAsync();
     }
     
@@ -62,16 +57,13 @@ public class AdminDbRepos
 
             var retValue = new SqlParameter("retval", SqlDbType.Int) { Direction = ParameterDirection.Output };
             var seededArg = new SqlParameter("seeded", seeded);
-            var nrZ = new SqlParameter("nrZ", SqlDbType.Int) { Direction = ParameterDirection.Output };
 
             parameters.Add(retValue);
             parameters.Add(seededArg);
-            parameters.Add(nrZ);
 
             //there is no FromSqlRawAsync to I make one here
             var _query = await Task.Run(() =>
-                _dbContext.InfoDbView.FromSqlRaw($"EXEC @retval = supusr.spDeleteAll @seeded," +
-                    $"@nrZ OUTPUT",
+                _dbContext.InfoDbView.FromSqlRaw($"EXEC @retval = supusr.spDeleteAll @seeded,",
                     parameters.ToArray()).AsEnumerable());
 
             //Execute the query and get the sp result set.

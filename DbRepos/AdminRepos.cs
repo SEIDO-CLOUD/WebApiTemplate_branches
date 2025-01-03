@@ -7,6 +7,8 @@ using Seido.Utilities.SeedGenerator;
 using Models.DTO;
 using DbModels;
 using DbContext;
+using Configuration;
+using Models;
 
 namespace DbRepos;
 
@@ -14,12 +16,14 @@ public class AdminDbRepos
 {
     private const string _seedSource = "./app-seeds.json";
     private readonly ILogger<AdminDbRepos> _logger;
+    private Encryptions _encryptions;
     private readonly MainDbContext _dbContext;
 
     #region contructors
-    public AdminDbRepos(ILogger<AdminDbRepos> logger, MainDbContext context)
+    public AdminDbRepos(ILogger<AdminDbRepos> logger, Encryptions encryptions, MainDbContext context)
     {
         _logger = logger;
+        _encryptions = encryptions;
         _dbContext = context;
     }
     #endregion
@@ -56,7 +60,9 @@ public class AdminDbRepos
         foreach (var p in persons)
         {
             p.CreditCardDbM = (seeder.Bool) ? new CreditCardDbM(){FirstName = p.FirstName, LastName = p.LastName}.Seed(seeder) : null;
-            p.CreditCardDbM?.Obfuscate();
+            p.CreditCardDbM?.EnryptAndObfuscate(_encryptions.AesEncryptToBase64);
+
+            var cc = p.CreditCardDbM?.Decrypt(_encryptions.AesDecryptFromBase64<CreditCard>);
         }
 
         //Assign Animals and Employees to all the Zoos

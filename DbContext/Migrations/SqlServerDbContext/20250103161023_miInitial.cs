@@ -62,6 +62,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                     Number = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     ExpirationYear = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     ExpirationMonth = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    EnryptedToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Seeded = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

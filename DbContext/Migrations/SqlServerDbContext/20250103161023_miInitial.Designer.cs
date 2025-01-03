@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250103123951_miInitial")]
+    [Migration("20250103161023_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -73,6 +73,9 @@ namespace DbContext.Migrations.SqlServerDbContext
 
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EnryptedToken")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ExpirationMonth")
                         .HasColumnType("nvarchar(200)");
@@ -197,6 +200,9 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Property<int>("NrSeededAnimals")
                         .HasColumnType("int");
 
+                    b.Property<int>("NrSeededCreditCards")
+                        .HasColumnType("int");
+
                     b.Property<int>("NrSeededEmployees")
                         .HasColumnType("int");
 
@@ -204,6 +210,9 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .HasColumnType("int");
 
                     b.Property<int>("NrUnseededAnimals")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NrUnseededCreditCards")
                         .HasColumnType("int");
 
                     b.Property<int>("NrUnseededEmployees")

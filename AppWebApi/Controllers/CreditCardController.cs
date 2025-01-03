@@ -51,16 +51,17 @@ namespace AppWebApi.Controllers
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICreditCard>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
-        public async Task<IActionResult> ReadItem(string id = null, string flat = "false")
+        public async Task<IActionResult> ReadItem(string id = null, string flat = "false", string decrypt = "false")
         {
             try
             {
                 var idArg = Guid.Parse(id);
                 bool flatArg = bool.Parse(flat);
+                bool decryptArg = bool.Parse(decrypt);
 
-                _logger.LogInformation($"{nameof(ReadItem)}: {nameof(idArg)}: {idArg}, {nameof(flatArg)}: {flatArg}");
+                _logger.LogInformation($"{nameof(ReadItem)}: {nameof(idArg)}: {idArg}, {nameof(flatArg)}: {flatArg}, {nameof(decryptArg)}: {decryptArg}");
                 
-                var item = await _service.ReadCreditCardAsync(idArg, flatArg);
+                var item = await _service.ReadCreditCardAsync(idArg, flatArg, decryptArg);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(item);
@@ -108,7 +109,7 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(ReadItemDto)}: {nameof(idArg)}: {idArg}");
 
-                var item = await _service.ReadCreditCardAsync(idArg, false);
+                var item = await _service.ReadCreditCardAsync(idArg, false, false);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(

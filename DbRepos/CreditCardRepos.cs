@@ -6,6 +6,7 @@ using Models;
 using Models.DTO;
 using DbModels;
 using DbContext;
+using Configuration;
 
 namespace DbRepos;
 
@@ -13,16 +14,18 @@ public class CreditCardDbRepos
 {
     private readonly ILogger<CreditCardDbRepos> _logger;
     private readonly MainDbContext _dbContext;
+    private Encryptions _encryptions;
 
     #region contructors
-    public CreditCardDbRepos(ILogger<CreditCardDbRepos> logger, MainDbContext context)
+    public CreditCardDbRepos(ILogger<CreditCardDbRepos> logger, Encryptions encryptions, MainDbContext context)
     {
         _logger = logger;
+        _encryptions = encryptions;
         _dbContext = context;
     }
     #endregion
 
-    public async Task<ResponseItemDto<ICreditCard>> ReadItemAsync(Guid id, bool flat)
+    public async Task<ResponseItemDto<ICreditCard>> ReadItemAsync(Guid id, bool flat, bool decrypt = false)
     {
         IQueryable<CreditCardDbM> query;
         if (!flat)
@@ -37,7 +40,18 @@ public class CreditCardDbRepos
                 .Where(i => i.CreditCardId == id);
         }
 
-        var resp = await query.FirstOrDefaultAsync<ICreditCard>();
+        var resp = await query.FirstOrDefaultAsync<CreditCard>();
+        if (decrypt)
+        {
+            var cc = resp.Decrypt(_encryptions.AesDecryptFromBase64<CreditCard>);
+
+            //Nav props are not set in the decrypted object, set them
+            cc.Employee = resp.Employee;
+
+            //finally, have resp to reference cc instance
+            resp = cc;
+        }
+
         return new ResponseItemDto<ICreditCard>()
         {
             DbConnectionKeyUsed = _dbContext.dbConnection,
@@ -122,7 +136,8 @@ public class CreditCardDbRepos
         //transfer any changes from DTO to database objects
         //Update individual properties
         var item = new CreditCardDbM(itemDto);
-        item.Obfuscate();
+
+        item.EnryptAndObfuscate(_encryptions.AesEncryptToBase64);
 
         //Update navigation properties
         await navProp_ItemCUdto_to_ItemDbM(itemDto, item);

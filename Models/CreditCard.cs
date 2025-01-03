@@ -6,7 +6,7 @@ using Seido.Utilities.SeedGenerator;
 
 namespace Models;
 
-public class CreditCard:ICreditCard, ISeed<CreditCard>
+public class CreditCard : ICreditCard, ISeed<CreditCard>
 {
     public virtual Guid CreditCardId { get; set; }
 
@@ -16,6 +16,10 @@ public class CreditCard:ICreditCard, ISeed<CreditCard>
     public string Number { get; set; }
     public string ExpirationYear { get; set; }
     public string ExpirationMonth { get; set; }
+
+    [JsonIgnore]
+    public string EnryptedToken {get; set; }
+    
 
     //Navigation properties
     public virtual IEmployee Employee { get; set; }
@@ -37,8 +41,10 @@ public class CreditCard:ICreditCard, ISeed<CreditCard>
     }
     #endregion
 
-    public CreditCard Obfuscate ()
+    public CreditCard EnryptAndObfuscate (Func<CreditCard, string> encryptor)
     {
+        this.EnryptedToken = encryptor(this);
+
         this.FirstName = Regex.Replace(FirstName, "(?<=.{1}).", "*");
         this.LastName = Regex.Replace(LastName, "(?<=.{1}).", "*");
 
@@ -50,5 +56,10 @@ public class CreditCard:ICreditCard, ISeed<CreditCard>
         this.ExpirationMonth = "**";
         
         return this;
+    }
+
+    public CreditCard Decrypt (Func<string, CreditCard> decryptor)
+    {
+        return decryptor(this.EnryptedToken);
     }
 }

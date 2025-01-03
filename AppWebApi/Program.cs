@@ -16,6 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Configuration.AddApplicationSecrets("../Configuration/Configuration.csproj");
 
 //use multiple Database connections and their respective DbContexts
+builder.Services.AddEnryptions(builder.Configuration);
 builder.Services.AddDatabaseConnections(builder.Configuration);
 builder.Services.AddDatabaseConnectionsDbContext();
 #endregion

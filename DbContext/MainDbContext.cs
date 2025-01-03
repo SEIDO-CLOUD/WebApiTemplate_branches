@@ -57,6 +57,9 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
         #endregion
 
         #region override modelbuilder
+        //Tokens can be very long
+        modelBuilder.Entity<CreditCardDbM>()
+            .Property(a => a.EnryptedToken).HasColumnType("nvarchar(max)");
         #endregion
         
         base.OnModelCreating(modelBuilder);

@@ -56,6 +56,7 @@ public class AdminDbRepos
         foreach (var p in persons)
         {
             p.CreditCardDbM = (seeder.Bool) ? new CreditCardDbM(){FirstName = p.FirstName, LastName = p.LastName}.Seed(seeder) : null;
+            p.CreditCardDbM?.Obfuscate();
         }
 
         //Assign Animals and Employees to all the Zoos

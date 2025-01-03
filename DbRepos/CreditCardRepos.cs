@@ -122,6 +122,7 @@ public class CreditCardDbRepos
         //transfer any changes from DTO to database objects
         //Update individual properties
         var item = new CreditCardDbM(itemDto);
+        item.Obfuscate();
 
         //Update navigation properties
         await navProp_ItemCUdto_to_ItemDbM(itemDto, item);

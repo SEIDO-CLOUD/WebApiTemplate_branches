@@ -39,15 +39,15 @@ public class CreditCard:ICreditCard, ISeed<CreditCard>
 
     public CreditCard Obfuscate ()
     {
-        FirstName = Regex.Replace(FirstName, "(?<=.{1}).", "*");
-        LastName = Regex.Replace(LastName, "(?<=.{1}).", "*");
+        this.FirstName = Regex.Replace(FirstName, "(?<=.{1}).", "*");
+        this.LastName = Regex.Replace(LastName, "(?<=.{1}).", "*");
 
         string pattern = @"\b(\d{4}[-\s]?)(\d{4}[-\s]?)(\d{4}[-\s]?)(\d{4})\b";
         string replacement = "$1**** **** **** $4"; 
-        Number =  Regex.Replace(Number, pattern, replacement);
+        this.Number =  Regex.Replace(Number, pattern, replacement);
 
-        ExpirationYear = "**";
-        ExpirationMonth = "**";
+        this.ExpirationYear = "**";
+        this.ExpirationMonth = "**";
         
         return this;
     }

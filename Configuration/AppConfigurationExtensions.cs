@@ -69,7 +69,7 @@ public static class AppConfigurationExtensions
         return serviceCollection;
     }
 
-    public static IServiceCollection AddEnryptions(this IServiceCollection serviceCollection, IConfiguration configuration)
+    public static IServiceCollection AddEncryptions(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         serviceCollection.Configure<AesEcryptionOptions>(
             options => configuration.GetSection(AesEcryptionOptions.Position).Bind(options));

@@ -29,8 +29,6 @@ public class CreditCard:ICreditCard, ISeed<CreditCard>
         CreditCardId = Guid.NewGuid();
         
         Issuer = seeder.FromEnum<CardIssues>();
-        FirstName = seeder.FirstName;
-        LastName = seeder.LastName;
 
         Number = $"{seeder.Next(2222, 9999)}-{seeder.Next(2222, 9999)}-{seeder.Next(2222, 9999)}-{seeder.Next(2222, 9999)}";
         ExpirationYear = $"{seeder.Next(25, 32)}";

@@ -22,12 +22,19 @@ public class CreditCardDbM : CreditCard, ISeed<CreditCardDbM>
     }
     #endregion
     
+    //In a one-to-one relationship, you needed to establish that the Foreign Key should in this table, CreditCards
+    //Connecting below FK above with EmployeeDbM.EmployeeId
+    [JsonIgnore]
+    public virtual Guid EmployeeId { get; set; }
+
     [NotMapped]
     public override IEmployee Employee { get => EmployeeDbM; set => throw new NotImplementedException(); }
 
     [JsonIgnore]
     [Required]
+    [ForeignKey ("EmployeeId")] //Connecting FK above with EmployeeDbM.EmployeeId
     public  EmployeeDbM  EmployeeDbM { get; set; } = null;
+
 
     public override CreditCardDbM Seed (SeedGenerator _seeder)
     {

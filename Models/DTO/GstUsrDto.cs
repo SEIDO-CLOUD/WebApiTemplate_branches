@@ -15,6 +15,8 @@ public class GstUsrInfoDbDto
     public int NrSeededEmployees { get; set; } = 0;
     public int NrUnseededEmployees { get; set; } = 0;
 
+    public int NrSeededCreditCards { get; set; } = 0;
+    public int NrUnseededCreditCards { get; set; } = 0;
 }
 
 public class GstUsrInfoZoosDto

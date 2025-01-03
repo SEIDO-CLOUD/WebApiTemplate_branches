@@ -141,8 +141,33 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(CreateItem)}: {ex.Message}");
-                return BadRequest($"Could not create. Error {ex.Message}");
+                _logger.LogError($"{nameof(CreateItem)}: {ex.Message}.{ex.InnerException.Message}");
+                return BadRequest($"Could not create. Error {ex.Message}.{ex.InnerException.Message}");
+            }
+        }
+
+
+        [HttpGet()]
+        [ProducesResponseType(200, Type = typeof(ResponsePageDto<IEmployee>))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        public async Task<IActionResult> ReadEmployeesWithCC(string hasCreditcard = "true", string pageNr = "0", string pageSize = "10")
+        {
+            try
+            {
+                bool hasCreditcardArg = bool.Parse(hasCreditcard);
+                int pageNrArg = int.Parse(pageNr);
+                int pageSizeArg = int.Parse(pageSize);
+
+                _logger.LogInformation($"{nameof(ReadItems)}: {nameof(hasCreditcardArg)}: {hasCreditcardArg}, " +
+                    $"{nameof(pageNrArg)}: {pageNrArg}, {nameof(pageSizeArg)}: {pageSizeArg}");
+                
+                var resp = await _service.ReadEmployeesWithCCAsync(hasCreditcardArg, pageNrArg, pageSizeArg);     
+                return Ok(resp);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{nameof(ReadItems)}: {ex.Message}");
+                return BadRequest(ex.Message);
             }
         }
     }

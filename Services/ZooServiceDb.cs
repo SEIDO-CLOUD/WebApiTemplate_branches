@@ -54,4 +54,6 @@ public class ZooServiceDb : IZooService {
     public Task<ResponseItemDto<ICreditCard>> ReadCreditCardAsync(Guid id, bool flat) => _creditcardRepo.ReadItemAsync(id, flat);
     public Task<ResponseItemDto<ICreditCard>> DeleteCreditCardAsync(Guid id) => _creditcardRepo.DeleteItemAsync(id);
     public Task<ResponseItemDto<ICreditCard>> CreateCreditCardAsync(CreditCardCuDto item) => _creditcardRepo.CreateItemAsync(item);
+
+    public Task<ResponsePageDto<IEmployee>> ReadEmployeesWithCCAsync(bool hasCreditCard, int pageNumber, int pageSize) => _creditcardRepo.ReadEmployeesWithCCAsync(hasCreditCard, pageNumber, pageSize);
 }

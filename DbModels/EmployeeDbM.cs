@@ -29,6 +29,13 @@ public class EmployeeDbM : Employee, ISeed<EmployeeDbM>
     [Required]
     public  List<ZooDbM>  ZoosDbM { get; set; } = null;
 
+
+    [NotMapped]
+    public override ICreditCard CreditCard { get => CreditCardDbM; set => throw new NotImplementedException(); }
+
+    [JsonIgnore]
+    public  CreditCardDbM  CreditCardDbM { get; set; } = null;
+
     public override EmployeeDbM Seed (SeedGenerator _seeder)
     {
         base.Seed (_seeder);

@@ -136,6 +136,39 @@ public class CreditCardDbRepos
         return await ReadItemAsync(item.CreditCardId, false);    
     }
 
+    //Special Non-Crud repo
+    public async Task<ResponsePageDto<IEmployee>> ReadEmployeesWithCCAsync(bool hasCreditCard, int pageNumber, int pageSize)
+    {
+        var query = _dbContext.Employees.AsNoTracking()
+            .Include(i => i.CreditCardDbM);
+
+        var ret = new ResponsePageDto<IEmployee>()
+        {
+            DbConnectionKeyUsed = _dbContext.dbConnection,
+            DbItemsCount = await query
+
+                //Adding filter functionality
+                .Where(i => i.CreditCardDbM == null).CountAsync(),
+
+            PageItems = await query
+
+                //Adding filter functionality
+                .Where(i =>(hasCreditCard) ?i.CreditCardDbM != null : i.CreditCardDbM == null)
+
+                //Adding paging
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize)
+
+                .ToListAsync<IEmployee>(),
+
+            PageNr = pageNumber,
+            PageSize = pageSize
+        };
+        return ret;
+    }
+
+
+
     private async Task navProp_ItemCUdto_to_ItemDbM(CreditCardCuDto itemDtoSrc, CreditCardDbM itemDst)
     {
         //update Employee nav props

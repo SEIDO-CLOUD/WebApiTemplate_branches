@@ -55,7 +55,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                 {
                     CreditCardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     strIssuer = table.Column<string>(type: "nvarchar(200)", nullable: true),
-                    EmployeeDbMEmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Issuer = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(200)", nullable: true),
@@ -68,8 +68,8 @@ namespace DbContext.Migrations.SqlServerDbContext
                 {
                     table.PrimaryKey("PK_CreditCards", x => x.CreditCardId);
                     table.ForeignKey(
-                        name: "FK_CreditCards_Employees_EmployeeDbMEmployeeId",
-                        column: x => x.EmployeeDbMEmployeeId,
+                        name: "FK_CreditCards_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalSchema: "supusr",
                         principalTable: "Employees",
                         principalColumn: "EmployeeId",
@@ -138,10 +138,11 @@ namespace DbContext.Migrations.SqlServerDbContext
                 column: "ZooDbMZooId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CreditCards_EmployeeDbMEmployeeId",
+                name: "IX_CreditCards_EmployeeId",
                 schema: "supusr",
                 table: "CreditCards",
-                column: "EmployeeDbMEmployeeId");
+                column: "EmployeeId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployeeDbMZooDbM_ZoosDbMZooId",

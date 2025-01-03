@@ -68,7 +68,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("EmployeeDbMEmployeeId")
+                    b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ExpirationMonth")
@@ -97,7 +97,8 @@ namespace DbContext.Migrations.SqlServerDbContext
 
                     b.HasKey("CreditCardId");
 
-                    b.HasIndex("EmployeeDbMEmployeeId");
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
 
                     b.ToTable("CreditCards", "supusr");
                 });
@@ -265,8 +266,8 @@ namespace DbContext.Migrations.SqlServerDbContext
             modelBuilder.Entity("DbModels.CreditCardDbM", b =>
                 {
                     b.HasOne("DbModels.EmployeeDbM", "EmployeeDbM")
-                        .WithMany()
-                        .HasForeignKey("EmployeeDbMEmployeeId")
+                        .WithOne("CreditCardDbM")
+                        .HasForeignKey("DbModels.CreditCardDbM", "EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -286,6 +287,11 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .HasForeignKey("ZoosDbMZooId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DbModels.EmployeeDbM", b =>
+                {
+                    b.Navigation("CreditCardDbM");
                 });
 
             modelBuilder.Entity("DbModels.ZooDbM", b =>

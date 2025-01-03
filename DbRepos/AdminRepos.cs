@@ -52,6 +52,12 @@ public class AdminDbRepos
         var zoos = seeder.ItemsToList<ZooDbM>(nrOfItems);
         var persons = seeder.ItemsToList<EmployeeDbM>(seeder.Next(nrOfItems, 5*nrOfItems));
 
+        //Assign CreditCards to persons with 50% probability
+        foreach (var p in persons)
+        {
+            p.CreditCardDbM = (seeder.Bool) ? new CreditCardDbM(){FirstName = p.FirstName, LastName = p.LastName}.Seed(seeder) : null;
+        }
+
         //Assign Animals and Employees to all the Zoos
         foreach (var zoo in zoos)
         {

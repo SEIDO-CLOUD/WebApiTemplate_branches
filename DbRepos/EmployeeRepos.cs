@@ -29,6 +29,7 @@ public class EmployeeDbRepos
         {
             query = _dbContext.Employees.AsNoTracking()
                 .Include(i => i.ZoosDbM)
+                .Include(i => i.CreditCardDbM)
                 .Where(i => i.EmployeeId == id);
         }
         else
@@ -56,7 +57,8 @@ public class EmployeeDbRepos
         else
         {
             query = _dbContext.Employees.AsNoTracking()
-                .Include(i => i.ZoosDbM);
+                .Include(i => i.ZoosDbM)
+                .Include(i => i.CreditCardDbM);
         }
 
         var ret = new ResponsePageDto<IEmployee>()

@@ -14,6 +14,7 @@ public class Employee:IEmployee, ISeed<Employee>
 
     //Navigation properties
     public virtual List<IZoo> Zoos { get; set; }
+    public virtual ICreditCard CreditCard { get; set; }
 
     #region Seeder
     public bool Seeded { get; set; } = false;

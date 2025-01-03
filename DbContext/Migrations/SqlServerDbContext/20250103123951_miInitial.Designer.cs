@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250102190540_miInitial")]
+    [Migration("20250103123951_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -71,7 +71,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("EmployeeDbMEmployeeId")
+                    b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ExpirationMonth")
@@ -100,7 +100,8 @@ namespace DbContext.Migrations.SqlServerDbContext
 
                     b.HasKey("CreditCardId");
 
-                    b.HasIndex("EmployeeDbMEmployeeId");
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
 
                     b.ToTable("CreditCards", "supusr");
                 });
@@ -268,8 +269,8 @@ namespace DbContext.Migrations.SqlServerDbContext
             modelBuilder.Entity("DbModels.CreditCardDbM", b =>
                 {
                     b.HasOne("DbModels.EmployeeDbM", "EmployeeDbM")
-                        .WithMany()
-                        .HasForeignKey("EmployeeDbMEmployeeId")
+                        .WithOne("CreditCardDbM")
+                        .HasForeignKey("DbModels.CreditCardDbM", "EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -289,6 +290,11 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .HasForeignKey("ZoosDbMZooId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DbModels.EmployeeDbM", b =>
+                {
+                    b.Navigation("CreditCardDbM");
                 });
 
             modelBuilder.Entity("DbModels.ZooDbM", b =>

@@ -32,4 +32,5 @@ public interface IZooService {
     public Task<ResponseItemDto<ICreditCard>> DeleteCreditCardAsync(Guid id);
     public Task<ResponseItemDto<ICreditCard>> CreateCreditCardAsync(CreditCardCuDto item);
 
+    public Task<ResponsePageDto<IEmployee>> ReadEmployeesWithCCAsync(bool hasCreditCard, int pageNumber, int pageSize);
 }

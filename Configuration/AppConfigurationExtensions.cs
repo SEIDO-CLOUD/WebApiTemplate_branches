@@ -69,6 +69,16 @@ public static class AppConfigurationExtensions
         return serviceCollection;
     }
 
+    public static IServiceCollection AddEncryptions(this IServiceCollection serviceCollection, IConfiguration configuration)
+    {
+        serviceCollection.Configure<AesEcryptionOptions>(
+            options => configuration.GetSection(AesEcryptionOptions.Position).Bind(options));
+        serviceCollection.AddSingleton<Encryptions>();
+
+        return serviceCollection;
+    }
+
+
     private static IConfigurationBuilder AddAzureKeyVault(this IConfigurationBuilder configuration)
     {
             //A deployed WebApp will start here by reading the environment variables

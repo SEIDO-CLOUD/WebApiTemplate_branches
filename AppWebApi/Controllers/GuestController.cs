@@ -13,12 +13,12 @@ namespace AppWebApi.Controllers
     [Route("api/[controller]/[action]")]
     public class GuestController : Controller
     {
-        readonly IZooService _service = null;
-        readonly ILogger<GuestController> _logger = null;
+        readonly IAdminService _adminService;
+        readonly ILogger<GuestController> _logger;
 
-        public GuestController(IZooService service, ILogger<GuestController> logger)
+        public GuestController(IAdminService adminService, ILogger<GuestController> logger)
         {
-            _service = service;
+            _adminService = adminService;
             _logger = logger;
         }
 
@@ -28,7 +28,7 @@ namespace AppWebApi.Controllers
         {
             try
             {
-                var info = await _service.InfoAsync();
+                var info = await _adminService.InfoAsync();
 
                 _logger.LogInformation($"{nameof(Info)}:\n{JsonConvert.SerializeObject(info)}");
                 return Ok(info);

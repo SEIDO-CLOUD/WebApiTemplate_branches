@@ -73,7 +73,7 @@ public static class AppConfigurationExtensions
     {
         serviceCollection.Configure<AesEcryptionOptions>(
             options => configuration.GetSection(AesEcryptionOptions.Position).Bind(options));
-        serviceCollection.AddSingleton<Encryptions>();
+        serviceCollection.AddTransient<Encryptions>();
 
         return serviceCollection;
     }

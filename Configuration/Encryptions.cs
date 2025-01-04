@@ -52,7 +52,7 @@ public class Encryptions
     public byte[] Pbkdf2HashToBytes (int nrBytes, string password)
     {
         byte[] registeredPasswordKeyDerivation = KeyDerivation.Pbkdf2(
-            password: Password,
+            password: password,
             salt: Encoding.UTF8.GetBytes(_aesOption.Salt),
             prf: KeyDerivationPrf.HMACSHA512,
             iterationCount: _aesOption.Iterations,
@@ -61,7 +61,7 @@ public class Encryptions
         return registeredPasswordKeyDerivation;
     }
 
-    private string EncryptPasswordToBase64(string password)    
+    public string EncryptPasswordToBase64(string password)    
     {
         //Hash a password using salt and streching
         byte[] encrypted = Pbkdf2HashToBytes(64, password);

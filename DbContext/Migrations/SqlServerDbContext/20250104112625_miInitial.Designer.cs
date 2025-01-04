@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250103161023_miInitial")]
+    [Migration("20250104112625_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -136,6 +136,32 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.HasKey("EmployeeId");
 
                     b.ToTable("Employees", "supusr");
+                });
+
+            modelBuilder.Entity("DbModels.UserDbM", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users", "dbo");
                 });
 
             modelBuilder.Entity("DbModels.ZooDbM", b =>

@@ -27,7 +27,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public DbSet<ZooDbM> Zoos { get; set; }    
     public DbSet<AnimalDbM> Animals { get; set; }    
     public DbSet<EmployeeDbM> Employees { get; set; }    
-    public DbSet<CreditCardDbM> CreditCards { get; set; }    
+    public DbSet<CreditCardDbM> CreditCards { get; set; }
+    public DbSet<UserDbM> Users { get; set; }    
     #endregion
 
     #region model the Views

@@ -124,7 +124,7 @@ public class AdminDbRepos
                     UserId = Guid.NewGuid(),
                     UserName = $"user{i}",
                     Email = $"user{i}@gmail.com",
-                    Password = EncryptPasswordToBase64($"user{i}"),
+                    Password = _encryptions.EncryptPasswordToBase64($"user{i}"),
                     Role = "usr"
                 });
             }
@@ -137,7 +137,7 @@ public class AdminDbRepos
                     UserId = Guid.NewGuid(),
                     UserName = $"superuser{i}",
                     Email = $"superuser{i}@gmail.com",
-                    Password = EncryptPasswordToBase64($"superuser{i}"),
+                    Password = _encryptions.EncryptPasswordToBase64($"superuser{i}"),
                     Role = "supusr"
                 });
             }

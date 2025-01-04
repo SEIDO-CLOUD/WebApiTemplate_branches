@@ -30,7 +30,7 @@ public class LoginDbRepos
 
 
 
-    public async Task<LoginUserSessionDto> LoginUserAsync(LoginCredentialsDto usrCreds)
+    public async Task<ResponseItemDto<LoginUserSessionDto>> LoginUserAsync(LoginCredentialsDto usrCreds)
     {
         using (var cmd1 = _dbContext.Database.GetDbConnection().CreateCommand())
         {
@@ -39,7 +39,7 @@ public class LoginDbRepos
             cmd1.CommandType = CommandType.StoredProcedure;
             cmd1.CommandText = "gstusr.spLogin";
             cmd1.Parameters.Add(new SqlParameter("UserNameOrEmail", usrCreds.UserNameOrEmail));
-            cmd1.Parameters.Add(new SqlParameter("Password", EncryptPassword(usrCreds.Password)));
+            cmd1.Parameters.Add(new SqlParameter("Password", _encryptions.EncryptPasswordToBase64(usrCreds.Password)));
 
             int _usrIdIdx = cmd1.Parameters.Add(new SqlParameter("UserId", SqlDbType.UniqueIdentifier) { Direction = ParameterDirection.Output });
             int _usrIdx = cmd1.Parameters.Add(new SqlParameter("UserName", SqlDbType.NVarChar, 100) { Direction = ParameterDirection.Output });
@@ -49,7 +49,7 @@ public class LoginDbRepos
             _dbContext.Database.OpenConnection();
             await cmd1.ExecuteScalarAsync();
 
-            var _info = new LoginUserSessionDto
+            var info = new LoginUserSessionDto
             {
                 //Notice the soft cast conversion 'as' it will be null if cast cannot be made
                 UserId = cmd1.Parameters[_usrIdIdx].Value as Guid?,
@@ -57,7 +57,11 @@ public class LoginDbRepos
                 UserRole = cmd1.Parameters[_roleIdx].Value as string
             };
 
-            return _info;
+            return new ResponseItemDto<LoginUserSessionDto>()
+            {
+                DbConnectionKeyUsed = _dbContext.dbConnection,
+                Item = info
+            };
         }
     }
 }

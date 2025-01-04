@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using System.Security;
 
 using Seido.Utilities.SeedGenerator;
 using Models.DTO;

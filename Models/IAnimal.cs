@@ -1,4 +1,5 @@
 namespace Models;
+
 public enum AnimalKind {Zebra, Elephant, Lion, Leopard, Gasell}
 public enum AnimalMood { Happy, Hungry, Lazy, Sulky, Buzy, Sleepy };
 

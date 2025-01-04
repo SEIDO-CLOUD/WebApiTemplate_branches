@@ -4,7 +4,7 @@ using Configuration;
 namespace Models.DTO;
 
 public class GstUsrInfoDbDto
-{   
+{
     public string Title {get;  set;}
     public int NrSeededZoos { get; set; } = 0;
     public int NrUnseededZoos { get; set; } = 0;

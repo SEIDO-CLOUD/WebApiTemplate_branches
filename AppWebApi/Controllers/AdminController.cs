@@ -43,6 +43,7 @@ namespace AppWebApi.Controllers
             }
          }
 
+#if DEBUG
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<GstUsrInfoAllDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -82,6 +83,7 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+#endif
 
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(IEnumerable<LogMessage>))]

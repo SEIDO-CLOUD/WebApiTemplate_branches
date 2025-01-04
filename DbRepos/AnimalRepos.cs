@@ -169,7 +169,7 @@ public class AnimalDbRepos
 
     private async Task navProp_ItemCUdto_to_ItemDbM(AnimalCuDto itemDtoSrc, AnimalDbM itemDst)
     {
-        //update owner, i.e. navigation property FriendDbM
+        //update zoo nav props
         var zoo = await _dbContext.Zoos.FirstOrDefaultAsync(
             a => (a.ZooId == itemDtoSrc.ZooId));
 

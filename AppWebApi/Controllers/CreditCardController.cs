@@ -108,7 +108,7 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(ReadItemDto)}: {nameof(idArg)}: {idArg}");
 
-                var item = await _service.ReadCreditCardAsync(idArg, false, false);
+                var item = await _service.ReadCreditCardAsync(idArg, false);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(
@@ -123,7 +123,6 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         [HttpPost()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICreditCard>))]
@@ -145,7 +144,6 @@ namespace AppWebApi.Controllers
                 return BadRequest($"Could not create. Error {ex.Message}.{ex.InnerException.Message}");
             }
         }
-
 
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponsePageDto<IEmployee>))]

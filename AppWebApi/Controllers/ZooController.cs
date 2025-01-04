@@ -79,8 +79,6 @@ namespace AppWebApi.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IZoo>))]
         [ProducesResponseType(400, Type = typeof(string))]
-        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
-            Policy = null, Roles = "supusr")]
         public async Task<IActionResult> DeleteItem(string id)
         {
             try

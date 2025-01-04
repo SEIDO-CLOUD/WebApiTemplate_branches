@@ -33,7 +33,7 @@ public class AnimalDbM : Animal, ISeed<AnimalDbM>
     [JsonIgnore]
     [Required]
     public  ZooDbM ZooDbM { get; set; }
-    
+
     public override AnimalDbM Seed (SeedGenerator _seeder)
     {
         base.Seed (_seeder);

@@ -84,19 +84,6 @@ namespace AppWebApi.Controllers
         }
 
         [HttpGet()]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<LogMessage>))]
-        public async Task<IActionResult> Log([FromServices] ILoggerProvider _loggerProvider)
-        {
-            //Note the way to get the LoggerProvider, not the logger from Services via DI
-            if (_loggerProvider is InMemoryLoggerProvider cl)
-            {
-                return Ok(await cl.MessagesAsync);
-            }
-            return Ok("No messages in log");
-        }
-
-
-        [HttpGet()]
         [ProducesResponseType(200, Type = typeof(UsrInfoDto))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> SeedUsers(string countUsr = "32", string countSupUsr = "2")
@@ -115,6 +102,18 @@ namespace AppWebApi.Controllers
             {
                 return BadRequest(ex.Message);
             }       
+        }
+        
+        [HttpGet()]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<LogMessage>))]
+        public async Task<IActionResult> Log([FromServices] ILoggerProvider _loggerProvider)
+        {
+            //Note the way to get the LoggerProvider, not the logger from Services via DI
+            if (_loggerProvider is InMemoryLoggerProvider cl)
+            {
+                return Ok(await cl.MessagesAsync);
+            }
+            return Ok("No messages in log");
         }
     }
 }

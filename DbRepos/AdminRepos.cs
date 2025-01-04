@@ -9,6 +9,7 @@ using DbModels;
 using DbContext;
 using Configuration;
 using Models;
+using System.Security;
 
 namespace DbRepos;
 
@@ -61,8 +62,10 @@ public class AdminDbRepos
         {
             p.CreditCardDbM = (seeder.Bool) ? new CreditCardDbM(){FirstName = p.FirstName, LastName = p.LastName}.Seed(seeder) : null;
             p.CreditCardDbM?.EnryptAndObfuscate(_encryptions.AesEncryptToBase64);
-
-            var cc = p.CreditCardDbM?.Decrypt(_encryptions.AesDecryptFromBase64<CreditCard>);
+#if DEBUG
+            var temp = p.CreditCardDbM?.Decrypt(_encryptions.AesDecryptFromBase64<CreditCard>);
+            if (temp?.CreditCardId != p.CreditCardDbM?.CreditCardId) throw new SecurityException("CreditCard encryption error");
+#endif
         }
 
         //Assign Animals and Employees to all the Zoos
@@ -108,7 +111,7 @@ public class AdminDbRepos
             return await InfoAsync();
     }
 
-    public async Task<UsrInfoDto> SeedUsersAsync(int nrOfUsers, int nrOfSuperUsers)
+    public async Task<UsrInfoDto> SeedUsersAsync(int nrOfUsers, int nrOfSuperUsers, int nrOfSysAdmin)
     {
             _logger.LogInformation($"Seeding {nrOfUsers} users and {nrOfSuperUsers} superusers");
             
@@ -141,12 +144,26 @@ public class AdminDbRepos
                     Role = "supusr"
                 });
             }
+
+            //add system adminitrators
+            for (int i = 1; i <= nrOfSysAdmin; i++)
+            {
+                _dbContext.Users.Add(new UserDbM
+                {
+                    UserId = Guid.NewGuid(),
+                    UserName = $"sysadmin{i}",
+                    Email = $"sysadmin{i}@gmail.com",
+                    Password = _encryptions.EncryptPasswordToBase64($"sysadmin{i}"),
+                    Role = "sysadmin"
+                });
+            }
             await _dbContext.SaveChangesAsync();
 
             var _info = new UsrInfoDto
             {
                 NrUsers = await _dbContext.Users.CountAsync(i => i.Role == "usr"),
-                NrSuperUsers = await _dbContext.Users.CountAsync(i => i.Role == "supusr")
+                NrSuperUsers = await _dbContext.Users.CountAsync(i => i.Role == "supusr"),
+                NrSystemAdmin = await _dbContext.Users.CountAsync(i => i.Role == "sysadmin")
             };
 
             return _info;

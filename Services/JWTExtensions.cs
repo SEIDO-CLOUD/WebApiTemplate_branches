@@ -39,5 +39,8 @@ public static class JWTExtentions
                     ClockSkew = TimeSpan.FromDays(1),
                 };
         });
+        
+        Services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.Position));
+        Services.AddTransient<JWTService>();
     }
 }

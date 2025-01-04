@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using DbRepos;
 using Models.DTO;
+using System.Security;
 
 namespace Services;
 
@@ -22,15 +23,17 @@ public class LoginServiceDb : ILoginService
     {
         try
         {
-            var _usrSession = await _repo.LoginUserAsync(usrCreds);
+            var usrSession = await _repo.LoginUserAsync(usrCreds);
 
             //Successful login. Create a JWT token
-            _usrSession.Item.JwtToken = _jtwService.CreateJwtUserToken(_usrSession.Item);
+            usrSession.Item.JwtToken = _jtwService.CreateJwtUserToken(usrSession.Item);
 
+#if DEBUG
             //For test only, decypt the JWT token and compare.
-            var _tmpUserSession = _jtwService.DecodeToken(_usrSession.Item.JwtToken.EncryptedToken);
-
-            return _usrSession;
+            var tmp = _jtwService.DecodeToken(usrSession.Item.JwtToken.EncryptedToken);
+            if (tmp.UserId != usrSession.Item.UserId) throw new SecurityException("JWT Token encryption error");
+#endif
+            return usrSession;
         }
         catch
         {

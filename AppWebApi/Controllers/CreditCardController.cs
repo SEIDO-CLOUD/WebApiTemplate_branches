@@ -10,7 +10,7 @@ using Services;
 namespace AppWebApi.Controllers
 {
     [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
-        Policy = null, Roles = "usr, supusr")]
+        Policy = null, Roles = "supusr, sysadmin")]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class CreditCardController : Controller
@@ -75,8 +75,6 @@ namespace AppWebApi.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
-            Policy = null, Roles = "supusr")]        
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICreditCard>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -113,7 +111,7 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(ReadItemDto)}: {nameof(idArg)}: {idArg}");
 
-                var item = await _service.ReadCreditCardAsync(idArg, false, false);
+                var item = await _service.ReadCreditCardAsync(idArg, false);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(
@@ -128,7 +126,6 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         [HttpPost()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICreditCard>))]
@@ -151,7 +148,6 @@ namespace AppWebApi.Controllers
             }
         }
 
-
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponsePageDto<IEmployee>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -163,7 +159,7 @@ namespace AppWebApi.Controllers
                 int pageNrArg = int.Parse(pageNr);
                 int pageSizeArg = int.Parse(pageSize);
 
-                _logger.LogInformation($"{nameof(ReadItems)}: {nameof(hasCreditcardArg)}: {hasCreditcardArg}, " +
+                _logger.LogInformation($"{nameof(ReadEmployeesWithCC)}: {nameof(hasCreditcardArg)}: {hasCreditcardArg}, " +
                     $"{nameof(pageNrArg)}: {pageNrArg}, {nameof(pageSizeArg)}: {pageSizeArg}");
                 
                 var resp = await _service.ReadEmployeesWithCCAsync(hasCreditcardArg, pageNrArg, pageSizeArg);     
@@ -171,7 +167,7 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(ReadItems)}: {ex.Message}");
+                _logger.LogError($"{nameof(ReadEmployeesWithCC)}: {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
@@ -190,7 +186,7 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(ReadClearCC)}: {nameof(idArg)}: {idArg}");
                 
-                var item = await _service.ReadClearCCAsync(idArg);
+                var item = await _service.ReadDecryptedCCAsync(idArg);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(item);

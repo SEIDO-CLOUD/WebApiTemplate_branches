@@ -87,7 +87,7 @@ CREATE ROLE zooefcSupUsr;
 
 --assign securables creadentials to the roles
 GRANT SELECT, EXECUTE ON SCHEMA::gstusr to zooefcGstUsr;
-GRANT SELECT, UPDATE, INSERT ON SCHEMA::supusr to zooefcUsr;
+GRANT SELECT ON SCHEMA::supusr to zooefcUsr;
 GRANT SELECT, UPDATE, INSERT, DELETE, EXECUTE ON SCHEMA::supusr to zooefcSupUsr;
 
 --finally, add the users to the roles

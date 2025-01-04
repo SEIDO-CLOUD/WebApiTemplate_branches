@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Microsoft.Data.SqlClient;
 
-using Seido.Utilities.SeedGenerator;
 using Models.DTO;
 using DbModels;
 using DbContext;
@@ -12,7 +11,6 @@ namespace DbRepos;
 
 public class AdminDbRepos
 {
-    private const string _seedSource = "./app-seeds.json";
     private readonly ILogger<AdminDbRepos> _logger;
     private readonly MainDbContext _dbContext;
 
@@ -41,9 +39,7 @@ public class AdminDbRepos
         //First of all make sure the database is cleared from all seeded data
         await RemoveSeedAsync(true);
 
-        //Create a seeder
-        var fn = Path.GetFullPath(_seedSource);
-        var seeder = new SeedGenerator(fn);
+        //Here a seeder is created
 
         //Here the database models will be seeded using the seeder
 

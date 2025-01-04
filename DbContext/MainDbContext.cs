@@ -24,7 +24,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public string dbConnection  => _databaseConnections.GetDbConnection(this.Database.GetConnectionString());
 
     #region C# model of database tables
-    public DbSet<ZooDbM> Zoos { get; set; }
+    public DbSet<TemplateModelDbM> Zoos { get; set; }
     #endregion
 
     #region model the Views

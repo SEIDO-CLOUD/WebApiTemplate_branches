@@ -8,9 +8,9 @@ using Models.DTO;
 
 namespace DbModels;
 
-[Table("Zoos", Schema = "supusr")]
-public class ZooDbM
+[Table("TemplateModel", Schema = "supusr")]
+public class TemplateModelDbM
 {
     [Key]
-    public Guid ZooId { get; set; }
+    public Guid Id { get; set; }
 }

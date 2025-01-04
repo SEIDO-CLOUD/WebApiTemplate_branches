@@ -51,17 +51,16 @@ namespace AppWebApi.Controllers
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICreditCard>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
-        public async Task<IActionResult> ReadItem(string id = null, string flat = "false", string decrypt = "false")
+        public async Task<IActionResult> ReadItem(string id = null, string flat = "false")
         {
             try
             {
                 var idArg = Guid.Parse(id);
                 bool flatArg = bool.Parse(flat);
-                bool decryptArg = bool.Parse(decrypt);
 
-                _logger.LogInformation($"{nameof(ReadItem)}: {nameof(idArg)}: {idArg}, {nameof(flatArg)}: {flatArg}, {nameof(decryptArg)}: {decryptArg}");
+                _logger.LogInformation($"{nameof(ReadItem)}: {nameof(idArg)}: {idArg}, {nameof(flatArg)}: {flatArg}");
                 
-                var item = await _service.ReadCreditCardAsync(idArg, flatArg, decryptArg);
+                var item = await _service.ReadCreditCardAsync(idArg, flatArg);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(item);
@@ -109,7 +108,7 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(ReadItemDto)}: {nameof(idArg)}: {idArg}");
 
-                var item = await _service.ReadCreditCardAsync(idArg, false, false);
+                var item = await _service.ReadCreditCardAsync(idArg, false);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(
@@ -124,7 +123,6 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         [HttpPost()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICreditCard>))]
@@ -147,7 +145,6 @@ namespace AppWebApi.Controllers
             }
         }
 
-
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponsePageDto<IEmployee>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -159,7 +156,7 @@ namespace AppWebApi.Controllers
                 int pageNrArg = int.Parse(pageNr);
                 int pageSizeArg = int.Parse(pageSize);
 
-                _logger.LogInformation($"{nameof(ReadItems)}: {nameof(hasCreditcardArg)}: {hasCreditcardArg}, " +
+                _logger.LogInformation($"{nameof(ReadEmployeesWithCC)}: {nameof(hasCreditcardArg)}: {hasCreditcardArg}, " +
                     $"{nameof(pageNrArg)}: {pageNrArg}, {nameof(pageSizeArg)}: {pageSizeArg}");
                 
                 var resp = await _service.ReadEmployeesWithCCAsync(hasCreditcardArg, pageNrArg, pageSizeArg);     
@@ -167,7 +164,31 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(ReadItems)}: {ex.Message}");
+                _logger.LogError($"{nameof(ReadEmployeesWithCC)}: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet()]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICreditCard>))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        public async Task<IActionResult> ReadClearCC(string id = null)
+        {
+            try
+            {
+                var idArg = Guid.Parse(id);
+
+                _logger.LogInformation($"{nameof(ReadClearCC)}: {nameof(idArg)}: {idArg}");
+                
+                var item = await _service.ReadDecryptedCCAsync(idArg);
+                if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
+
+                return Ok(item);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{nameof(ReadClearCC)}: {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }

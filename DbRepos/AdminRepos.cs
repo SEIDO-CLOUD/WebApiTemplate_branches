@@ -61,8 +61,10 @@ public class AdminDbRepos
         {
             p.CreditCardDbM = (seeder.Bool) ? new CreditCardDbM(){FirstName = p.FirstName, LastName = p.LastName}.Seed(seeder) : null;
             p.CreditCardDbM?.EnryptAndObfuscate(_encryptions.AesEncryptToBase64);
-
-            var cc = p.CreditCardDbM?.Decrypt(_encryptions.AesDecryptFromBase64<CreditCard>);
+#if DEBUG
+            var temp = p.CreditCardDbM?.Decrypt(_encryptions.AesDecryptFromBase64<CreditCard>);
+            if (temp?.CreditCardId != p.CreditCardDbM?.CreditCardId) throw new SecurityException("CreditCard encryption error");
+#endif
         }
 
         //Assign Animals and Employees to all the Zoos

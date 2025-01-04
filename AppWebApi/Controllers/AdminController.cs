@@ -15,12 +15,12 @@ namespace AppWebApi.Controllers
     public class AdminController : Controller
     {
         readonly DatabaseConnections _dbConnections;
-        readonly IZooService _service;
+        readonly IAdminService _adminService;
         readonly ILogger<AdminController> _logger;
 
-        public AdminController(IZooService service, ILogger<AdminController> logger, DatabaseConnections dbConnections)
+        public AdminController(IAdminService adminService, ILogger<AdminController> logger, DatabaseConnections dbConnections)
         {
-            _service = service;
+            _adminService = adminService;
             _logger = logger;
             _dbConnections = dbConnections;
         }
@@ -53,7 +53,7 @@ namespace AppWebApi.Controllers
                 int countArg = int.Parse(count);
 
                 _logger.LogInformation($"{nameof(Seed)}: {nameof(countArg)}: {countArg}");
-                var info = await _service.SeedAsync(countArg);
+                var info = await _adminService.SeedAsync(countArg);
                 return Ok(info);
             }
             catch (Exception ex)
@@ -73,7 +73,7 @@ namespace AppWebApi.Controllers
                 bool seededArg = bool.Parse(seeded);
 
                 _logger.LogInformation($"{nameof(RemoveSeed)}: {nameof(seededArg)}: {seededArg}");
-                var info = await _service.RemoveSeedAsync(seededArg);
+                var info = await _adminService.RemoveSeedAsync(seededArg);
                 return Ok(info);        
             }
             catch (Exception ex)

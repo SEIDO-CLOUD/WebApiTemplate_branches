@@ -107,4 +107,48 @@ public class AdminDbRepos
 
             return await InfoAsync();
     }
+
+    public async Task<UsrInfoDto> SeedUsersAsync(int nrOfUsers, int nrOfSuperUsers)
+    {
+            _logger.LogInformation($"Seeding {nrOfUsers} users and {nrOfSuperUsers} superusers");
+            
+            //First delete all existing users
+            foreach (var u in _dbContext.Users)
+                _dbContext.Users.Remove(u);
+
+            //add users
+            for (int i = 1; i <= nrOfUsers; i++)
+            {
+                _dbContext.Users.Add(new UserDbM
+                {
+                    UserId = Guid.NewGuid(),
+                    UserName = $"user{i}",
+                    Email = $"user{i}@gmail.com",
+                    Password = EncryptPasswordToBase64($"user{i}"),
+                    Role = "usr"
+                });
+            }
+
+            //add super user
+            for (int i = 1; i <= nrOfSuperUsers; i++)
+            {
+                _dbContext.Users.Add(new UserDbM
+                {
+                    UserId = Guid.NewGuid(),
+                    UserName = $"superuser{i}",
+                    Email = $"superuser{i}@gmail.com",
+                    Password = EncryptPasswordToBase64($"superuser{i}"),
+                    Role = "supusr"
+                });
+            }
+            await _dbContext.SaveChangesAsync();
+
+            var _info = new UsrInfoDto
+            {
+                NrUsers = await _dbContext.Users.CountAsync(i => i.Role == "usr"),
+                NrSuperUsers = await _dbContext.Users.CountAsync(i => i.Role == "supusr")
+            };
+
+            return _info;
+    }
 }

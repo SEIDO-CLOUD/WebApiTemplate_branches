@@ -106,6 +106,7 @@ namespace AppWebApi.Controllers
             }       
         }
 #endif
+
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(IEnumerable<LogMessage>))]
         public async Task<IActionResult> Log([FromServices] ILoggerProvider _loggerProvider)

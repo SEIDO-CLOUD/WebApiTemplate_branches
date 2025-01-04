@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Microsoft.Data.SqlClient;
-using System.Security;
 
 using Seido.Utilities.SeedGenerator;
 using Models.DTO;
@@ -10,6 +9,7 @@ using DbModels;
 using DbContext;
 using Configuration;
 using Models;
+using System.Security;
 
 namespace DbRepos;
 

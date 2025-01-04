@@ -8,27 +8,21 @@ namespace Services;
 
 public class ZooServiceDb : IZooService {
 
-    private readonly AdminDbRepos _adminRepo;
     private readonly ZooDbRepos _zooRepo;
     private readonly AnimalDbRepos _animalRepo;
     private readonly EmployeeDbRepos _employeeRepo;
     private readonly CreditCardDbRepos _creditcardRepo;
     private readonly ILogger<ZooServiceDb> _logger;    
     
-    public ZooServiceDb(AdminDbRepos adminRepo, ZooDbRepos zooRepo, AnimalDbRepos animalRepo, EmployeeDbRepos employeeRepo, 
+    public ZooServiceDb(ZooDbRepos zooRepo, AnimalDbRepos animalRepo, EmployeeDbRepos employeeRepo, 
         CreditCardDbRepos creditcardRepo, ILogger<ZooServiceDb> logger)
     {
-        _adminRepo = adminRepo;
         _zooRepo = zooRepo;
         _animalRepo = animalRepo;
         _employeeRepo = employeeRepo;
         _creditcardRepo = creditcardRepo;
         _logger = logger;
     }
-
-    public Task<ResponseItemDto<GstUsrInfoAllDto>> InfoAsync() => _adminRepo.InfoAsync();
-    public Task<ResponseItemDto<GstUsrInfoAllDto>> SeedAsync(int nrOfItems) => _adminRepo.SeedAsync(nrOfItems);
-    public Task<ResponseItemDto<GstUsrInfoAllDto>> RemoveSeedAsync(bool seeded) => _adminRepo.RemoveSeedAsync(seeded);
 
     public Task<ResponsePageDto<IZoo>> ReadZoosAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize) => _zooRepo.ReadItemsAsync(seeded, flat, filter, pageNumber, pageSize);
     public Task<ResponseItemDto<IZoo>> ReadZooAsync(Guid id, bool flat) => _zooRepo.ReadItemAsync(id, flat);

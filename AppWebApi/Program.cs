@@ -30,6 +30,7 @@ builder.Services.AddScoped<ZooDbRepos>();
 builder.Services.AddScoped<AnimalDbRepos>();
 builder.Services.AddScoped<EmployeeDbRepos>();
 builder.Services.AddScoped<CreditCardDbRepos>();
+builder.Services.AddScoped<IAdminService, AdminServiceDb>();
 builder.Services.AddScoped<IZooService, ZooServiceDb>();
 
 

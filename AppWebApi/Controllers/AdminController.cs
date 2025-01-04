@@ -116,8 +116,8 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }       
         }
-
 #endif
+
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(IEnumerable<LogMessage>))]
         public async Task<IActionResult> Log([FromServices] ILoggerProvider _loggerProvider)

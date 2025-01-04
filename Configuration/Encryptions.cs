@@ -49,15 +49,22 @@ public class Encryptions
         return decryptedObject;
     }
 
-    public byte[] Pbkdf2HashToBytes (int nrBytes, string Password)
+    public byte[] Pbkdf2HashToBytes (int nrBytes, string password)
     {
         byte[] registeredPasswordKeyDerivation = KeyDerivation.Pbkdf2(
-        password: Password,
-        salt: Encoding.UTF8.GetBytes(_aesOption.Salt),
-        prf: KeyDerivationPrf.HMACSHA512,
-        iterationCount: _aesOption.Iterations,
-        numBytesRequested: nrBytes);
+            password: password,
+            salt: Encoding.UTF8.GetBytes(_aesOption.Salt),
+            prf: KeyDerivationPrf.HMACSHA512,
+            iterationCount: _aesOption.Iterations,
+            numBytesRequested: nrBytes);
 
         return registeredPasswordKeyDerivation;
+    }
+
+    public string EncryptPasswordToBase64(string password)    
+    {
+        //Hash a password using salt and streching
+        byte[] encrypted = Pbkdf2HashToBytes(64, password);
+        return Convert.ToBase64String(encrypted);
     }
 }

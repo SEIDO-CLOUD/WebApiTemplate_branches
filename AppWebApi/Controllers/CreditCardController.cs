@@ -124,7 +124,6 @@ namespace AppWebApi.Controllers
             }
         }
 
-
         [HttpPost()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICreditCard>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -146,7 +145,6 @@ namespace AppWebApi.Controllers
             }
         }
 
-
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponsePageDto<IEmployee>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -158,7 +156,7 @@ namespace AppWebApi.Controllers
                 int pageNrArg = int.Parse(pageNr);
                 int pageSizeArg = int.Parse(pageSize);
 
-                _logger.LogInformation($"{nameof(ReadItems)}: {nameof(hasCreditcardArg)}: {hasCreditcardArg}, " +
+                _logger.LogInformation($"{nameof(ReadEmployeesWithCC)}: {nameof(hasCreditcardArg)}: {hasCreditcardArg}, " +
                     $"{nameof(pageNrArg)}: {pageNrArg}, {nameof(pageSizeArg)}: {pageSizeArg}");
                 
                 var resp = await _service.ReadEmployeesWithCCAsync(hasCreditcardArg, pageNrArg, pageSizeArg);     
@@ -166,7 +164,7 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(ReadItems)}: {ex.Message}");
+                _logger.LogError($"{nameof(ReadEmployeesWithCC)}: {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }

@@ -42,9 +42,8 @@ public static class DbContextExtensions
                 //unknown database type
                 throw new InvalidDataException($"DbContext for {databaseConnections.SetupInfo.DataConnectionServer} not existing");
             }
-
         });
-         
+        
         return serviceCollection;
     }
 }

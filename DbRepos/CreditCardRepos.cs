@@ -136,7 +136,20 @@ public class CreditCardDbRepos
         return await ReadItemAsync(item.CreditCardId, false);    
     }
 
-    //Special Non-Crud repo
+    //CRUD support
+    private async Task navProp_ItemCUdto_to_ItemDbM(CreditCardCuDto itemDtoSrc, CreditCardDbM itemDst)
+    {
+        //update Employee nav props
+        var employee = await _dbContext.Employees.FirstOrDefaultAsync(
+            a => (a.EmployeeId == itemDtoSrc.EmployeeId));
+
+        if (employee == null)
+            throw new ArgumentException($"Item id {itemDtoSrc.EmployeeId} not existing");
+
+        itemDst.EmployeeDbM = employee;
+    }
+
+    //Special Non-CRUD repo
     public async Task<ResponsePageDto<IEmployee>> ReadEmployeesWithCCAsync(bool hasCreditCard, int pageNumber, int pageSize)
     {
         var query = _dbContext.Employees.AsNoTracking()
@@ -165,19 +178,5 @@ public class CreditCardDbRepos
             PageSize = pageSize
         };
         return ret;
-    }
-
-
-
-    private async Task navProp_ItemCUdto_to_ItemDbM(CreditCardCuDto itemDtoSrc, CreditCardDbM itemDst)
-    {
-        //update Employee nav props
-        var employee = await _dbContext.Employees.FirstOrDefaultAsync(
-            a => (a.EmployeeId == itemDtoSrc.EmployeeId));
-
-        if (employee == null)
-            throw new ArgumentException($"Item id {itemDtoSrc.EmployeeId} not existing");
-
-        itemDst.EmployeeDbM = employee;
     }
 }

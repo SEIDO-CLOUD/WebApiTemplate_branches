@@ -13,8 +13,7 @@ public class ZooServiceDb : IZooService {
     private readonly EmployeeDbRepos _employeeRepo;
     private readonly ILogger<ZooServiceDb> _logger;    
     
-    public ZooServiceDb(ZooDbRepos zooRepo, AnimalDbRepos animalRepo, EmployeeDbRepos employeeRepo, 
-        CreditCardDbRepos creditcardRepo, ILogger<ZooServiceDb> logger)
+    public ZooServiceDb(ZooDbRepos zooRepo, AnimalDbRepos animalRepo, EmployeeDbRepos employeeRepo, ILogger<ZooServiceDb> logger)
     {
         _zooRepo = zooRepo;
         _animalRepo = animalRepo;

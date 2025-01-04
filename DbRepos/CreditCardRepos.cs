@@ -25,7 +25,7 @@ public class CreditCardDbRepos
     }
     #endregion
 
-    public async Task<ResponseItemDto<ICreditCard>> ReadItemAsync(Guid id, bool flat, bool decrypt = false)
+    public async Task<ResponseItemDto<ICreditCard>> ReadItemAsync(Guid id, bool flat)
     {
         IQueryable<CreditCardDbM> query;
         if (!flat)
@@ -41,17 +41,6 @@ public class CreditCardDbRepos
         }
 
         var resp = await query.FirstOrDefaultAsync<CreditCard>();
-        if (decrypt)
-        {
-            var cc = resp.Decrypt(_encryptions.AesDecryptFromBase64<CreditCard>);
-
-            //Nav props are not set in the decrypted object, set them
-            cc.Employee = resp.Employee;
-
-            //finally, have resp to reference cc instance
-            resp = cc;
-        }
-
         return new ResponseItemDto<ICreditCard>()
         {
             DbConnectionKeyUsed = _dbContext.dbConnection,
@@ -152,7 +141,20 @@ public class CreditCardDbRepos
         return await ReadItemAsync(item.CreditCardId, false);    
     }
 
-    //Special Non-Crud repo
+    //CRUD support
+    private async Task navProp_ItemCUdto_to_ItemDbM(CreditCardCuDto itemDtoSrc, CreditCardDbM itemDst)
+    {
+        //update Employee nav props
+        var employee = await _dbContext.Employees.FirstOrDefaultAsync(
+            a => (a.EmployeeId == itemDtoSrc.EmployeeId));
+
+        if (employee == null)
+            throw new ArgumentException($"Item id {itemDtoSrc.EmployeeId} not existing");
+
+        itemDst.EmployeeDbM = employee;
+    }
+
+    //Special Non-CRUD repo
     public async Task<ResponsePageDto<IEmployee>> ReadEmployeesWithCCAsync(bool hasCreditCard, int pageNumber, int pageSize)
     {
         var query = _dbContext.Employees.AsNoTracking()
@@ -183,17 +185,22 @@ public class CreditCardDbRepos
         return ret;
     }
 
-
-
-    private async Task navProp_ItemCUdto_to_ItemDbM(CreditCardCuDto itemDtoSrc, CreditCardDbM itemDst)
+    public async Task<ResponseItemDto<ICreditCard>> ReadDecryptedCCAsync(Guid id)
     {
-        //update Employee nav props
-        var employee = await _dbContext.Employees.FirstOrDefaultAsync(
-            a => (a.EmployeeId == itemDtoSrc.EmployeeId));
+        IQueryable<CreditCardDbM> query = _dbContext.CreditCards.AsNoTracking()
+                .Include(i => i.EmployeeDbM)
+                .Where(i => i.CreditCardId == id);
 
-        if (employee == null)
-            throw new ArgumentException($"Item id {itemDtoSrc.EmployeeId} not existing");
+        var resp = await query.FirstOrDefaultAsync<CreditCard>();
+        var cc = resp.Decrypt(_encryptions.AesDecryptFromBase64<CreditCard>);
 
-        itemDst.EmployeeDbM = employee;
+        //Nav props are not set in the decrypted object, set them
+        cc.Employee = resp.Employee;
+
+        return new ResponseItemDto<ICreditCard>()
+        {
+            DbConnectionKeyUsed = _dbContext.dbConnection,
+            Item = cc
+        };
     }
 }

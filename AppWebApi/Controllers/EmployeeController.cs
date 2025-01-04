@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using Models;
 using Models.DTO;
@@ -8,6 +9,8 @@ using Services;
 
 namespace AppWebApi.Controllers
 {
+    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+        Policy = null, Roles = "usr, supusr")]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class EmployeeController : Controller
@@ -72,6 +75,8 @@ namespace AppWebApi.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "supusr")]
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IEmployee>))]
         [ProducesResponseType(400, Type = typeof(string))]

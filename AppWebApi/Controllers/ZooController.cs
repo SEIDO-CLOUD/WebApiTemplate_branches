@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using Models;
 using Models.DTO;
@@ -7,6 +8,8 @@ using Services;
 
 namespace AppWebApi.Controllers
 {
+    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+        Policy = null, Roles = "usr, supusr")]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class ZooController : Controller
@@ -74,6 +77,8 @@ namespace AppWebApi.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IZoo>))]
         [ProducesResponseType(400, Type = typeof(string))]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "supusr")]
         public async Task<IActionResult> DeleteItem(string id)
         {
             try

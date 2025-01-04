@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 
@@ -10,6 +11,10 @@ using Configuration;
 
 namespace AppWebApi.Controllers
 {
+#if !DEBUG    
+    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+        Policy = null, Roles = "supusr")]
+#endif
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class AdminController : Controller
@@ -43,6 +48,10 @@ namespace AppWebApi.Controllers
             }
          }
 
+#if DEBUG
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "supusr")]
+
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<GstUsrInfoAllDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -62,6 +71,9 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "supusr")]
 
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<GstUsrInfoAllDto>))]
@@ -84,19 +96,6 @@ namespace AppWebApi.Controllers
         }
 
         [HttpGet()]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<LogMessage>))]
-        public async Task<IActionResult> Log([FromServices] ILoggerProvider _loggerProvider)
-        {
-            //Note the way to get the LoggerProvider, not the logger from Services via DI
-            if (_loggerProvider is InMemoryLoggerProvider cl)
-            {
-                return Ok(await cl.MessagesAsync);
-            }
-            return Ok("No messages in log");
-        }
-
-
-        [HttpGet()]
         [ProducesResponseType(200, Type = typeof(UsrInfoDto))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> SeedUsers(string countUsr = "32", string countSupUsr = "2")
@@ -115,6 +114,19 @@ namespace AppWebApi.Controllers
             {
                 return BadRequest(ex.Message);
             }       
+        }
+
+#endif
+        [HttpGet()]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<LogMessage>))]
+        public async Task<IActionResult> Log([FromServices] ILoggerProvider _loggerProvider)
+        {
+            //Note the way to get the LoggerProvider, not the logger from Services via DI
+            if (_loggerProvider is InMemoryLoggerProvider cl)
+            {
+                return Ok(await cl.MessagesAsync);
+            }
+            return Ok("No messages in log");
         }
     }
 }

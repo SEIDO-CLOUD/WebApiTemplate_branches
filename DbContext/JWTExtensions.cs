@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 using Configuration;
 
-namespace Services;
+namespace DbContext;
 
 public static class JWTExtentions
 {

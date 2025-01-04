@@ -6,7 +6,8 @@ using Microsoft.Extensions.Options;
 using Configuration;
 using Models.DTO;
 
-namespace Services;
+namespace DbContext;
+
 public class JWTService
 {
     private readonly JwtOptions _jwtOptions;

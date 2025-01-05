@@ -46,9 +46,7 @@ This text shows the steps to run AppWebApi locally using .NET User Secrets and S
          "nrSeededAnimals": 0,
          "nrUnseededAnimals": 0,
          "nrSeededEmployees": 0,
-         "nrUnseededEmployees": 0,
-         "nrSeededCreditCards": 0,
-         "nrUnseededCreditCards": 0
+         "nrUnseededEmployees": 0
       },
       "zoos": [],
       "animals": [],

@@ -37,6 +37,7 @@ DROP VIEW IF EXISTS [gstusr].[vwInfoEmployees]
 GO
 
 --drop tables in the right order not to get fk conflicts
+DROP TABLE IF EXISTS supusr.TemplateModel;
 DROP TABLE IF EXISTS dbo.Users;
 DROP TABLE IF EXISTS supusr.EmployeeDbMZooDbM;
 DROP TABLE IF EXISTS supusr.Animals;

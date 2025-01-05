@@ -13,10 +13,15 @@ GO
 --02-create-gstusr-view.sql
 --create a view that gives overview of the database content
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
-    SELECT (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 1) as nrSeededZoos, 
-        (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 0) as nrUnseededZoos,
-        (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 1) as nrSeededAnimals, 
-        (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 0) as nrUnseededAnimals
+    SELECT 'Guest user database overview' as Title,
+    (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 1) as nrSeededZoos, 
+    (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 0) as nrUnseededZoos,
+    (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 1) as nrSeededAnimals, 
+    (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 0) as nrUnseededAnimals,
+    (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 1) as nrSeededEmployees, 
+    (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 0) as nrUnseededEmployees,
+    (SELECT COUNT(*) FROM supusr.CreditCards WHERE Seeded = 1) as nrSeededCreditCards, 
+    (SELECT COUNT(*) FROM supusr.CreditCards WHERE Seeded = 0) as nrUnseededCreditCards
 
 GO
 
@@ -31,24 +36,26 @@ CREATE OR ALTER VIEW gstusr.vwInfoAnimals AS
     GROUP BY z.Country, z.City, z.Name WITH ROLLUP;
 GO
 
+CREATE OR ALTER VIEW gstusr.vwInfoEmployees AS
+    SELECT z.Country, z.City, z.Name as ZooName, COUNT(e.EmployeeId) as NrEmployees FROM supusr.Zoos z
+    INNER JOIN supusr.EmployeeDbMZooDbM ct ON ct.ZoosDbMZooId = z.ZooId
+    INNER JOIN supusr.Employees e ON e.EmployeeId = ct.EmployeesDbMEmployeeId
+    GROUP BY z.Country, z.City, z.Name WITH ROLLUP;
+GO
+
 
 
 --03-create-supusr-sp.sql
 CREATE OR ALTER PROC supusr.spDeleteAll
-    @Seeded BIT = 1,
+    @Seeded BIT = 1
 
-    @nrZoosAffected INT OUTPUT,
-    @nrAnimalsAffected INT OUTPUT
-    
     AS
 
     SET NOCOUNT ON;
 
-    SELECT  @nrZoosAffected = COUNT(*) FROM supusr.Zoos WHERE Seeded = @Seeded;
-    SELECT  @nrAnimalsAffected = COUNT(*) FROM supusr.Animals WHERE Seeded = @Seeded;
-
     DELETE FROM supusr.Zoos WHERE Seeded = @Seeded;
     DELETE FROM supusr.Animals WHERE Seeded = @Seeded;
+    DELETE FROM supusr.Employees WHERE Seeded = @Seeded;
 
     SELECT * FROM gstusr.vwInfoDb;
 
@@ -83,7 +90,7 @@ CREATE ROLE zoosefcSupUsr;
 
 --assign securables creadentials to the roles
 GRANT SELECT, EXECUTE ON SCHEMA::gstusr to zoosefcGstUsr;
-GRANT SELECT, UPDATE, INSERT ON SCHEMA::supusr to zoosefcUsr;
+GRANT SELECT ON SCHEMA::supusr to zoosefcUsr;
 GRANT SELECT, UPDATE, INSERT, DELETE, EXECUTE ON SCHEMA::supusr to zoosefcSupUsr;
 
 --finally, add the users to the roles
@@ -97,5 +104,31 @@ ALTER ROLE zoosefcUsr ADD MEMBER supusrUser;
 ALTER ROLE zoosefcSupUsr ADD MEMBER supusrUser;
 GO
 
+--07-create-gstusr-login.sql
+CREATE OR ALTER PROC gstusr.spLogin
+    @UserNameOrEmail NVARCHAR(100),
+    @Password NVARCHAR(200),
 
+    @UserId UNIQUEIDENTIFIER OUTPUT,
+    @UserName NVARCHAR(100) OUTPUT,
+    @Role NVARCHAR(100) OUTPUT
+    
+    AS
+
+    SET NOCOUNT ON;
+    
+    SET @UserId = NULL;
+    SET @UserName = NULL;
+    SET @Role = NULL;
+    
+    SELECT Top 1 @UserId = UserId, @UserName = UserName, @Role = [Role] FROM dbo.Users 
+    WHERE ((UserName = @UserNameOrEmail) OR
+           (Email IS NOT NULL AND (Email = @UserNameOrEmail))) AND ([Password] = @Password);
+    
+    IF (@UserId IS NULL)
+    BEGIN
+        ;THROW 999999, 'Login error: wrong user or password', 1
+    END
+
+GO
 

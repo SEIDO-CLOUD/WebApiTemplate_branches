@@ -1,5 +1,7 @@
-To create the publish the app to azure
+To run the local application using Azure KeyVault and Azure SQL
 
+Ensure ConnectionStrings and Project seetings
+---------------------------------------------------
 1. Open your user secrets and make sure you have the connection string to your groups Azure SQL Server.
    E.g, to SQL Server for the group Tanzanite is should look like
    "SQLServer-zooefc-azure-sysadmin": "Server=tcp:SYS6-Tanzanite-sqlserver-6755B002D1BB.database.windows.net,1433;Initial Catalog=SYS6-Tanzanite-db-6755B002D1BB;Persist Security Info=False;User ID=martin;Password=tegdek-1nyjZe-worzij;MultipleActiveResultSets=False;Encrypt=true;TrustServerCertificate=False;Connection Timeout=30;",
@@ -10,10 +12,14 @@ To create the publish the app to azure
 2. In Configuration.csproj make sure you have the AzureProjectSettings tag set to 
     <AzureProjectSettings>/Users/Martin/Development/scripts/azure/az-projects/newton-tanzanite</AzureProjectSettings>
 
+Update Azure KeyVault
+---------------------
 3. Update your groups Azure KeyVault with the content of your user secrets
    With Terminal in folder .scripts 
    ./az-kv-update.sh
 
+Run Application locally using local SQL Server and Azure KeyVault
+-----------------------------------------------------------------
 4. Make sure that below two keys in appsettings.json in the folders AppWebApi and DbContext are set to following:
       "UseAzureKeyVault": true
       "UseDataSetWithTag": "zooefc.localhost.docker"
@@ -37,6 +43,9 @@ To create the publish the app to azure
 
    Verify database seed with endpoint Guest/Info. You will see the overview of the local database content
    
+
+Build Azure Database
+--------------------
 6. Change UseDataSetWithTag to in appsettings.json in the folders AppWebApi and DbContext are set to following:
       "UseDataSetWithTag": "zooefc.azure"
    
@@ -49,9 +58,15 @@ To create the publish the app to azure
    connection string corresponding to Tag
    "zooefc.azure"
 
-4. Use Azure Data Studio to execute SQL script DbContext/SqlScripts/initDatabaseAzure.sql on the database zooefc
+9. Use Azure Data Studio to execute SQL script DbContext/SqlScripts/initDatabaseAzure.sql on the database zooefc
 
-5. Run AppGoodFriendsWebApi with or without debugger
+10. NOTE!!: If you need to do steps 6-9 again, you need to clear the Azure Database:
+    Use Azure Data Studio to execute SQL script DbContext/SqlScripts/clearDatabaseAzure.sql on the database zooefc
+
+
+Run Application locally using Azure SQL Server and Azure KeyVault
+-----------------------------------------------------------------
+11. Run AppGoodFriendsWebApi with or without debugger
    Without debugger: Open a Terminal in folder AppGoodFriendsWebApi run: 
    dotnet run -lp https 
 
@@ -69,9 +84,20 @@ To create the publish the app to azure
    }
 
    Verify database seed with endpoint Guest/Info. You will see the overview of the local database content
-   
-6. Use endpoint Admin/Seed to seed the database, Admin/RemoveSeed to remove the seed
-   Verify connections and setup with endpoint Admin/Info
+
+12. Use endpoint Admin/SeedUsers to seed users into the the database
+
+13. Use endpoint Guest/LoginUser to login as sysadmin1
+{
+  "userNameOrEmail": "sysadmin1",
+  "password": "sysadmin1"
+}
+14. Authorize using Swagger Authorize butto and paste in the encryptedToken recieved after login.
+    NOTE!!: Copy and paste the encryptedToken WITHIN the quotation, i.e. WITHOUT the first and last quotation mark "
+
+15. Use endpoint Admin/Seed to seed the database, Admin/RemoveSeed to remove the seed
    Verify database seed with endpoint Guest/Info
+
+16. As sysadmin you can now use and play with all endpoints
 
 

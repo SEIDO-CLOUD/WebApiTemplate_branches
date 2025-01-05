@@ -1,24 +1,29 @@
-To run the local application using Azure KeyVault and Azure SQL
+This text shows the steps to run AppWebApi locally but using Azure KeyVault and Azure SQL.
+First Azure KeyVault is engaged and the Azure SQL Server
+This is needed before publishing the app to Azure.
+
 
 Ensure ConnectionStrings and Project seetings
 ---------------------------------------------------
 1. Open your user secrets and make sure you have the connection string to your groups Azure SQL Server.
    E.g, to SQL Server for the group Tanzanite is should look like
-   "SQLServer-zooefc-azure-sysadmin": "Server=tcp:SYS6-Tanzanite-sqlserver-6755B002D1BB.database.windows.net,1433;Initial Catalog=SYS6-Tanzanite-db-6755B002D1BB;Persist Security Info=False;User ID=martin;Password=tegdek-1nyjZe-worzij;MultipleActiveResultSets=False;Encrypt=true;TrustServerCertificate=False;Connection Timeout=30;",
-   "SQLServer-zooefc-azure-gstusr": "Server=tcp:SYS6-Tanzanite-sqlserver-6755B002D1BB.database.windows.net,1433;Initial Catalog=SYS6-Tanzanite-db-6755B002D1BB;Persist Security Info=False;User ID=gstusrUser;Password=pa$$Word1;MultipleActiveResultSets=False;Encrypt=true;TrustServerCertificate=False;Connection Timeout=30;",
-   "SQLServer-zooefc-azure-usr": "Server=tcp:SYS6-Tanzanite-sqlserver-6755B002D1BB.database.windows.net,1433;Initial Catalog=SYS6-Tanzanite-db-6755B002D1BB;Persist Security Info=False;User User ID=usrUser;Password=pa$$Word1;MultipleActiveResultSets=False;Encrypt=true;TrustServerCertificate=False;Connection Timeout=30;",
-   "SQLServer-zooefc-azure-supusr": "Server=tcp:SYS6-Tanzanite-sqlserver-6755B002D1BB.database.windows.net,1433;Initial Catalog=SYS6-Tanzanite-db-6755B002D1BB;Persist Security Info=False;User ID=supusrUser;Password=pa$$Word1;MultipleActiveResultSets=False;Encrypt=true;TrustServerCertificate=False;Connection Timeout=30;"
+   "SQLServer-zooefc-azure-sysadmin": "Server=tcp:SYS6-Tanzanite-sqlserver-6755B002D1BB .....",
+   "SQLServer-zooefc-azure-gstusr": "Server=tcp:SYS6-Tanzanite-sqlserver-6755B002D1BB ....."
+   "SQLServer-zooefc-azure-usr": "Server=tcp:SYS6-Tanzanite-sqlserver-6755B002D1BB ....."
+   "SQLServer-zooefc-azure-supusr": "Server=tcp:SYS6-Tanzanite-sqlserver-6755B002D1BB ....."
 
 2. In Configuration.csproj make sure you have the AzureProjectSettings tag set to 
     <AzureProjectSettings>/Users/Martin/Development/scripts/azure/az-projects/newton-tanzanite</AzureProjectSettings>
 
+
 Update Azure KeyVault
 ---------------------
 3. Update your groups Azure KeyVault with the content of your user secrets
-   With Terminal in folder .scripts 
+   With Terminal in folder .scripts run
    ./az-kv-update.sh
 
-Run Application locally using local SQL Server and Azure KeyVault
+
+Run AppWebApi locally using local SQL Server and Azure KeyVault
 -----------------------------------------------------------------
 4. Make sure that below two keys in appsettings.json in the folders AppWebApi and DbContext are set to following:
       "UseAzureKeyVault": true
@@ -27,8 +32,8 @@ Run Application locally using local SQL Server and Azure KeyVault
 
 5. You can now run the AppWebApi using you local docker SQL Server
    Run AppWebApi with or without debugger
-   Without debugger: Open a Terminal in folder AppGoodFriendsWebApi run: 
-   dotnet run -lp http
+   Without debugger: Open a Terminal in folder AppWebApi run: 
+   dotnet run -lp https
 
    Verify connections and setup with endpoint Admin/Info. Output should be
    {
@@ -49,7 +54,7 @@ Build Azure Database
 6. Change UseDataSetWithTag to in appsettings.json in the folders AppWebApi and DbContext are set to following:
       "UseDataSetWithTag": "zooefc.azure"
    
-7. With Terminal in folder .scripts 
+7. With Terminal in folder .scripts run
    ./database-rebuild-all.sh azure
    Ensure no errors from build, migration or database update
 
@@ -64,10 +69,10 @@ Build Azure Database
     Use Azure Data Studio to execute SQL script DbContext/SqlScripts/clearDatabaseAzure.sql on the database zooefc
 
 
-Run Application locally using Azure SQL Server and Azure KeyVault
+Run AppWebApi locally using Azure SQL Server and Azure KeyVault
 -----------------------------------------------------------------
-11. Run AppGoodFriendsWebApi with or without debugger
-   Without debugger: Open a Terminal in folder AppGoodFriendsWebApi run: 
+11. Run AppWebApi with or without debugger
+   Without debugger: Open a Terminal in folder AppWebApi run: 
    dotnet run -lp https 
 
    open url: https://localhost:7066/swagger
@@ -99,5 +104,3 @@ Run Application locally using Azure SQL Server and Azure KeyVault
    Verify database seed with endpoint Guest/Info
 
 16. As sysadmin you can now use and play with all endpoints
-
-

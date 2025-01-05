@@ -27,10 +27,18 @@ warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
 
 2. open url: ttp://localhost:5000/swagger
 
-3. Use endpoint Guest/LoginUser to login as sysadmin1
-   Authorize in swagger
+3. Verify database seed with endpoint Guest/Info. You will see the overview of the local database content
 
-4. Verify connections and setup with endpoint Admin/Info. Output should be
+4. Use endpoint Guest/LoginUser to login as sysadmin1
+{
+  "userNameOrEmail": "sysadmin1",
+  "password": "sysadmin1"
+}
+
+5. Authorize using Swagger Authorize butto and paste in the encryptedToken recieved after login.
+    NOTE!!: Copy and paste the encryptedToken WITHIN the quotation, i.e. WITHOUT the first and last quotation mark "
+
+6. Verify connections and setup with endpoint Admin/Info. Output should be
    {
    "appEnvironment": "Production",
    "secretSource": "Azure: Tanzanite",
@@ -45,20 +53,20 @@ warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
 Publish AppWebApi to Azure App Service
 --------------------------------------
 
-5. In Azure tab on VSC open App Services find you groups App Service, for example SYS6-Tanzanite-ws-6755B002D1BB
+7. In Azure tab on VSC open App Services find you groups App Service, for example SYS6-Tanzanite-ws-6755B002D1BB
 
-6. Right click on the App Service and select "Deploy to Web App...". Click deploy. 
+8. Right click on the App Service and select "Deploy to Web App...". Click deploy. 
 
-7. Choose skip for now if VSC is asking to save deployment AzureProjectSettings
+9. Choose "skip for now" if VSC is asking to "Always to deploy to workspace" deployment
 
 
 Launch AppWebApi running on Azure in the browser
 ------------------------------------------------
 
-8. After deployment browse to website. E.g.
+10. After deployment browse to website. E.g.
    https://sys6-tanzanite-ws-6755b002d1bb.azurewebsites.net/swagger
 
    You can rightclick on the App Service to deployed to and select "Browse Website"
    
-   NOTE!!: remomber to add /swagger at the end of the url to see the swagger interface.
+   NOTE!!: remember to add /swagger at the end of the url to see the swagger interface.
 

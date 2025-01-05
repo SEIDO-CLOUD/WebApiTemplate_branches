@@ -20,10 +20,21 @@ This text shows the steps to run AppWebApi locally using .NET User Secrets and S
 
 6. Run AppWebApi with or without debugger
 
-   6 A. Without debugger:   
+   Without debugger:   
    Open a Terminal in folder AppWebApi run: 
    dotnet run -lp https 
    open url: https://localhost:7066/swagger
+
+   Verify output from endpoint Admin/Info. Output should be
+   {
+   "appEnvironment": "Development",
+   "secretSource": "Usersecret: 126a42a7-3b4f-429f-997d-1849782efbb0",
+   "dataConnectionTag": "zooefc.localhost.docker",
+   "defaultDataUser": "sysadmin",
+   "migrationDataUser": "sysadmin",
+   "dataConnectionServer": 0,
+   "dataConnectionServerString": "SQLServer"
+   }
 
    Verify database seed with endpoint Guest/Info. You will see the overview of the local database content
    {
@@ -45,21 +56,6 @@ This text shows the steps to run AppWebApi locally using .NET User Secrets and S
    },
    "dbConnectionKeyUsed": "SQLServer-zooefc-docker-sysadmin"
    }
-
-
-   6 B. With debugger: 
-   Verify output from endpoint Admin/Info. Output should be
-   {
-   "appEnvironment": "Development",
-   "secretSource": "Usersecret: 126a42a7-3b4f-429f-997d-1849782efbb0",
-   "dataConnectionTag": "zooefc.localhost.docker",
-   "defaultDataUser": "sysadmin",
-   "migrationDataUser": "sysadmin",
-   "dataConnectionServer": 0,
-   "dataConnectionServerString": "SQLServer"
-   }
-
-   Verify database seed with endpoint Guest/Info. You will see the overview of the local database content
 
 7. Use endpoint Admin/SeedUsers to seed users into the the database
 

@@ -92,15 +92,7 @@ Run AppWebApi locally using Azure SQL Server and Azure KeyVault
 
 12. Use endpoint Admin/SeedUsers to seed users into the the database
 
-13. Use endpoint Guest/LoginUser to login as sysadmin1
-{
-  "userNameOrEmail": "sysadmin1",
-  "password": "sysadmin1"
-}
-14. Authorize using Swagger Authorize butto and paste in the encryptedToken recieved after login.
-    NOTE!!: Copy and paste the encryptedToken WITHIN the quotation, i.e. WITHOUT the first and last quotation mark "
-
-15. Use endpoint Admin/Seed to seed the database, Admin/RemoveSeed to remove the seed
+13. Use endpoint Admin/Seed to seed the database, Admin/RemoveSeed to remove the seed
    Verify database seed with endpoint Guest/Info
 
-16. As sysadmin you can now use and play with all endpoints
+14. You can now use and play with all endpoints

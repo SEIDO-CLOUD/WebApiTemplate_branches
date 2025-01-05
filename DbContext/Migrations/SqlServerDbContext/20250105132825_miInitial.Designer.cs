@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250102124539_miInitial")]
+    [Migration("20250105132825_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -25,15 +25,15 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DbModels.ZooDbM", b =>
+            modelBuilder.Entity("DbModels.TemplateModelDbM", b =>
                 {
-                    b.Property<Guid>("ZooId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ZooId");
+                    b.HasKey("Id");
 
-                    b.ToTable("Zoos", "supusr");
+                    b.ToTable("TemplateModel", "supusr");
                 });
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>

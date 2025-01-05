@@ -22,15 +22,15 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DbModels.ZooDbM", b =>
+            modelBuilder.Entity("DbModels.TemplateModelDbM", b =>
                 {
-                    b.Property<Guid>("ZooId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ZooId");
+                    b.HasKey("Id");
 
-                    b.ToTable("Zoos", "supusr");
+                    b.ToTable("TemplateModel", "supusr");
                 });
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>

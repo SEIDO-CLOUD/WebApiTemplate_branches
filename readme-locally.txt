@@ -40,28 +40,10 @@ This text shows the steps to run AppWebApi locally using .NET User Secrets and S
    {
    "item": {
       "db": {
-         "title": "Guest user database overview",
-         "nrSeededZoos": 0,
-         "nrUnseededZoos": 0,
-         "nrSeededAnimals": 0,
-         "nrUnseededAnimals": 0,
-         "nrSeededEmployees": 0,
-         "nrUnseededEmployees": 0,
-         "nrSeededCreditCards": 0,
-         "nrUnseededCreditCards": 0
-      },
-      "zoos": [],
-      "animals": [],
-      "employees": []
+         "title": "Guest user database overview"
+      }
    },
    "dbConnectionKeyUsed": "SQLServer-zooefc-docker-sysadmin"
    }
-
-7. Use endpoint Admin/SeedUsers to seed users into the the database
-
-8. Use endpoint Admin/Seed to seed the database, Admin/RemoveSeed to remove the seed
-   Verify database seed with endpoint Guest/Info
-
-9. You can now use and play with all endpoints
 
 

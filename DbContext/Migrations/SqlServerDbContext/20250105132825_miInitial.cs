@@ -15,15 +15,15 @@ namespace DbContext.Migrations.SqlServerDbContext
                 name: "supusr");
 
             migrationBuilder.CreateTable(
-                name: "Zoos",
+                name: "TemplateModel",
                 schema: "supusr",
                 columns: table => new
                 {
-                    ZooId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Zoos", x => x.ZooId);
+                    table.PrimaryKey("PK_TemplateModel", x => x.Id);
                 });
         }
 
@@ -31,7 +31,7 @@ namespace DbContext.Migrations.SqlServerDbContext
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Zoos",
+                name: "TemplateModel",
                 schema: "supusr");
         }
     }

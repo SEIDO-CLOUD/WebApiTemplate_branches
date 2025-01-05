@@ -13,36 +13,8 @@ GO
 --02-create-gstusr-view.sql
 --create a view that gives overview of the database content
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
-    SELECT 'Guest user database overview' as Title,
-    (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 1) as nrSeededZoos, 
-    (SELECT COUNT(*) FROM supusr.Zoos WHERE Seeded = 0) as nrUnseededZoos,
-    (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 1) as nrSeededAnimals, 
-    (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 0) as nrUnseededAnimals,
-    (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 1) as nrSeededEmployees, 
-    (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 0) as nrUnseededEmployees,
-    (SELECT COUNT(*) FROM supusr.CreditCards WHERE Seeded = 1) as nrSeededCreditCards, 
-    (SELECT COUNT(*) FROM supusr.CreditCards WHERE Seeded = 0) as nrUnseededCreditCards
-
+    SELECT 'Guest user database overview' as Title
 GO
-
-CREATE OR ALTER VIEW gstusr.vwInfoZoos AS
-    SELECT z.Country, z.City, COUNT(*) as NrZoos  FROM supusr.Zoos z
-    GROUP BY z.Country, z.City WITH ROLLUP;
-GO
-
-CREATE OR ALTER VIEW gstusr.vwInfoAnimals AS
-    SELECT z.Country, z.City, z.Name as ZooName, COUNT(a.AnimalId) as NrAnimals FROM supusr.Zoos z
-    INNER JOIN supusr.Animals a ON a.ZooDbMZooId = z.ZooId
-    GROUP BY z.Country, z.City, z.Name WITH ROLLUP;
-GO
-
-CREATE OR ALTER VIEW gstusr.vwInfoEmployees AS
-    SELECT z.Country, z.City, z.Name as ZooName, COUNT(e.EmployeeId) as NrEmployees FROM supusr.Zoos z
-    INNER JOIN supusr.EmployeeDbMZooDbM ct ON ct.ZoosDbMZooId = z.ZooId
-    INNER JOIN supusr.Employees e ON e.EmployeeId = ct.EmployeesDbMEmployeeId
-    GROUP BY z.Country, z.City, z.Name WITH ROLLUP;
-GO
-
 
 
 --03-create-supusr-sp.sql
@@ -53,10 +25,9 @@ CREATE OR ALTER PROC supusr.spDeleteAll
 
     SET NOCOUNT ON;
 
-    DELETE FROM supusr.Zoos WHERE Seeded = @Seeded;
-    DELETE FROM supusr.Animals WHERE Seeded = @Seeded;
-    DELETE FROM supusr.Employees WHERE Seeded = @Seeded;
+    -- will delete here
 
+    -- return new data status
     SELECT * FROM gstusr.vwInfoDb;
 
     --throw our own error

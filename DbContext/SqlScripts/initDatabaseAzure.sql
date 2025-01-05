@@ -19,10 +19,7 @@ CREATE OR ALTER VIEW gstusr.vwInfoDb AS
     (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 1) as nrSeededAnimals, 
     (SELECT COUNT(*) FROM supusr.Animals WHERE Seeded = 0) as nrUnseededAnimals,
     (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 1) as nrSeededEmployees, 
-    (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 0) as nrUnseededEmployees,
-    (SELECT COUNT(*) FROM supusr.CreditCards WHERE Seeded = 1) as nrSeededCreditCards, 
-    (SELECT COUNT(*) FROM supusr.CreditCards WHERE Seeded = 0) as nrUnseededCreditCards
-
+    (SELECT COUNT(*) FROM supusr.Employees WHERE Seeded = 0) as nrUnseededEmployees
 GO
 
 CREATE OR ALTER VIEW gstusr.vwInfoZoos AS

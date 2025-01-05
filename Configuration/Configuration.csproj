@@ -9,8 +9,8 @@
 
   <PropertyGroup>
     <UserSecretPath>/Users/Martin/.microsoft/usersecrets/</UserSecretPath>
-    <AzureScriptDirectory>/Users/Martin/Development/scripts/azure</AzureScriptDirectory>
-    <AzureProjectSettings>/Users/Martin/Development/scripts/azure/az-projects/newton-tanzanite</AzureProjectSettings>
+    <AzureScriptDirectory>/Users/Martin/Development/projects/CloudServices_and_Security_Jan_2025/azure</AzureScriptDirectory>
+    <AzureProjectSettings>/Users/Martin/Development/projects/CloudServices_and_Security_Jan_2025/azure/az-projects/newton-tanzanite</AzureProjectSettings>
   </PropertyGroup>
 
   <ItemGroup>

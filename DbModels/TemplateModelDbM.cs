@@ -8,8 +8,8 @@ using Models.DTO;
 namespace DbModels;
 
 [Table("TemplateModel", Schema = "supusr")]
-public class TemplateModelDbM
+public class TemplateModelDbM : TemplateModel
 {
     [Key]
-    public Guid Id { get; set; }
+    public override Guid Id { get; set; }
 }

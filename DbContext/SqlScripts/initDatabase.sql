@@ -13,7 +13,7 @@ GO
 --02-create-gstusr-view.sql
 --create a view that gives overview of the database content
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
-    SELECT 'Guest user database overview' as Title
+    SELECT 'Hello Nagge' as Title
 GO
 
 

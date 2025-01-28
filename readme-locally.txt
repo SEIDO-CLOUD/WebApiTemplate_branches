@@ -1,5 +1,12 @@
 This text shows the steps to run AppWebApi locally using .NET User Secrets and SQL server running in docker
 
+0. In project Configuration, file Configuration.csproj, ensure you have the right paths to  <UserSecretPath>,
+   <AzureScriptDirectory> and <AzureProjectSettings>
+
+   - Exclude Configuration.csproj from git repository by adding it to the file .gitignore
+   - remove Configuration.csproj from git cache by below command opening a terminal in WebApiTemplate_branches and type
+   git rm --cached Configuration/Configuration.csproj
+
 1. Make sure that belwo two keys in appsettings.json in the folders AppWebApi and DbContext are set to following:
       "UseAzureKeyVault": false
       "UseDataSetWithTag": "zooefc.localhost.docker"

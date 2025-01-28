@@ -23,6 +23,7 @@ echo "AzureScriptDirectory="$AzureScriptDirectory
 echo "AzureProjectSettings="$AzureProjectSettings
 echo "ApplicationDirectory="$ApplicationDirectory
 echo "PublishDirectory="$PublishDirectory
+
 #exit
 
 #Step1: Set the Azure Keyvault access parameters as operating system environment variables.
@@ -38,7 +39,7 @@ export AZURE_CLIENT_SECRET=$(./az-access-secrets.sh $AzureProjectSettings app pa
 
 #Set the environment variables to the ws application
 printf "\n\nSet the environment variables to the azure web application"
-./az-apps-set-env.sh $AzureProjectSettings
+#./az-apps-set-env.sh $AzureProjectSettings
 
 cd $PWDIR
 
@@ -49,14 +50,19 @@ echo "AZURE_KeyVaultSecret=" $AZURE_KeyVaultSecret
 echo "AZURE_CLIENT_ID=" $AZURE_CLIENT_ID
 echo "AZURE_CLIENT_SECRET=" $AZURE_CLIENT_SECRET
 
+#exit
+
 #Step2: Generate the release files
 printf "\n\nPublish the webapi...\n"
 # #remove any previous publish
 rm -rf $PublishDirectory
 
+#exit
+
 cd $ApplicationDirectory
 dotnet publish --configuration Release --output ./publish
 
+#exit
 
 #Step3: Run the application from the folder containing the release files.
 printf "\n\nRun the webapi from the published directory...\n"

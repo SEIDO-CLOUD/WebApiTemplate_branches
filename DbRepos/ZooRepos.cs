@@ -121,6 +121,7 @@ public class ZooDbRepos
             .Where(i => i.ZooId == itemDto.ZooId);
         var item = await query1
             .Include(i => i.AnimalsDbM)
+            .Include(i => i.EmployeesDbM)
             .FirstOrDefaultAsync<ZooDbM>();
 
         //If the item does not exists
@@ -184,5 +185,21 @@ public class ZooDbRepos
             }
         }
         itemDst.AnimalsDbM = Animals;
+
+        //update EmployeessDbM from list
+        List<EmployeeDbM> Employees = null;
+        if (itemDtoSrc.EmployeesId != null)
+        {
+            Employees = new List<EmployeeDbM>();
+            foreach (var id in itemDtoSrc.EmployeesId)
+            {
+                var p = await _dbContext.Employees.FirstOrDefaultAsync(i => i.EmployeeId == id);
+                if (p == null)
+                    throw new ArgumentException($"Item id {id} not existing");
+
+                Employees.Add(p);
+            }
+        }
+        itemDst.EmployeesDbM = Employees;
     }
 }

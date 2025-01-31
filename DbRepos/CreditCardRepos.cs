@@ -161,7 +161,7 @@ public class CreditCardDbRepos
             DbItemsCount = await query
 
                 //Adding filter functionality
-                .Where(i => i.CreditCardDbM == null).CountAsync(),
+                .Where(i => (hasCreditCard) ?i.CreditCardDbM != null : i.CreditCardDbM == null).CountAsync(),
 
             PageItems = await query
 

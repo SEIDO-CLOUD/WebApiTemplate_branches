@@ -20,6 +20,7 @@ printf "\n\Updating Keyvault with usersecrets"
 cd $AzureScriptDirectory
 
 #execite the scripts to login and update the keyvault with the user secrets
+./az-logout.sh $AzureProjectSettings
 ./az-login.sh $AzureProjectSettings
 ./az-kv-sec-copy.sh $AzureProjectSettings $ApplicationProjectFile
 

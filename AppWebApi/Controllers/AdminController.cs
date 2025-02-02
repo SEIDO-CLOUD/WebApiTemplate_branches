@@ -43,8 +43,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(Info)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(Info)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
          }
 
@@ -67,8 +67,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(Seed)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(Seed)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
 
@@ -90,8 +90,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(RemoveSeed)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(RemoveSeed)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
 
@@ -113,7 +113,7 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }       
         }
 #endif

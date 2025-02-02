@@ -44,8 +44,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(ReadItems)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(ReadItems)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
 
@@ -69,8 +69,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(ReadItem)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(ReadItem)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
 
@@ -95,8 +95,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(DeleteItem)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(DeleteItem)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
 
@@ -125,8 +125,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(ReadItemDto)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(ReadItemDto)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
 
@@ -152,8 +152,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(UpdateItem)}: {ex.Message}");
-                return BadRequest($"Could not update. Error {ex.Message}");
+                _logger.LogError($"{nameof(UpdateItem)}: {ex.InnerException?.Message}");
+                return BadRequest($"Could not update. Error {ex.InnerException?.Message}");
             }
         }
 
@@ -175,8 +175,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(CreateItem)}: {ex.Message}");
-                return BadRequest($"Could not create. Error {ex.Message}");
+                _logger.LogError($"{nameof(CreateItem)}: {ex.InnerException?.Message}");
+                return BadRequest($"Could not create. Error {ex.InnerException?.Message}");
             }
         }
     }

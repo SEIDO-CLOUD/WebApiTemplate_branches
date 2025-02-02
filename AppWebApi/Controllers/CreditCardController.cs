@@ -45,8 +45,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(ReadItems)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(ReadItems)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
 
@@ -70,8 +70,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(ReadItem)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(ReadItem)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
 
@@ -94,8 +94,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(DeleteItem)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(DeleteItem)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
 
@@ -122,8 +122,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(ReadItemDto)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(ReadItemDto)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
 
@@ -167,8 +167,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(ReadEmployeesWithCC)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(ReadEmployeesWithCC)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
 
@@ -193,8 +193,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(ReadClearCC)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(ReadClearCC)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
     }

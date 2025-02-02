@@ -38,8 +38,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{nameof(Info)}: {ex.Message}");
-                return BadRequest(ex.Message);
+                _logger.LogError($"{nameof(Info)}: {ex.InnerException?.Message}");
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }
         }
 
@@ -79,8 +79,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"Login Error: {ex.Message}");
-                return BadRequest($"Login Error: {ex.Message}");
+                _logger.LogWarning($"Login Error: {ex.InnerException?.Message}");
+                return BadRequest($"Login Error: {ex.InnerException?.Message}");
             }
         }
     }

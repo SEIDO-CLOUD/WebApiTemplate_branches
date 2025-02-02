@@ -95,6 +95,7 @@ namespace AppWebApi.Controllers
             }
         }
 
+        //You need to run this with sysadmin connection string
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(UsrInfoDto))]
         [ProducesResponseType(400, Type = typeof(string))]

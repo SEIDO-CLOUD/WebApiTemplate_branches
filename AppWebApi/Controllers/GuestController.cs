@@ -79,8 +79,8 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"Login Error: {ex.InnerException?.Message}");
-                return BadRequest($"Login Error: {ex.InnerException?.Message}");
+                _logger.LogWarning($"Login Error: {ex.Message}.{ex.InnerException?.Message}");
+                return BadRequest($"Login Error: {ex.Message}.{ex.InnerException?.Message}");
             }
         }
     }

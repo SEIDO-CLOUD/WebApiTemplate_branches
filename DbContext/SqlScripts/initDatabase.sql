@@ -146,7 +146,7 @@ CREATE OR ALTER PROC gstusr.spLogin
     
     IF (@UserId IS NULL)
     BEGIN
-        ;THROW 999999, 'Login error: wrong user or password', 1
+        ;THROW 999999, 'SQL Login error: wrong user or password', 1
     END
 
 GO

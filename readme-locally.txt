@@ -1,6 +1,6 @@
 This text shows the steps to run AppWebApi locally using .NET User Secrets and SQL server running in docker
 
-dotnet dev certs trust
+dotnet dev-certs https --trust
 
 
 0. In project Configuration, file Configuration.csproj, ensure you have the right paths to  <UserSecretPath>,

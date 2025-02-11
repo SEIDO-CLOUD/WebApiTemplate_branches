@@ -59,3 +59,12 @@ stages:
               appSettings:  
                 -MY_ENV_VAR1 "SeidoAB"
                 -MY_ENV_VAR2 "SeidoAB"
+
+  - stage: runStage 
+    jobs:
+    - job: runAppSimple
+      displayName: 'dotnet run' 
+      timeoutInMinutes: 10
+      steps:
+        - script: dotnet run --project AppWebApiTest/AppWebApiTest.csproj
+       #- bash: exit 1  #This step will now fail

@@ -1,6 +1,6 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
@@ -8,71 +8,33 @@ trigger:
 
 pool:
   vmImage: 'windows-latest'
-# name: 'MartinsXPS15'
-# demands:
-#     - agent.name -equals MARTINS_XPS15
+  # name: 'MartinsXPS15'
+  # demands:
+  #   - agent.name -equals MARTINS_XPS15
 
+#https://learn.microsoft.com/en-us/azure/devops/pipelines/process/stages?view=azure-devops&tabs=yaml
+#stages is a logical group of jobs
+#Stages run by default sequentially and you can use dependencies and conditions
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 stages:
-  - stage: buildAndDeploy
+  - stage: runStage 
     jobs:
-      - job: buildjob
-        steps:
-          - task: NuGetToolInstaller@1
-
-          - task: NuGetCommand@2
-            inputs:
-              restoreSolution: '$(solution)'
-
-          - task: VSBuild@1
-            inputs:
-              solution: '$(solution)'
-              msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-              platform: '$(buildPlatform)'
-              configuration: '$(buildConfiguration)'
-
-          - task: PublishBuildArtifacts@1
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-              ArtifactName: 'drop'
-              publishLocation: 'Container'
-
-          - task: DownloadBuildArtifacts@1
-            inputs:
-              buildType: 'current'
-              downloadType: 'single'
-              itemPattern: 'drop'
-              downloadPath: '$(Build.ArtifactStagingDirectory)'
-          
-          - task: AzureRmWebAppDeployment@4
-            inputs:
-              ConnectionType: 'AzureRM'
-              azureSubscription: 'Tanzanite'
-              appType: 'webApp'
-              WebAppName: 'SYS6-Tanzanite-ws-6755B002D1BB'
-              #WebAppName: 'SYS6-Tanzanite-ws-devops'
-              packageForLinux: '$(Build.ArtifactStagingDirectory)\*.zip'
-              appSettings:  
-                -MY_ENV_VAR1 "SeidoAB"
-                -MY_ENV_VAR2 "SeidoAB"
-
-  - stage: IntegrationTest 
-    jobs:
-    - job: AppWebApiTest
-      displayName: 'running AppWebApiTest' 
+    - job: runAppSimple
+      displayName: 'dotnet run' 
       timeoutInMinutes: 10
       steps:
         - script: dotnet run --project AppWebApiTest/AppWebApiTest.csproj
        #- bash: exit 1  #This step will now fail
-
-  - stage: AllGood 
+  
+  - stage: finalStage 
+    dependsOn: 
+    - buildStage 
+    - runStage 
     jobs:
-    - job: AllGood
-      displayName: 'AllGood' 
+    - job: finalJob
+      displayName: 'finalJob' 
       timeoutInMinutes: 10
       steps:
-      - bash: echo "Deployment and tests successful"
+      - bash: echo "Executing finalJob"

@@ -15,7 +15,8 @@ public class Worker : BackgroundService
     {
         _logger.LogInformation("Hello World again");
         //throw new Exception("Error in AppSimple");
-
+// Ensure the application exits with result code 1
+            Environment.Exit(1);
         await _host.StopAsync();
     }
 }

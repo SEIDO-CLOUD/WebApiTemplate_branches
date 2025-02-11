@@ -9,8 +9,10 @@ namespace Services;
 public class AdminServiceDb : IAdminService {
 
     private readonly AdminDbRepos _adminRepo;
-    private readonly ILogger<AdminServiceDb> _logger;    
-    
+    private readonly ILogger<AdminServiceDb> _logger;
+
+    public string BearerToken { set => throw new NotImplementedException(); }
+
     public AdminServiceDb(AdminDbRepos adminRepo, ILogger<AdminServiceDb> logger)
     {
         _adminRepo = adminRepo;

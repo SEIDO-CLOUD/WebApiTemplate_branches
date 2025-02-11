@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-App_simple-79cc5b22-154b-43e1-b823-6b54ced543d0</UserSecretsId>
+    <UserSecretsId>dotnet-AppWebApiTest-79cc5b22-154b-43e1-b823-6b54ced543d0</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

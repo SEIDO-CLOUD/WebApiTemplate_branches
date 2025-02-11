@@ -12,8 +12,10 @@ public class ZooServiceDb : IZooService {
     private readonly AnimalDbRepos _animalRepo;
     private readonly EmployeeDbRepos _employeeRepo;
     private readonly CreditCardDbRepos _creditcardRepo;
-    private readonly ILogger<ZooServiceDb> _logger;    
-    
+    private readonly ILogger<ZooServiceDb> _logger;
+
+    public string BearerToken { set => throw new NotImplementedException(); }
+
     public ZooServiceDb(ZooDbRepos zooRepo, AnimalDbRepos animalRepo, EmployeeDbRepos employeeRepo, 
         CreditCardDbRepos creditcardRepo, ILogger<ZooServiceDb> logger)
     {
@@ -50,4 +52,9 @@ public class ZooServiceDb : IZooService {
 
     public Task<ResponsePageDto<IEmployee>> ReadEmployeesWithCCAsync(bool hasCreditCard, int pageNumber, int pageSize) => _creditcardRepo.ReadEmployeesWithCCAsync(hasCreditCard, pageNumber, pageSize);
     public Task<ResponseItemDto<ICreditCard>> ReadDecryptedCCAsync(Guid id) => _creditcardRepo.ReadDecryptedCCAsync(id);
+
+    public Task<ResponseItemDto<ZooCuDto>> ReadZooDtoAsync(Guid id, bool flat)
+    {
+        throw new NotImplementedException();
+    }
 }

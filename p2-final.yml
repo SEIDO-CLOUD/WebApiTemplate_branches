@@ -19,30 +19,60 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-  - stage: buildStage 
+  - stage: buildAndDeploy 
     jobs:
+      - job: buildAndDeployWebApi
+        steps:
+          - task: NuGetToolInstaller@1
 
-    - job: buildDotnet
-      displayName: 'build solution $(buildConfiguration)'
-      steps:
-        - script: dotnet build --configuration $(buildConfiguration)
+          - task: NuGetCommand@2
+            inputs:
+              restoreSolution: '$(solution)'
 
-  - stage: runStage 
+          - task: VSBuild@1
+            inputs:
+              solution: '$(solution)'
+              msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+              platform: '$(buildPlatform)'
+              configuration: '$(buildConfiguration)'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+
+          - task: DownloadBuildArtifacts@1
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              itemPattern: 'drop'
+              downloadPath: '$(Build.ArtifactStagingDirectory)'
+          
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'Tanzanite'
+              appType: 'webApp'
+              WebAppName: 'SYS6-Tanzanite-ws-6755B002D1BB'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)\*.zip'
+
+
+  - stage: IntegrationTest 
     jobs:
-    - job: runAppSimple
-      displayName: 'dotnet run' 
+    - job: AppWebApiTest
+      displayName: 'running AppWebApiTest' 
       timeoutInMinutes: 10
       steps:
         - script: dotnet run --project AppWebApiTest/AppWebApiTest.csproj
-       #- bash: exit 1  #This step will now fail
   
-  - stage: finalStage 
+  - stage: AllGood 
     dependsOn: 
-    - buildStage 
-    - runStage 
+    - buildAndDeploy 
+    - IntegrationTest 
     jobs:
-    - job: finalJob
-      displayName: 'finalJob' 
+    - job: AllGood
+      displayName: 'AllGood' 
       timeoutInMinutes: 10
       steps:
-      - bash: echo "Executing finalJob"
+      - bash: echo "Deployment and tests successful"

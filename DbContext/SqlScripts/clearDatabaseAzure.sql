@@ -6,18 +6,18 @@ DROP PROCEDURE IF EXISTS gstusr.spLogin
 GO
 
 -- remove roles
-ALTER ROLE zoosefcGstUsr DROP MEMBER gstusrUser;
-ALTER ROLE zoosefcGstUsr DROP MEMBER usrUser;
-ALTER ROLE zoosefcGstUsr DROP MEMBER supusrUser;
+ALTER ROLE zooefcGstUsr DROP MEMBER gstusrUser;
+ALTER ROLE zooefcGstUsr DROP MEMBER usrUser;
+ALTER ROLE zooefcGstUsr DROP MEMBER supusrUser;
 
-ALTER ROLE zoosefcUsr DROP MEMBER usrUser;
-ALTER ROLE zoosefcUsr DROP MEMBER supusrUser;
+ALTER ROLE zooefcUsr DROP MEMBER usrUser;
+ALTER ROLE zooefcUsr DROP MEMBER supusrUser;
 
-ALTER ROLE zoosefcSupUsr DROP MEMBER supusrUser;
+ALTER ROLE zooefcSupUsr DROP MEMBER supusrUser;
 
-DROP ROLE IF EXISTS zoosefcGstUsr;
-DROP ROLE IF EXISTS zoosefcUsr;
-DROP ROLE IF EXISTS zoosefcSupUsr;
+DROP ROLE IF EXISTS zooefcGstUsr;
+DROP ROLE IF EXISTS zooefcUsr;
+DROP ROLE IF EXISTS zooefcSupUsr;
 GO
 
 --drop users

@@ -21,22 +21,6 @@ variables:
 stages:
   - stage: buildStage 
     jobs:
-    - job: showDirectory
-      displayName: 'show directory and files'
-      timeoutInMinutes: 10
-      steps:
-        - task: Bash@3
-          inputs:
-            targetType: 'inline'
-            script: |
-              # Write your commands here
-              echo 'Directory'
-              pwd
-              echo 'Files'
-              ls -l
-              echo 'Project directory'
-              cd AppSimple
-              ls -l
 
     - job: buildDotnet
       displayName: 'build solution $(buildConfiguration)'

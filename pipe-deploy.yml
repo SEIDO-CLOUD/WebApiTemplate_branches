@@ -1,0 +1,61 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- 9_integration_test
+
+pool:
+  vmImage: 'windows-latest'
+# name: 'MartinsXPS15'
+# demands:
+#     - agent.name -equals MARTINS_XPS15
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+stages:
+  - stage: Build
+    jobs:
+      - job: buildjob
+        steps:
+          - task: NuGetToolInstaller@1
+
+          - task: NuGetCommand@2
+            inputs:
+              restoreSolution: '$(solution)'
+
+          - task: VSBuild@1
+            inputs:
+              solution: '$(solution)'
+              msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+              platform: '$(buildPlatform)'
+              configuration: '$(buildConfiguration)'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+
+          - task: DownloadBuildArtifacts@1
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              itemPattern: 'drop'
+              downloadPath: '$(Build.ArtifactStagingDirectory)'
+          
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'Tanzanite'
+              appType: 'webApp'
+              WebAppName: 'SYS6-Tanzanite-ws-6755B002D1BB'
+              #WebAppName: 'SYS6-Tanzanite-ws-devops'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)\*.zip'
+              appSettings:  
+                -MY_ENV_VAR1 "SeidoAB"
+                -MY_ENV_VAR2 "SeidoAB"

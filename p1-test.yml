@@ -19,30 +19,6 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-  - stage: buildStage 
-    jobs:
-    - job: showDirectory
-      displayName: 'show directory and files'
-      timeoutInMinutes: 10
-      steps:
-        - task: Bash@3
-          inputs:
-            targetType: 'inline'
-            script: |
-              # Write your commands here
-              echo 'Directory'
-              pwd
-              echo 'Files'
-              ls -l
-              echo 'Project directory'
-              cd AppSimple
-              ls -l
-
-    - job: buildDotnet
-      displayName: 'build solution $(buildConfiguration)'
-      steps:
-        - script: dotnet build --configuration $(buildConfiguration)
-
   - stage: runStage 
     jobs:
     - job: runAppSimple
@@ -51,14 +27,3 @@ stages:
       steps:
         - script: dotnet run --project AppWebApiTest/AppWebApiTest.csproj
        #- bash: exit 1  #This step will now fail
-  
-  - stage: finalStage 
-    dependsOn: 
-    - buildStage 
-    - runStage 
-    jobs:
-    - job: finalJob
-      displayName: 'finalJob' 
-      timeoutInMinutes: 10
-      steps:
-      - bash: echo "Executing finalJob"

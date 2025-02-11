@@ -30,26 +30,17 @@ public class TestEndpointAccess : ITestEndpointAccess
 
         var creds = new LoginCredentialsDto(){UserNameOrEmail = "sysadmin1", Password="sysadmin1"};
 
-        try
-        {
-            var token = await LoginAccess(settings, creds);
-            _adminService.BearerToken = token;
-            _zooService.BearerToken = token;
+        var token = await LoginAccess(settings, creds);
+        _adminService.BearerToken = token;
+        _zooService.BearerToken = token;
 
-            await AdminAccess(settings);
-            await ReadAccess(settings);
-            await UpdateAccess(settings);
-            await CreateAccess(settings);
-            await DeleteAccess(settings);
+        await AdminAccess(settings);
+        await ReadAccess(settings);
+        await UpdateAccess(settings);
+        await CreateAccess(settings);
+        await DeleteAccess(settings);
 
-            _logger.LogInformation("All tests completed successfully");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"{ex.Message}.{ex.InnerException?.Message}");
-            _logger.LogError("TestEndpointAccess failed");
-        }
-
+        _logger.LogInformation("All tests completed successfully");
         _logger.LogInformation("TestEndpointAccess suite ended");
     }
 

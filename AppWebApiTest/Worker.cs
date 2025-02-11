@@ -21,6 +21,9 @@ public class Worker : BackgroundService
         try
         {
             await _testEndpointAccess.ExecuteTestsAsync();
+
+            _logger.LogInformation("JWT CRUD test suite successfull");
+            _logger.LogInformation("TestEndpointAccess suite ended");
         }
         catch (Exception ex)
         {

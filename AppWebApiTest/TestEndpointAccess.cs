@@ -118,18 +118,18 @@ public class TestEndpointAccess : ITestEndpointAccess
         _logger.LogTrace(JsonConvert.SerializeObject(info, settings));
 
 
-        // _logger.LogInformation($"Test: {nameof(_adminService.RemoveSeedAsync)}:");
-        // info = await _adminService.RemoveSeedAsync(true);
-        // _logger.LogTrace(JsonConvert.SerializeObject(info, settings));
+        _logger.LogInformation($"Test: {nameof(_adminService.RemoveSeedAsync)}:");
+        info = await _adminService.RemoveSeedAsync(true);
+        _logger.LogTrace(JsonConvert.SerializeObject(info, settings));
 
-        // _logger.LogInformation($"Test: {nameof(_adminService.SeedAsync)}:");
-        // _logger.LogTrace(JsonConvert.SerializeObject(info, settings));
-        // info = await _adminService.SeedAsync(10);
-        // if (info.Item.Db.NrSeededZoos != 10)
-        // {
-        //     _logger.LogError($"Seed error in {nameof(_adminService.SeedAsync)}");
-        //     _logger.LogError(JsonConvert.SerializeObject(info, settings));
-        // }
+        _logger.LogInformation($"Test: {nameof(_adminService.SeedAsync)}:");
+        _logger.LogTrace(JsonConvert.SerializeObject(info, settings));
+        info = await _adminService.SeedAsync(10);
+        if (info.Item.Db.NrSeededZoos != 10)
+        {
+            _logger.LogError($"Seed error in {nameof(_adminService.SeedAsync)}");
+            _logger.LogError(JsonConvert.SerializeObject(info, settings));
+        }
 
 
     }

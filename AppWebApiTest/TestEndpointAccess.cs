@@ -117,7 +117,7 @@ public class TestEndpointAccess : ITestEndpointAccess
         var info = await _adminService.InfoAsync();
         _logger.LogTrace(JsonConvert.SerializeObject(info, settings));
 
-
+/*
         _logger.LogInformation($"Test: {nameof(_adminService.RemoveSeedAsync)}:");
         info = await _adminService.RemoveSeedAsync(true);
         _logger.LogTrace(JsonConvert.SerializeObject(info, settings));
@@ -130,7 +130,7 @@ public class TestEndpointAccess : ITestEndpointAccess
             _logger.LogError($"Seed error in {nameof(_adminService.SeedAsync)}");
             _logger.LogError(JsonConvert.SerializeObject(info, settings));
         }
-
+*/
 
     }
 

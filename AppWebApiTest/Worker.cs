@@ -16,11 +16,20 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        //dotnet run -- 10
+        //sets nrOfIterations to 10 
+        var args = Environment.GetCommandLineArgs();
+        int nrOfIterations = 1;
+        if (args.Length >= 2 && int.TryParse(args[1], out int argNrIterations))
+        {
+            nrOfIterations = argNrIterations;
+        }
+
         bool testFauilure = false;
         _logger.LogInformation("JWT CRUD test suite started");
         try
         {
-            await _testEndpointAccess.ExecuteTestsAsync();
+            await _testEndpointAccess.ExecuteTestsAsync(nrOfIterations);
 
             _logger.LogInformation("JWT CRUD test suite successfull");
             _logger.LogInformation("TestEndpointAccess suite ended");

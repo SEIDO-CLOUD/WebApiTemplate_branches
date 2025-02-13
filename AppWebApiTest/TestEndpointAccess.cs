@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 
 using Models.DTO;
 using Services;
+using Models;
 
 namespace AppWebApiTest;
 public class TestEndpointAccess : ITestEndpointAccess
@@ -20,13 +21,13 @@ public class TestEndpointAccess : ITestEndpointAccess
         _loginService = loginService;
     }
 
-    public async Task ExecuteTestsAsync()
+    public async Task ExecuteTestsAsync(int NrOfIterations)
     {
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
             Formatting = Formatting.Indented // This enables indentation and newlines
         };
-        _logger.LogInformation("TestEndpointAccess suite started");
+        _logger.LogInformation($"TestEndpointAccess suite started. Iterations: {NrOfIterations}");
 
         var creds = new LoginCredentialsDto(){UserNameOrEmail = "sysadmin1", Password="sysadmin1"};
 
@@ -34,17 +35,21 @@ public class TestEndpointAccess : ITestEndpointAccess
         _adminService.BearerToken = token;
         _zooService.BearerToken = token;
 
-        await AdminAccess(settings);
-        await ReadAccess(settings);
-        await UpdateAccess(settings);
-        await CreateAccess(settings);
-        await DeleteAccess(settings);
+        for (int i = 0; i < NrOfIterations; i++)
+        {
+                _logger.LogInformation($"Iteration {i+1} of {NrOfIterations}");
+                await AdminAccess(settings);
+                await ReadAccess(settings);
+                await UpdateAccess(settings);
+                var zoo = await CreateAccess(settings);
+                await DeleteAccess(settings, zoo);    
+        }
 
         _logger.LogInformation("All tests completed successfully");
         _logger.LogInformation("TestEndpointAccess suite ended");
     }
 
-    private async Task CreateAccess(JsonSerializerSettings settings)
+    private async Task<IZoo> CreateAccess(JsonSerializerSettings settings)
     {
         _logger.LogInformation($"Test: {nameof(_zooService.CreateZooAsync)}");
         var item = new ZooCuDto();
@@ -55,6 +60,7 @@ public class TestEndpointAccess : ITestEndpointAccess
 
         var zoo = await _zooService.CreateZooAsync(item);
         _logger.LogTrace(JsonConvert.SerializeObject(zoo, settings));
+        return zoo.Item;
     }
 
     private async Task UpdateAccess(JsonSerializerSettings settings)
@@ -91,23 +97,21 @@ public class TestEndpointAccess : ITestEndpointAccess
         }
     }
 
-    private async Task DeleteAccess(JsonSerializerSettings settings)
+    private async Task DeleteAccess(JsonSerializerSettings settings, IZoo zoo)
     {
         _logger.LogInformation($"Test: {nameof(_zooService.DeleteZooAsync)}");
-        var respItems = await _zooService.ReadZoosAsync(true, true, null, 0, 5);
-        var respItem = await _zooService.DeleteZooAsync(respItems.PageItems[0].ZooId);
-
         try 
         {
-            await _zooService.ReadZooAsync(respItems.PageItems[0].ZooId, false);
+             await _zooService.DeleteZooAsync(zoo.ZooId);
+             await _zooService.ReadZooAsync(zoo.ZooId, false);
 
-            //I should reach this place, as item should not exist
+            //I should reach this place, as item should no longer exist
             _logger.LogError($"Delete error in {nameof(_zooService.DeleteZooAsync)}");
-            _logger.LogTrace(JsonConvert.SerializeObject(respItem, settings));
+            _logger.LogTrace(JsonConvert.SerializeObject(zoo, settings));
         }
-        catch (Exception ex)
+        catch (HttpRequestException ex)
         {
-             _logger.LogDebug($"Successfully deleted item {respItems.PageItems[0].ZooId}");
+             _logger.LogDebug($"Successfully deleted item {zoo.ZooId}");
         }
     }
 

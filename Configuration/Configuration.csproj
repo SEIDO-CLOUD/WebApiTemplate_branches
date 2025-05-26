@@ -10,7 +10,7 @@
   <PropertyGroup>
     <UserSecretPath>/Users/Martin/.microsoft/usersecrets/</UserSecretPath>
     <AzureScriptDirectory>/Users/Martin/Development/projects/CloudServices_and_Security_Jan_2025/azuregitbash</AzureScriptDirectory>
-    <AzureProjectSettings>/Users/Martin/Development/projects/CloudServices_and_Security_Jan_2025/azuregitbash/az-projects/newton-tanzanite</AzureProjectSettings>
+    <AzureProjectSettings>/Users/Martin/Development/projects/CloudServices_and_Security_Jan_2025/azuregitbash/az-projects/newton-garnet</AzureProjectSettings>
   </PropertyGroup>
 
   <ItemGroup>

@@ -10,7 +10,7 @@
   <PropertyGroup>
     <UserSecretPath>/Users/Martin/.microsoft/usersecrets/</UserSecretPath>
     <AzureScriptDirectory>/Users/Martin/Development/scripts/azure</AzureScriptDirectory>
-    <AzureProjectSettings>/Users/Martin/Development/scripts/azure/az-projects/newton-tanzanite</AzureProjectSettings>
+    <AzureProjectSettings>/Users/Martin/Development/scripts/azure/az-projects/newton-garnet</AzureProjectSettings>
   </PropertyGroup>
 
   <ItemGroup>

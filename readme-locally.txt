@@ -1,7 +1,8 @@
 This text shows the steps to run AppWebApi locally using .NET User Secrets and SQL server running in docker
 
-1. Make sure that belwo two keys in appsettings.json in the folders AppWebApi and DbContext are set to following:
+1. Make sure that below three keys in appsettings.json in the folders AppWebApi and DbContext are set to following:
       "UseAzureKeyVault": false
+      "DefaultDataUser": "sysadmin"
       "UseDataSetWithTag": "zooefc.localhost.docker"
    This ensures you will use user secrets and docker on your local development computer.
 
@@ -59,18 +60,24 @@ This text shows the steps to run AppWebApi locally using .NET User Secrets and S
 
 7. Use endpoint Admin/SeedUsers to seed users into the the database
 
-8. Use endpoint Guest/LoginUser to login as sysadmin1
+8. Terminate WebApi
+   Change one key in appsettings.json in the folder AppWebApi to following:
+      "DefaultDataUser": "gstusr"
+   This ensures your database connection, unless logged in, will be gstusr
+   
+9. Run AppWebApi with or without debugger
+   Use endpoint Guest/LoginUser to login as sysadmin1
 {
   "userNameOrEmail": "sysadmin1",
   "password": "sysadmin1"
 }
 
-9. Authorize using Swagger Authorize butto and paste in the encryptedToken recieved after login.
+10. Authorize using Swagger Authorize button and paste in the encryptedToken recieved after login.
     NOTE!!: Copy and paste the encryptedToken WITHIN the quotation, i.e. WITHOUT the first and last quotation mark "
 
-10. Use endpoint Admin/Seed to seed the database, Admin/RemoveSeed to remove the seed
+11. Use endpoint Admin/Seed to seed the database, Admin/RemoveSeed to remove the seed
    Verify database seed with endpoint Guest/Info
 
-11. As sysadmin you can now use and play with all endpoints
+12. As sysadmin you can now use and play with all endpoints
 
 

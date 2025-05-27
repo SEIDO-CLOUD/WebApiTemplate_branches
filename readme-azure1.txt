@@ -56,7 +56,7 @@ Build Azure Database
    Use connection string from user secrets: sysadmin
    connection string corresponding to Tag
    "zooefc.azure"
-   NOTE: You may have to open the firewalls on the SQL Server on Azure
+   NOTE: You will have to open the firewalls on the SQL Server on Azure
    
 7. Use Azure Data Studio to execute SQL script DbContext/SqlScripts/clearDatabaseAzure.sql on the database zooefc
    Ignore any errors

@@ -38,22 +38,13 @@ warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
 5. Authorize using Swagger Authorize butto and paste in the encryptedToken recieved after login.
     NOTE!!: Copy and paste the encryptedToken WITHIN the quotation, i.e. WITHOUT the first and last quotation mark "
 
-6. Verify connections and setup with endpoint Admin/Info. Output should be
-   {
-   "appEnvironment": "Production",
-   "secretSource": "Azure: Tanzanite",
-   "dataConnectionTag": "zooefc.azure",
-   "defaultDataUser": "sysadmin",
-   "migrationDataUser": "sysadmin",
-   "dataConnectionServer": 0,
-   "dataConnectionServerString": "SQLServer"
-   }
+6. As sysadmin you can now use and play with all endpoints in the pre-publish application
 
 
 Publish AppWebApi to Azure App Service
 --------------------------------------
 
-7. In Azure tab on VSC open App Services find you groups App Service, for example SYS6-Tanzanite-ws-6755B002D1BB
+7. In Azure tab on VSC open App Services find your groups App Service, for example SYS6-Tanzanite-ws-6755B002D1BB
 
 8. Right click on the App Service and select "Deploy to Web App...". Click deploy. 
 
